@@ -1,0 +1,36 @@
+services:
+  php:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
+    networks:
+      - internal
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 8008:80
+    networks:
+      - internal
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      #POSTGRES_DB: value
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 1488
+    volumes:     
+      - ./docker/db:/var/lib/postgresql/data
+    networks:
+      - internal
+  adminer:  
+    image: adminer
+    restart: always
+    ports:
+      - 7777:8080
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
