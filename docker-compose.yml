@@ -39,7 +39,14 @@ services:
       - ./frontend:/var/www/html
       - ./docker/node:/scripts
     ports:
-      - 80:3000
+      - 3000:3000
+  symfony:
+    build: ./docker/symfony
+    tty: true
+    volumes:
+      - ./backend:/var/www/html
+    ports:
+      - 8000:8000
 networks:
   internal:
     driver: bridge
