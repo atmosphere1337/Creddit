@@ -50,10 +50,12 @@ function LeftSidebar() {
 }
 const StyledAside = styled.aside`
     padding: 20px;
-    background-color: #268585;
+    background-color: #401616;
     border-width: 0;
     border-right-width: 1px;
     border-style: solid;
+    color: #aca9a9;
+
 `;
 const Stylednav = styled.nav`
     
