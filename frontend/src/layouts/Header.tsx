@@ -25,7 +25,6 @@ function Header() {
 }
 
 const StyledHeader = styled.header`
-    background-color: #7f3333;
     color: #aca9a9;
     border-bottom-width: 1px;
     border-top-width: 0;

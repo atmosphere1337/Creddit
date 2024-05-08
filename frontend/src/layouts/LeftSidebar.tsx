@@ -32,7 +32,7 @@ const rawData : rawDataType[] = [
 function LeftSidebar() {
     return (
         <StyledAside>
-            <Stylednav>
+            <StyledNav>
                 { rawData.map( (value) =>
                     <LeftTag name={value.name}
                              logo={value.logo}
@@ -44,24 +44,23 @@ function LeftSidebar() {
                              logo={value.logo}
                     />
                 ) }
-            </Stylednav>
+            </StyledNav>
         </StyledAside>
     );
 }
 const StyledAside = styled.aside`
     padding: 20px;
-    background-color: #401616;
     border-width: 0;
     border-right-width: 1px;
     border-style: solid;
     color: #aca9a9;
 
 `;
-const Stylednav = styled.nav`
+const StyledNav = styled.nav`
     
 `;
 const StyledLeftTag = styled.div`
-    background-color: blueviolet;    
+    background-color: #300900;
     margin-bottom: 20px;
     padding-left: 20px;
     display: flex;
