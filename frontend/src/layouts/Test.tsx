@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 // material ui check
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card'
 // redux check
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment } from '../other/counterSlice'
@@ -26,7 +27,11 @@ function Test() {
                 { count }
             </div>
             <div>
+                Button
                 <Button variant="contained" onClick={ () => dispatch(decrement()) }>Hello Orwell</Button>
+            </div>
+            <div>
+                <Card variant="outlined">What</Card>
             </div>
             <div onClick={ () => { dispatch(increment()) } } >
                 hello Orwell

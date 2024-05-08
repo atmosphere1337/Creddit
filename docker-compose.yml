@@ -9,6 +9,8 @@ services:
   nginx:
     profiles: ["prod"]
     build: ./docker/nginx
+    volumes:
+      - ./frontend/build:/var/www/html
     ports:
       - 8008:80
     networks:
