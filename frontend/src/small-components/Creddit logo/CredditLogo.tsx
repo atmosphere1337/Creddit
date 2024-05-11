@@ -4,8 +4,10 @@ import styled from "styled-components";
 function CredditLogo() {
     return (
         <StyledLogo>
-            <Picture />
-            <TextWhite />
+            <a href="/">
+                <Picture />
+                <TextWhite />
+            </a>
         </StyledLogo>
     );
 }
@@ -13,4 +15,5 @@ function CredditLogo() {
 const StyledLogo = styled.div`
     padding-left: 10px;
 `;
+
 export default CredditLogo;

@@ -5,14 +5,14 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card'
 // redux check
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../other/counterSlice'
+import { switchMode } from '../other/generalSlice'
 import { useAppSelector, useAppDispatch } from '../other/hooks'
 import styled from "styled-components"
 
 
 
 function Test() {
-    const count = useAppSelector((state) => state.counter.value)
+    const count = useAppSelector((state) => state.general.darkMode)
     const dispatch = useAppDispatch()
     const [value, setValue] = useState("Hello world")
     return (
@@ -28,12 +28,12 @@ function Test() {
             </div>
             <div>
                 Button
-                <Button variant="contained" onClick={ () => dispatch(decrement()) }>Hello Orwell</Button>
+                <Button variant="contained" onClick={ () => dispatch(switchMode()) }>Hello Orwell</Button>
             </div>
             <div>
                 <Card variant="outlined">What</Card>
             </div>
-            <div onClick={ () => { dispatch(increment()) } } >
+            <div onClick={ () => { dispatch(switchMode()) } } >
                 hello Orwell
             </div>
         </>

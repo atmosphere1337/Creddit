@@ -6,11 +6,11 @@ import Content from "./Content";
 function Main() {
     return (
         <StyledMain>
-            <Header />
-            <StyledSidebarAndContent>
-                <LeftSidebar />
-                <Content />
-            </StyledSidebarAndContent>
+          <Header />
+          <StyledSidebarAndContent>
+            <LeftSidebar />
+            <Content />
+          </StyledSidebarAndContent>
         </StyledMain>
     );
 }

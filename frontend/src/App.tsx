@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/test" element={<Test />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/" element={<Main />} />
       </Routes>
     </BrowserRouter>
   );

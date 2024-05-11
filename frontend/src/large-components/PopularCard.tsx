@@ -16,17 +16,19 @@ function PopularChannel({name, members}: RawDataType) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
         <StyledChannel>
+          <a href="/">
             <div>
-                <div>
-                    {name}
-                </div>
-                <div>
-                    {members}
-                </div>
+              <div>
+                {name}
+              </div>
+              <div>
+                {members}
+              </div>
             </div>
             <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-                {colors[randomColor]}
+              {colors[randomColor]}
             </StyledAvatarChannel>
+          </a>
         </StyledChannel>
     );
 }

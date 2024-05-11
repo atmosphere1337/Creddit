@@ -16,8 +16,7 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash
 RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
-#composer install ?
-# install symfony bin
+
 EXPOSE 8000
 WORKDIR /var/www/html
 COPY ./init.sh /scripts/init.sh

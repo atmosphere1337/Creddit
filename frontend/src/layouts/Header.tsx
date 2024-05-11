@@ -17,7 +17,8 @@ function Header() {
                     <SearchBar />
                 </StyledRightBox>
                 <StyledRightBox>
-                    <RedButton name="Log In" />
+                    <RedButton name="Sign In" />
+                    <RedButton name="Sign Up" />
                 </StyledRightBox>
             </StyledNav>
         </StyledHeader>
