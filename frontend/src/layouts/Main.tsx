@@ -1,15 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from './Header';
 import LeftSidebar from "./LeftSidebar";
 import styled from "styled-components";
-import Content from "./Content";
+import Feed from './Feed';
+import ContentSidebarRight from "./ContentSidebarRight";
 function Main() {
+    useEffect(() => {
+        let url : string = "/api/feed"; 
+        let options = {
+            method: "GET"    
+        };
+        /*
+        fetch(url, options)
+        .then(res => res.json() )
+        .then( payload => {
+            //alert(payload);
+        });    
+        */
+    });
     return (
         <StyledMain>
           <Header />
           <StyledSidebarAndContent>
             <LeftSidebar />
-            <Content />
+            <StyledContentDiv>
+              <Feed />
+              <ContentSidebarRight />
+            </StyledContentDiv>
           </StyledSidebarAndContent>
         </StyledMain>
     );
@@ -18,12 +35,13 @@ const StyledMain = styled.div`
     color: white;
     background-color: #301515;
 `;
-const StyledContent = styled.div`
-    background-color: #581e8f;
-`;
 const StyledSidebarAndContent = styled.div`
     display: grid;
     grid-auto-flow: row;
     grid-template-columns: 272px 1fr;
+`;
+const StyledContentDiv = styled.div`
+    display: flex;
+    justify-content: center;
 `;
 export default Main;

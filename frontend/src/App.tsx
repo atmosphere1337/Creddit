@@ -11,6 +11,7 @@ function App() {
         <Route path="/test" element={<Test />} />
         <Route path="/main" element={<Main />} />
         <Route path="/" element={<Main />} />
+        <Route path="/c/:channel" element={<Main />} />
       </Routes>
     </BrowserRouter>
   );
