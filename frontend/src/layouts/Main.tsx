@@ -6,17 +6,15 @@ import Feed from './Feed';
 import ContentSidebarRight from "./ContentSidebarRight";
 function Main() {
     useEffect(() => {
-        let url : string = "/api/feed"; 
+        let url : string = "/api/feed";
         let options = {
             method: "GET"    
         };
-        /*
-        fetch(url, options)
+        fetch(url)
         .then(res => res.json() )
         .then( payload => {
-            //alert(payload);
-        });    
-        */
+            alert(JSON.stringify(payload));
+        });
     });
     return (
         <StyledMain>
