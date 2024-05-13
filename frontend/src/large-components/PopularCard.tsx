@@ -4,30 +4,33 @@ import {useState} from "react";
 type RawDataType = {
     name: string,
     members: number,
+    link: string,
 }
 
 const rawData : RawDataType[] = [
-    {name: "c/DarkSouls", members: 228 },
-    {name:  "c/EldenRing", members: 1337},
-    {name:  "c/CounterStrike2", members: 1488},
+    { name: "c/DarkSouls", members: 228, link: "darksouls" },
+    { name:  "c/EldenRing", members: 1337, link: "eldenring" },
+    { name:  "c/CounterStrike2", members: 1488, link: "counterstriker2" },
 ];
-function PopularChannel({name, members}: RawDataType) {
+function PopularChannel({name, members, link}: RawDataType) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
-        <StyledChannel>
+        <StyledA href={"/c/" + link}>
+          <StyledChannel>
             <div>
-                <div>
-                    {name}
-                </div>
-                <div>
-                    {members}
-                </div>
+              <div>
+                {name}
+              </div>
+              <div>
+                {members}
+              </div>
             </div>
             <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-                {colors[randomColor]}
+              {colors[randomColor]}
             </StyledAvatarChannel>
-        </StyledChannel>
+          </StyledChannel>
+        </StyledA>
     );
 }
 
@@ -39,7 +42,11 @@ function PopularCard() {
                 Popular Channels
             </div>
             <div>
-                { rawData.map((element) => <PopularChannel name={ element.name }  members={element.members} />) }
+                { rawData.map((element) => <PopularChannel
+                                                            name = { element.name }
+                                                            members = { element.members }
+                                                            link = { element.link }
+                                                        />) }
             </div>
         </StyledDiv>
     );
@@ -65,5 +72,22 @@ const StyledAvatarChannel = styled.div`
 const StyledChannel = styled.div`
     display: flex;
     margin-bottom: 10px;
+`;
+const StyledA = styled.a`
+    &:link {
+        text-decoration: inherit;
+        color: inherit;
+        cursor: auto;
+    }
+
+    &:visited {
+        text-decoration: inherit;
+        color: inherit;
+        cursor: auto;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+    
 `;
 export default PopularCard;
