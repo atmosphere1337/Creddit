@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import {useState} from "react";
+import { useState } from "react";
+import { StyledA } from "../other/styles/CommonStyles";
 
 type RawDataType = {
     name: string,
@@ -10,7 +11,7 @@ type RawDataType = {
 const rawData : RawDataType[] = [
     { name: "c/DarkSouls", members: 228, link: "darksouls" },
     { name:  "c/EldenRing", members: 1337, link: "eldenring" },
-    { name:  "c/CounterStrike2", members: 1488, link: "counterstriker2" },
+    { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2" },
 ];
 function PopularChannel({name, members, link}: RawDataType) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
@@ -27,7 +28,6 @@ function PopularChannel({name, members, link}: RawDataType) {
               </div>
             </div>
             <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-              {colors[randomColor]}
             </StyledAvatarChannel>
           </StyledChannel>
         </StyledA>
@@ -72,22 +72,5 @@ const StyledAvatarChannel = styled.div`
 const StyledChannel = styled.div`
     display: flex;
     margin-bottom: 10px;
-`;
-const StyledA = styled.a`
-    &:link {
-        text-decoration: inherit;
-        color: inherit;
-        cursor: auto;
-    }
-
-    &:visited {
-        text-decoration: inherit;
-        color: inherit;
-        cursor: auto;
-    }
-    &:hover {
-        cursor: pointer;
-    }
-    
 `;
 export default PopularCard;

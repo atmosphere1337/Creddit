@@ -1,12 +1,16 @@
+import styled from "styled-components";
+import { StyledA } from "../../other/styles/CommonStyles";
 import Picture  from './Picture';
 import TextWhite from './TextWhite';
-import styled from "styled-components";
+
 function CredditLogo() {
     return (
+      <StyledA href="/">
         <StyledLogo>
-            <Picture />
-            <TextWhite />
+          <Picture />
+          <TextWhite />
         </StyledLogo>
+      </StyledA>
     );
 }
 

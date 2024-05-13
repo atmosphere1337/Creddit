@@ -6,6 +6,7 @@ import LeftSidebar from "./LeftSidebar";
 import Feed from './Feed';
 import ContentSidebarRight from "./ContentSidebarRight";
 import ApiFirstLoad from "./ApiFirstLoad";
+import ChannelWallpaper from "../large-components/ChannelWallpaper";
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
     return (
@@ -15,7 +16,13 @@ function Main({type = "default"} : {type: string}) {
           <StyledSidebarAndContent>
             <LeftSidebar />
             <StyledContentDiv>
-              <Feed />
+              <div>
+                {
+                    type == "channel" &&
+                    <ChannelWallpaper />
+                }
+                <Feed />
+              </div>
               <ContentSidebarRight />
             </StyledContentDiv>
           </StyledSidebarAndContent>
