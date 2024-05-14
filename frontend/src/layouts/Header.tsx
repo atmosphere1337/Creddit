@@ -10,16 +10,15 @@ function Header() {
             material UI?
          */
         <StyledHeader>
-            <StyledNav>
-                <CredditLogo />
-
-                <StyledRightBox>
-                    <SearchBar />
-                </StyledRightBox>
-                <StyledRightBox>
-                    <RedButton name="Log In" />
-                </StyledRightBox>
-            </StyledNav>
+          <StyledNav>
+            <CredditLogo />
+            <StyledRightBox>
+              <SearchBar />
+            </StyledRightBox>
+            <StyledRightBox>
+              <RedButton name="Log In" />
+            </StyledRightBox>
+          </StyledNav>
         </StyledHeader>
     );
 }

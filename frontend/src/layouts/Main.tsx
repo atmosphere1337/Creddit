@@ -4,10 +4,11 @@ import styled from "styled-components";
 import Header from './Header';
 import LeftSidebar from "./LeftSidebar";
 import Feed from './Feed';
+import AdFeed from "./AdFeed";
+import PostPage from "./PostPage";
 import ApiFirstLoad from "./ApiFirstLoad";
 import ChannelWallpaper from "../large-components/ChannelWallpaper";
 import PopularCard from "../large-components/PopularCard";
-import AdFeed from "./AdFeed";
 import ChannelInfoCard from "../large-components/ChannelInfoCard";
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
@@ -20,11 +21,13 @@ function Main({type = "default"} : {type: string}) {
             <StyledContentDiv>
               <div>
                 { type == "channel" && <ChannelWallpaper /> }
-                <Feed />
+                { type != "post" && <Feed /> }
+                { type == "post" && <PostPage /> }
               </div>
               <StyledContentSidebarRightDiv>
                 { type == "default" && <PopularCard /> }
                 { type == "channel" && <ChannelInfoCard /> }
+                { type == "post" && <ChannelInfoCard /> }
                 <AdFeed />
               </StyledContentSidebarRightDiv>
             </StyledContentDiv>
