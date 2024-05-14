@@ -12,6 +12,7 @@ function App() {
         <Route path="/main" element={ <Main type="default" /> } />
         <Route path="/" element={ <Main type="default" /> } />
         <Route path="/c/:channel" element={ <Main type="channel" /> } />
+        <Route path="/posts/:post" element={ <Main type="post" /> } />
       </Routes>
     </BrowserRouter>
   );

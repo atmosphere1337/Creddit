@@ -1,12 +1,13 @@
-import React, {useState, useEffect, } from 'react';
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect, } from 'react';
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from './Header';
 import LeftSidebar from "./LeftSidebar";
 import Feed from './Feed';
-import ContentSidebarRight from "./ContentSidebarRight";
 import ApiFirstLoad from "./ApiFirstLoad";
 import ChannelWallpaper from "../large-components/ChannelWallpaper";
+import PopularCard from "../large-components/PopularCard";
+import AdFeed from "./AdFeed";
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
     return (
@@ -17,13 +18,13 @@ function Main({type = "default"} : {type: string}) {
             <LeftSidebar />
             <StyledContentDiv>
               <div>
-                {
-                    type == "channel" &&
-                    <ChannelWallpaper />
-                }
+                { type == "channel" && <ChannelWallpaper /> }
                 <Feed />
               </div>
-              <ContentSidebarRight />
+              <StyledContentSidebarRightDiv>
+                <PopularCard />
+                <AdFeed />
+              </StyledContentSidebarRightDiv>
             </StyledContentDiv>
           </StyledSidebarAndContent>
         </StyledMain>
@@ -41,5 +42,10 @@ const StyledSidebarAndContent = styled.div`
 const StyledContentDiv = styled.div`
     display: flex;
     justify-content: center;
+`;
+const StyledContentSidebarRightDiv = styled.div`
+    width: 316px;
+    color: white;
+    padding: 20px;
 `;
 export default Main;
