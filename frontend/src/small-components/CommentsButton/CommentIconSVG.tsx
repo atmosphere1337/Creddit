@@ -8,7 +8,7 @@ function CommentIconSVG () {
             <defs>
 
             </defs>
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            <g id="Page-1" stroke="#FFFFFF" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Icon-Set" transform="translate(-360.000000, -255.000000)"
                    fill="#000000">
                     <path

@@ -8,6 +8,7 @@ import ApiFirstLoad from "./ApiFirstLoad";
 import ChannelWallpaper from "../large-components/ChannelWallpaper";
 import PopularCard from "../large-components/PopularCard";
 import AdFeed from "./AdFeed";
+import ChannelInfoCard from "../large-components/ChannelInfoCard";
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
     return (
@@ -22,7 +23,8 @@ function Main({type = "default"} : {type: string}) {
                 <Feed />
               </div>
               <StyledContentSidebarRightDiv>
-                <PopularCard />
+                { type == "default" && <PopularCard /> }
+                { type == "channel" && <ChannelInfoCard /> }
                 <AdFeed />
               </StyledContentSidebarRightDiv>
             </StyledContentDiv>
