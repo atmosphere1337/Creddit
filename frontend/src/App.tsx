@@ -1,5 +1,4 @@
 import  React from 'react';
-// router check
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Test from './layouts/Test'
 import Main from './layouts/Main'

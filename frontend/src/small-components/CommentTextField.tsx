@@ -1,13 +1,16 @@
 import styled from "styled-components";
+import {useState} from "react";
 
 function CommentTextField({hide}:{hide: any}) {
-    function expand(element : any) {
+    const [text, setText] = useState("");
+    function refreshField(element : any) {
         element.target.style.height = "0px";
         element.target.style.height = (17 + element.target.scrollHeight) + "px";
+        setText( element.target.value );
     }
     return (
         <div>
-            <StyledTextArea onChange={ ( e ) => { expand(e) } }>
+            <StyledTextArea value = { text } onChange={ ( e ) => { refreshField(e) } }>
             </StyledTextArea>
             <div style={{ display: "flex" }}>
                 <div style={{ marginLeft: "auto", marginRight: "10px" }}>
@@ -44,10 +47,17 @@ const StyledButtonDiv = styled.div`
 `;
 const StyledCommentButtonDiv = styled(StyledButtonDiv)`
     background-color: blue;
+
+    &:hover {
+        background-color: #4646fa;
+    }
 `;
 const StyledCancelButtonDiv = styled(StyledButtonDiv)`
     background-color: #333333;
     margin-right: 7px;
+    &:hover {
+        background-color: #555555;
+    }
 `;
 
 export default CommentTextField;

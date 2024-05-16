@@ -13,9 +13,9 @@ function RatingButton( {value} : {value: number}) {
     );
 }
 const StyledDiv = styled.div`
+    display: inline-block;
     padding: 5px;
     border-radius: 100px;
-    display: inline-block;
     background-color: #252e29;
 `;
 const StyledDiv2 = styled.div`

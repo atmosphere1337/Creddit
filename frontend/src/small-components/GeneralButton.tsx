@@ -8,6 +8,7 @@ function GeneralButton({value, link, color="blue"} : {value : string, link: stri
     );
 }
 const StyledDiv = styled.div`
+    display: inline-block;
     padding: 7px 10px;
     border-radius: 100px;
 `;

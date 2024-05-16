@@ -15,6 +15,7 @@ const StyledDiv = styled.div`
     border-radius: 100px;
     display: inline-block;
     background-color: #252e29;
+    cursor: pointer;
 `;
 const StyledDiv2 = styled.div`
     display: flex;

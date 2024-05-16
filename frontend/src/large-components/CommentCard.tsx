@@ -1,38 +1,43 @@
-import { useState } from "react";
+import { useState, Children, ReactNode } from "react";
 import styled from "styled-components";
 import RatingButton from "../small-components/RatingButton/RatingButton";
 import ReplyButton from "../small-components/ReplyButton/ReplyButton";
 import GeneralButton from "../small-components/GeneralButton";
-type TypeProps =  { name:string, comment:string, rating: number, age:number };
-function CommentCard({ name = "default", comment = "default", rating = 0, age = 0 } : TypeProps) {
+type TypeProps =  { name:string, comment:string, rating: number, age:number, children: ReactNode };
+function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, children = <></>} : TypeProps) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()) % colors.length);
     return (
-        <StyledDiv>
-            <div style={{ display: "flex" }}>
-                <div style={{ marginRight: "20px" }}>
-                    <StyledAvatarDiv dynamicColor={ colors[randomColor] } />
-                </div>
-                <div>
-                    <div style={{display: "flex", marginBottom: "10px"}}>
-                        <div style={{marginRight: "20px", fontWeight: "bold"}}>
-                            {name}
-                        </div>
-                        <div style={{ color: "#9f9e9e" }}>
-                            {age} minutes ago
-                        </div>
+        <>
+            <StyledDiv>
+                <div style={{ display: "flex" }}>
+                    <div style={{ marginRight: "20px" }}>
+                        <StyledAvatarDiv dynamicColor={ colors[randomColor] } />
                     </div>
                     <div>
-                        {comment}
+                        <div style={{display: "flex", marginBottom: "10px"}}>
+                            <div style={{marginRight: "20px", fontWeight: "bold"}}>
+                                {name}
+                            </div>
+                            <div style={{ color: "#9f9e9e" }}>
+                                {age} minutes ago
+                            </div>
+                        </div>
+                        <div>
+                            {comment}
+                        </div>
+                        <StyledButtonPadDiv>
+                            <RatingButton value={rating}/>
+                            <ReplyButton/>
+                            <GeneralButton value={"Report"} link={"suckmydickd"} color={"red"}/>
+                        </StyledButtonPadDiv>
                     </div>
-                    <StyledButtonPadDiv>
-                        <RatingButton value={rating}/>
-                        <ReplyButton/>
-                        <GeneralButton value={"Report"} link={"suckmydickd"} color={"red"}/>
-                    </StyledButtonPadDiv>
                 </div>
-            </div>
-        </StyledDiv>
+            </StyledDiv>
+            <StyledDiv2>
+                check
+            </StyledDiv2>
+        </>
     );
 }
 
@@ -54,8 +59,9 @@ const StyledButtonPadDiv = styled.div`
     gap: 7px;
     margin-top: 15px;
 `;
-const StyledCommentDiv = styled.div`
-    
+const StyledDiv2 = styled.div`
+    height: 100px;
+    padding-left: 30px;
 `;
 
 

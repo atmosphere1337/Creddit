@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components"
-import CredditLogo from "../small-components/Creddit logo/CredditLogo";
+import CredditLogo from "../small-components/CredditLogo/CredditLogo";
 import SearchBar from "../small-components/SearchBar/SarchBar";
 import RedButton from "../small-components/RedButton/RedButton";
 function Header() {
