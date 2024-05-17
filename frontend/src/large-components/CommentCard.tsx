@@ -1,12 +1,16 @@
-import { useState, Children, ReactNode } from "react";
+import React, { useState, Children, ReactNode } from "react";
 import styled from "styled-components";
 import RatingButton from "../small-components/RatingButton/RatingButton";
 import ReplyButton from "../small-components/ReplyButton/ReplyButton";
 import GeneralButton from "../small-components/GeneralButton";
+import CommentTextField from "../small-components/CommentTextField";
 type TypeProps =  { name:string, comment:string, rating: number, age:number, children: ReactNode };
 function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, children = <></>} : TypeProps) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()) % colors.length);
+    const [showCommentSwitch, setShowCommentSwitch] = useState(false);
+    const showComment = () => {setShowCommentSwitch(true)};
+    const hideComment = () => {setShowCommentSwitch(false)};
     return (
         <>
             <StyledDiv>
@@ -28,14 +32,17 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                         </div>
                         <StyledButtonPadDiv>
                             <RatingButton value={rating}/>
-                            <ReplyButton/>
-                            <GeneralButton value={"Report"} link={"suckmydickd"} color={"red"}/>
+                            <div onClick={ showComment }>
+                                <ReplyButton />
+                            </div>
+                            <GeneralButton value={"Report"} link={"suckmydickd"} color={"red"} />
                         </StyledButtonPadDiv>
                     </div>
                 </div>
             </StyledDiv>
             <StyledDiv2>
-                check
+                { showCommentSwitch && <CommentTextField hide={ hideComment}/> } 
+                {children}
             </StyledDiv2>
         </>
     );
@@ -60,7 +67,6 @@ const StyledButtonPadDiv = styled.div`
     margin-top: 15px;
 `;
 const StyledDiv2 = styled.div`
-    height: 100px;
     padding-left: 30px;
 `;
 
