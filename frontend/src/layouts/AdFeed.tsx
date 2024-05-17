@@ -13,6 +13,7 @@ function AdFeed() {
         <StyledDiv>
             {rawData.map ((element: rawDataType) =>
                 <AdBanner
+                    key = {element.name}
                     name = {element.name}
                     picture = {element.picture}
                     link = {element.link}

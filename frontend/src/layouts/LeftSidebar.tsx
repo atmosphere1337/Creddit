@@ -24,9 +24,9 @@ const rawData : rawDataType[] = [
     { name: "Gaming", logo: <Gaming /> },
     { name: "Sport", logo: <Sports /> },
     { name: "Business", logo: <Business /> },
-    { name: "Gaming", logo: <Gaming /> },
-    { name: "Sport", logo: <Sports /> },
-    { name: "Business", logo: <Business /> },
+    { name: "Politics", logo: <Gaming /> },
+    { name: "Movies", logo: <Sports /> },
+    { name: "Traveling", logo: <Business /> },
 ];
 
 function LeftSidebar() {
@@ -34,14 +34,18 @@ function LeftSidebar() {
         <StyledAside>
             <StyledNav>
                 { rawData.map( (value) =>
-                    <LeftTag name={value.name}
-                             logo={value.logo}
+                    <LeftTag
+                        key={value.name}
+                        name={value.name}
+                        logo={value.logo}
                     />
                 ) }
                 <hr />
                 { rawData.map( (value) =>
-                    <LeftTag name={value.name}
-                             logo={value.logo}
+                    <LeftTag
+                        key={value.name}
+                        name={value.name}
+                        logo={value.logo}
                     />
                 ) }
             </StyledNav>
