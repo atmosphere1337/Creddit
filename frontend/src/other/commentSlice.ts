@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import {RootState} from './store'
+import { createSlice, current } from '@reduxjs/toolkit';
+import {RootState} from './store';
 
 let rawList : IListedComment[] = [
     {
@@ -53,19 +53,14 @@ let rawList : IListedComment[] = [
 ];
 
 let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: 0, children: []}, ];
-let rawQueue : ITreeComment[] = [ rawTree[0] ];
 interface ICommentState {
     list: IListedComment[],
     tree: ITreeComment[],
-    queue: ITreeComment[],
-    value: number,
 }
 
 const initialState : ICommentState = {
     list: rawList,
     tree: rawTree,
-    queue: rawQueue,
-    value: 0,
 }
 interface IListedComment {
     id: number,
@@ -80,44 +75,47 @@ interface ITreeComment extends IListedComment {
 }
 
 /*
-function listToTree (  ) {
-    let current: any;
-    let filtered : any;
-    while (rawQueue.length != 0) {
-        current = rawQueue.shift();
-        filtered = rawList.filter(x => x.parent == current.id);
-        current.children = filtered;
-        rawQueue.push(...filtered);
-        rawList = rawList.filter( x => x.parent != current.id);
+
+    function listToTree (  ) {
+        let current: any;
+        let filtered : any;
+        while (rawQueue.length != 0) {
+            current = rawQueue.shift();
+            filtered = rawList.filter(x => x.parent == current.id);
+            current.children = filtered;
+            rawQueue.push(...filtered);
+            rawList = rawList.filter( x => x.parent != current.id);
+        }
     }
-}
- */
+
+*/
+
 export const commentSlice = createSlice({
     name: "comment",
     initialState,
     reducers: {
         treeFirstLoad : (state : ICommentState) => {
-            let current : ITreeComment;
-            let filtered : ITreeComment[] ;
-            while (state.queue.length != 0) {
-                current = <ITreeComment>state.queue.shift();
+            let currentNode : ITreeComment;
+            let filtered : ITreeComment[];
+            let fatherNode : ITreeComment = {id: 0, parent: -1, name:"FatherNode", comment:"", rating: 0, age: 0, children: []};
+            state.tree = [ fatherNode ];
+            let queue : ITreeComment [] = [ fatherNode ];
+            while (queue.length != 0) {
+                currentNode = <ITreeComment>queue.shift();
                 filtered = state.list
-                    .filter((x : IListedComment)   => x.parent == current.id)
+                    .filter((x : IListedComment)   => x.parent == currentNode.id)
                     .map((x : IListedComment) => {
                         return <ITreeComment>{...x, children: []};
                     });
-                current.children = filtered;
-                state.queue.push(...filtered);
-                state.list = state.list.filter( (x: IListedComment) => x.parent != current.id);
+                currentNode.children = filtered;
+                queue.push(...filtered);
+                state.list = state.list.filter( (x: IListedComment) => x.parent != currentNode.id);
             }
         },
-        inc : (state : ICommentState) => {
-            state.value++;
-        }
     }
 
 });
-export const { treeFirstLoad, inc  } = commentSlice.actions;
-export const selectTree = (state: RootState) => state.comment.tree;
-export const selectList = (state: RootState) => state.comment.list;
+
+export const { treeFirstLoad  } = commentSlice.actions;
+export type { ITreeComment };
 export default commentSlice.reducer;

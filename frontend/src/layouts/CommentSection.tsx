@@ -1,53 +1,33 @@
+import React from "react";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import { treeFirstLoad, inc } from '../other/commentSlice'
+import { treeFirstLoad, ITreeComment } from '../other/commentSlice'
 import { useAppSelector, useAppDispatch } from '../other/hooks'
 import CommentCard from "../large-components/CommentCard";
 import CommentTextField from "../small-components/CommentTextField";
 
-function RecursiveComment() {
-    const treeState = useAppSelector((state) => state.comment.tree);
-    const valueState = useAppSelector((state) => state.comment.value);
-    const dispatch = useAppDispatch()
-    useEffect( () => {
-        dispatch(treeFirstLoad());
-        console.log("small rawTree");
-        console.log( treeState );
-        console.log("value", valueState);
-    } );
+function RecursiveComment( { node } : {node: ITreeComment}) {
     return (
-        <>
+        <CommentCard key={node.id} name={node.name} comment={node.comment} rating={node.rating} age={node.age}>
             {
-                treeState[0].children.map(x =>
-                    <CommentCard name={x.name} comment={x.comment} rating={x.rating} age={x.age}>
-                        {
-                            x.children.map(
-                                y => <RecursiveComment   />
-                            )
-                        }
-                    </CommentCard>
+                node.children.map(
+                    (x : ITreeComment) => <RecursiveComment key={x.id} node={x} />
                 )
             }
-        </>
+        </CommentCard>
     );
 }
 
 function CommentSection() {
     const [defaultComment, setDefaultComment] = useState(false);
-    //const [rawTree, setRawTree] = useState<ITreeComment[]>( [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: 0, children: []}, ] );
-    //const [rawQueue, setRawQueue] = useState<ITreeComment[]>([ rawTree[0] ]);
     const treeState = useAppSelector((state) => state.comment.tree);
-    const valueState = useAppSelector((state) => state.comment.value);
     const dispatch = useAppDispatch()
     function switchDefaultComment() {
         setDefaultComment(x => !x);
     }
     useEffect( () => {
         dispatch(treeFirstLoad());
-        console.log("rawTree");
-        console.log( treeState )
-        dispatch(inc());
-    },[] );
+    }, []);
 
     return (
         <StyledDiv>
@@ -63,7 +43,7 @@ function CommentSection() {
                     Add comment
                 </StyledPopoutNewCommentDiv>
             }
-            <RecursiveComment />
+            <RecursiveComment key={0} node={ treeState[0] }/>
         </StyledDiv>
     );
 }
