@@ -8,7 +8,7 @@ import CommentTextField from "../small-components/CommentTextField";
 
 function RecursiveComment( { node } : {node: ITreeComment}) {
     return (
-        <CommentCard key={node.id} name={node.name} comment={node.comment} rating={node.rating} age={node.age}>
+        <CommentCard key={node.id} id={node.id} name={node.name} comment={node.comment} rating={node.rating} age={node.age}>
             {
                 node.children.map(
                     (x : ITreeComment) => <RecursiveComment key={x.id} node={x} />
@@ -34,7 +34,7 @@ function CommentSection() {
             {
                 defaultComment &&
                 <div>
-                    <CommentTextField hide={ switchDefaultComment } />
+                    <CommentTextField hide={ switchDefaultComment } parentCommentId={ 0 }/> 
                 </div>
             }
             {
@@ -43,7 +43,14 @@ function CommentSection() {
                     Add comment
                 </StyledPopoutNewCommentDiv>
             }
-            <RecursiveComment key={0} node={ treeState[0] }/>
+            { /*
+                Print comment tree with AllFatherComment
+                <RecursiveComment key={0} node={ treeState[0] }/> 
+            */ }
+            {
+                // Print comment tree without AllFather comment
+                treeState[0].children.map((x => <RecursiveComment key={0} node={ x } />))
+            }
         </StyledDiv>
     );
 }
