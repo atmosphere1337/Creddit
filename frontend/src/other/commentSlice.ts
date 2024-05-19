@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
 import {RootState} from './store';
 
 let rawList : IListedComment[] = [
@@ -51,8 +51,8 @@ let rawList : IListedComment[] = [
         age: 111,
     }
 ];
-
 let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: 0, children: []}, ];
+
 interface ICommentState {
     list: IListedComment[],
     tree: ITreeComment[],
@@ -61,6 +61,12 @@ interface ICommentState {
 const initialState : ICommentState = {
     list: rawList,
     tree: rawTree,
+}
+interface INewComment {
+    id: number,
+    parent: number,
+    name: string,
+    comment: string,
 }
 interface IListedComment {
     id: number,
@@ -89,7 +95,6 @@ interface ITreeComment extends IListedComment {
     }
 
 */
-
 export const commentSlice = createSlice({
     name: "comment",
     initialState,
@@ -112,10 +117,34 @@ export const commentSlice = createSlice({
                 state.list = state.list.filter( (x: IListedComment) => x.parent != currentNode.id);
             }
         },
+        addComment : (state: ICommentState, action : PayloadAction<INewComment>) => {
+            console.log("addComment in slice", action.payload);
+            let currentNode;
+            let queue = [ state.tree[0] ];
+            while (queue.length != 0) {
+                currentNode = <ITreeComment>queue.shift();
+                if (currentNode.id == action.payload.parent) {
+                    let newComment : ITreeComment = {
+                        id: action.payload.id,
+                        parent: action.payload.parent,
+                        name: action.payload.name,
+                        comment: action.payload.comment,
+                        rating: 0,
+                        age: 0,
+                        children: [], };  
+                    currentNode.children.unshift(newComment);
+                    break;
+                } else 
+                    currentNode.children.forEach(x => queue.push(x));
+            }
+
+
+        }
     }
 
 });
 
-export const { treeFirstLoad  } = commentSlice.actions;
-export type { ITreeComment };
+
+export const { treeFirstLoad, addComment } = commentSlice.actions;
+export type { ITreeComment, INewComment };
 export default commentSlice.reducer;
