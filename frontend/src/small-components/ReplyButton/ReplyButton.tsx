@@ -1,5 +1,7 @@
-import CommentIconSVG from "./CommentIconSVG";
+import React from 'react';
 import styled from "styled-components";
+import CommentIconSVG from "./CommentIconSVG";
+
 function ReplyButton() {
     return (
         <StyledDiv>

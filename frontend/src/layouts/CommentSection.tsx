@@ -56,7 +56,6 @@ function CommentSection() {
 }
 
 const StyledDiv = styled.div`
-    background-color: indigo;
     padding: 10px;
 `
 const StyledPopoutNewCommentDiv = styled.div`

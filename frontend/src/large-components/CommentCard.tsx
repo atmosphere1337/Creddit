@@ -4,8 +4,8 @@ import RatingButton from "../small-components/RatingButton/RatingButton";
 import ReplyButton from "../small-components/ReplyButton/ReplyButton";
 import GeneralButton from "../small-components/GeneralButton";
 import CommentTextField from "../small-components/CommentTextField";
-type TypeProps =  { name:string, comment:string, rating: number, age:number, children: ReactNode };
-function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, children = <></>} : TypeProps) {
+type TypeProps =  { name:string, comment:string, rating: number, age:number, id:number, children: ReactNode };
+function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, id = 0, children = <></>} : TypeProps) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()) % colors.length);
     const [showCommentSwitch, setShowCommentSwitch] = useState(false);
@@ -41,7 +41,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                 </div>
             </StyledDiv>
             <StyledDiv2>
-                { showCommentSwitch && <CommentTextField hide={ hideComment}/> } 
+                { showCommentSwitch && <CommentTextField hide={ hideComment } parentCommentId={ id }/> } 
                 {children}
             </StyledDiv2>
         </>

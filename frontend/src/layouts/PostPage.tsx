@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from "styled-components";
 import PostSmall from "../large-components/PostSmall/PostSmall";
 import CommentSection from "./CommentSection";
@@ -14,6 +15,5 @@ function PostPage() {
 const StyledDiv = styled.div`
     min-width: 765px;
     padding: 30px;
-    border-style: solid;
 `;
 export default PostPage;

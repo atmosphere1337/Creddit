@@ -10,6 +10,7 @@ import ApiFirstLoad from "./ApiFirstLoad";
 import ChannelWallpaper from "../large-components/ChannelWallpaper";
 import PopularCard from "../large-components/PopularCard";
 import ChannelInfoCard from "../large-components/ChannelInfoCard";
+import AddEditPostPage from './AddEditPostPage';
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
     return (
@@ -21,13 +22,15 @@ function Main({type = "default"} : {type: string}) {
             <StyledContentDiv>
               <div>
                 { type == "channel" && <ChannelWallpaper /> }
-                { type != "post" && <Feed /> }
-                { type == "post" && <PostPage /> }
+                { ["channel", "default"].includes(type) && <Feed /> }
+                { type == "read_post" && <PostPage /> }
+                { type == "new_post" && <AddEditPostPage /> }
               </div>
               <StyledContentSidebarRightDiv>
                 { type == "default" && <PopularCard /> }
                 { type == "channel" && <ChannelInfoCard /> }
-                { type == "post" && <ChannelInfoCard /> }
+                { type == "read_post" && <ChannelInfoCard /> }
+                { type == "new_post" && <ChannelInfoCard /> }
                 <AdFeed />
               </StyledContentSidebarRightDiv>
             </StyledContentDiv>

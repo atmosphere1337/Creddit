@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from "styled-components";
 import {StyledA} from "../other/styles/CommonStyles";
 import JoinButton from "../small-components/JoinButton";
@@ -18,8 +19,12 @@ function ChannelWallpaper() {
               c/Channel
             </StyledSpan>
             <StyledRightButtonsDiv>
-              <CreatePostButton />
-              <JoinButton />
+              <StyledA href="newpost/">
+                <CreatePostButton />
+              </StyledA>
+              <StyledA>
+                <JoinButton />
+              </StyledA>
             </StyledRightButtonsDiv>
           </StyledDiv2>
         </>
