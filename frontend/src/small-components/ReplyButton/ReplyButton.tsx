@@ -1,25 +1,27 @@
+import React from 'react';
 import styled from "styled-components";
-import ArrowDownSVG from "./ArrowDownSVG";
-import ArrowUpSVG from "./ArrowUpSVG";
-function RatingButton( {value} : {value: number}) {
+import CommentIconSVG from "./CommentIconSVG";
+
+function ReplyButton() {
     return (
         <StyledDiv>
             <StyledDiv2>
-                <ArrowUpSVG />
-                {value}
-                <ArrowDownSVG />
+                <CommentIconSVG />
+                Reply
             </StyledDiv2>
         </StyledDiv>
     );
 }
 const StyledDiv = styled.div`
-    display: inline-block;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 100px;
+    display: inline-block;
     background-color: #252e29;
+    cursor: pointer;
 `;
 const StyledDiv2 = styled.div`
     display: flex;
     align-items: center;
+    gap: 5px;
 `;
-export default RatingButton;
+export default ReplyButton;

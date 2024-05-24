@@ -8,37 +8,93 @@ import { useSelector, useDispatch } from 'react-redux'
 import { switchMode } from '../other/generalSlice'
 import { useAppSelector, useAppDispatch } from '../other/hooks'
 import styled from "styled-components"
+import { TextField, TextareaAutosize } from "@mui/material";
+import { Modal } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+//import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: '#AABB00',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function Test() {
     const count = useAppSelector((state) => state.general.darkMode)
     const dispatch = useAppDispatch()
     const [value, setValue] = useState("Hello world")
+    const [show, setShow] = useState(false);
     return (
         <>
             <Styled>
                 I'm styled component
             </Styled>
             <div>
-                { value }
+                {value}
             </div>
             <div>
-                { count }
+                {count}
             </div>
             <div>
                 Button
-                <Button variant="contained" onClick={ () => dispatch(switchMode()) }>Hello Orwell</Button>
+                <Button variant="contained" onClick={() => dispatch(decrement())}>Hello Orwell</Button>
             </div>
             <div>
                 <Card variant="outlined">What</Card>
             </div>
-            <div onClick={ () => { dispatch(switchMode()) } } >
+            <div onClick={() => {
+                dispatch(increment())
+            }}>
                 hello Orwell
             </div>
+
+            <div style={{marginTop: "40px"}}>
+                MaterialUI
+            </div>
+            <TextField/>
+
+            <div style={{marginTop: "40px"}}>
+                MaterialUI
+            </div>
+            <TextareaAutosize minRows={4} />
+            <div style={{display: "inline-block", backgroundColor: "red", padding: "5px 12px"}} onClick={() => setShow(true)}>Modal basic</div>
+            <div>
+                <Modal open={show} onClose={() => setShow(false)}>
+                    <Box sx={style}>
+                        <Typography>
+                            Bitch
+                        </Typography>
+                    </Box> 
+                </Modal>
+            </div>
+            <div>
+                Hello world
+                <div>
+                    {
+                        <AccessTimeFilledIcon style={{ fontSize: "40px", color: "#FFAAFF"}}/>
+                    }
+                </div>
+            </div>
+            <Button variant="contained" color="c_orange">
+                Button
+            </Button>
+            <Button variant="contained" color="c_gray">
+                Button
+            </Button>
+            
         </>
     )
 }
+
 const Styled = styled.div`
     background-color: blue;
 `

@@ -1,22 +1,25 @@
+import React from 'react';
 import styled from "styled-components";
-import {useState} from "react";
+import { useState } from "react";
+import { StyledA } from "../other/styles/CommonStyles";
 
 type RawDataType = {
     name: string,
     members: number,
+    link: string,
 }
 
 const rawData : RawDataType[] = [
-    {name: "c/DarkSouls", members: 228 },
-    {name:  "c/EldenRing", members: 1337},
-    {name:  "c/CounterStrike2", members: 1488},
+    { name: "c/DarkSouls", members: 228, link: "darksouls/" },
+    { name:  "c/EldenRing", members: 1337, link: "eldenring/" },
+    { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2/" },
 ];
-function PopularChannel({name, members}: RawDataType) {
+function PopularChannel({name, members, link}: RawDataType) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
-        <StyledChannel>
-          <a href="/">
+        <StyledA href={"/c/" + link}>
+          <StyledChannel>
             <div>
               <div>
                 {name}
@@ -26,10 +29,9 @@ function PopularChannel({name, members}: RawDataType) {
               </div>
             </div>
             <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-              {colors[randomColor]}
             </StyledAvatarChannel>
-          </a>
-        </StyledChannel>
+          </StyledChannel>
+        </StyledA>
     );
 }
 
@@ -41,7 +43,11 @@ function PopularCard() {
                 Popular Channels
             </div>
             <div>
-                { rawData.map((element) => <PopularChannel name={ element.name }  members={element.members} />) }
+                { rawData.map((element) => <PopularChannel
+                                                            name = { element.name }
+                                                            members = { element.members }
+                                                            link = { element.link }
+                                                        />) }
             </div>
         </StyledDiv>
     );

@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import {useState} from "react";
+import { useState } from "react";
 import RatingButton from "../../small-components/RatingButton/RatingButton";
 import CommentsButton from "../../small-components/CommentsButton/CommentsButton";
 import GeneralButton from "../../small-components/GeneralButton";
+import { StyledA } from "../../other/styles/CommonStyles";
 function PostSmall({name, comments, rating} : {name: string, comments: number, rating: number}) {
     const [color, setColor] = useState(Math.floor(100 * Math.random()));
     const colorize = () => {
@@ -11,19 +12,22 @@ function PostSmall({name, comments, rating} : {name: string, comments: number, r
     }
     return (
         <Styleddiv>
-            <div >
-                {name}
-            </div>
-            <StyledPicture style={{backgroundColor: colorize()}}>
-            </StyledPicture>
-            <StyledOptions>
-                <RatingButton   value={ rating } />
-                <CommentsButton value={ comments }></CommentsButton>
-                <GeneralButton value="Report" link="what" color="red"></GeneralButton>
-            </StyledOptions>
+          <div>
+            <StyledA href={ "/posts/" + name.replace(' ', '') }>
+              {name}
+            </StyledA>
+          </div>
+          <StyledPicture style={{backgroundColor: colorize()}}>
+          </StyledPicture>
+          <StyledOptions>
+            <RatingButton value={rating}/>
+            <CommentsButton value={comments}></CommentsButton>
+            <GeneralButton value="Report" link="what" color="red"></GeneralButton>
+          </StyledOptions>
         </Styleddiv>
     );
 }
+
 const Styleddiv = styled.div`
     background-color: #171733;
     margin-bottom: 30px;

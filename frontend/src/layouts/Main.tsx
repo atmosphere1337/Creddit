@@ -1,29 +1,38 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, } from 'react';
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import Header from './Header';
 import LeftSidebar from "./LeftSidebar";
-import styled from "styled-components";
 import Feed from './Feed';
-import ContentSidebarRight from "./ContentSidebarRight";
-function Main() {
-    useEffect(() => {
-        let url : string = "/api/feed";
-        let options = {
-            method: "GET"    
-        };
-        fetch(url)
-        .then(res => res.json() )
-        .then( payload => {
-            alert(JSON.stringify(payload));
-        });
-    });
+import AdFeed from "./AdFeed";
+import PostPage from "./PostPage";
+import ApiFirstLoad from "./ApiFirstLoad";
+import ChannelWallpaper from "../large-components/ChannelWallpaper";
+import PopularCard from "../large-components/PopularCard";
+import ChannelInfoCard from "../large-components/ChannelInfoCard";
+import AddEditPostPage from './AddEditPostPage';
+function Main({type = "default"} : {type: string}) {
+    let { channelUrl } = useParams();
     return (
         <StyledMain>
+          <ApiFirstLoad />
           <Header />
           <StyledSidebarAndContent>
             <LeftSidebar />
             <StyledContentDiv>
-              <Feed />
-              <ContentSidebarRight />
+              <div>
+                { type == "channel" && <ChannelWallpaper /> }
+                { ["channel", "default"].includes(type) && <Feed /> }
+                { type == "read_post" && <PostPage /> }
+                { type == "new_post" && <AddEditPostPage /> }
+              </div>
+              <StyledContentSidebarRightDiv>
+                { type == "default" && <PopularCard /> }
+                { type == "channel" && <ChannelInfoCard /> }
+                { type == "read_post" && <ChannelInfoCard /> }
+                { type == "new_post" && <ChannelInfoCard /> }
+                <AdFeed />
+              </StyledContentSidebarRightDiv>
             </StyledContentDiv>
           </StyledSidebarAndContent>
         </StyledMain>
@@ -41,5 +50,10 @@ const StyledSidebarAndContent = styled.div`
 const StyledContentDiv = styled.div`
     display: flex;
     justify-content: center;
+`;
+const StyledContentSidebarRightDiv = styled.div`
+    width: 316px;
+    color: white;
+    padding: 20px;
 `;
 export default Main;

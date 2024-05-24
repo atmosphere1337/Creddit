@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import  generalRecuder from './generalSlice';
+import counterReducer from './counterSlice';
+import commentReducer from './commentSlice';
+import userReducer from './userSlice';
+
 export const store = configureStore({
     reducer: {
-        general: generalRecuder,
+        counter: counterReducer,
+        comment: commentReducer,
+        user: userReducer,
     },
 })
 export type RootState = ReturnType<typeof store.getState>

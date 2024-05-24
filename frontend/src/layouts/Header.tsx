@@ -1,26 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components"
-import CredditLogo from "../small-components/Creddit logo/CredditLogo";
+//import { treeFirstLoad, ITreeComment } from '../other/userSlice'
+import { useAppSelector } from '../other/hooks'
+import CredditLogo from "../small-components/CredditLogo/CredditLogo";
 import SearchBar from "../small-components/SearchBar/SarchBar";
-import RedButton from "../small-components/RedButton/RedButton";
+import Button from '@mui/material/Button';
+import ModalLogin from '../large-components/modal-windows/ModalLogin';
+import ModalRegister from '../large-components/modal-windows/ModalRegister';
 function Header() {
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const isLogged = useAppSelector((state) => state.user.isLoggedIn);
     return (
-        /*
-            semantic tag?
-            material UI?
-         */
         <StyledHeader>
-            <StyledNav>
-                <CredditLogo />
-
-                <StyledRightBox>
-                    <SearchBar />
-                </StyledRightBox>
-                <StyledRightBox>
-                    <RedButton name="Sign In" />
-                    <RedButton name="Sign Up" />
-                </StyledRightBox>
-            </StyledNav>
+          <StyledNav>
+            <CredditLogo />
+            <StyledRightBox>
+              <SearchBar />
+            </StyledRightBox>
+            <StyledRightBox>
+              <Button color="warning" variant="contained" onClick={() => setShowLoginModal(true)}>
+                Log In
+              </Button> 
+              <Button color="warning" variant="contained" onClick={() => setShowRegisterModal(true)}>
+                Register
+              </Button> 
+              <ModalLogin open={showLoginModal} close={() => {setShowLoginModal(false)}} />
+              <ModalRegister open={showRegisterModal} close={() => {setShowRegisterModal(false)}} />
+            </StyledRightBox>
+          </StyledNav>
         </StyledHeader>
     );
 }
@@ -45,6 +53,7 @@ const StyledRightBox = styled.div`
     display: flex;
     align-items: center;
     margin-left: auto;
+    gap: 10px;
 `;
 const StyledSearchBarBox = styled.div`
     margin-left: auto;
