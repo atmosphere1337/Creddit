@@ -17,4 +17,5 @@ function CredditLogo() {
 const StyledLogo = styled.div`
     padding-left: 10px;
 `;
+
 export default CredditLogo;

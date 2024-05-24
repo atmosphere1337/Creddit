@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card'
 // redux check
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../other/counterSlice'
+import { switchMode } from '../other/generalSlice'
 import { useAppSelector, useAppDispatch } from '../other/hooks'
 import styled from "styled-components"
 import { TextField, TextareaAutosize } from "@mui/material";
@@ -29,7 +29,7 @@ const style = {
 };
 
 function Test() {
-    const count = useAppSelector((state) => state.counter.value)
+    const count = useAppSelector((state) => state.general.darkMode)
     const dispatch = useAppDispatch()
     const [value, setValue] = useState("Hello world")
     const [show, setShow] = useState(false);
