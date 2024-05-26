@@ -1,16 +1,47 @@
 import React, {useState} from 'react';
 import styled from "styled-components"
-//import { treeFirstLoad, ITreeComment } from '../other/userSlice'
-import { useAppSelector } from '../other/hooks'
+import { useAppSelector, useAppDispatch } from '../other/hooks'
+import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from '../other/userSlice';
 import CredditLogo from "../small-components/CredditLogo/CredditLogo";
 import SearchBar from "../small-components/SearchBar/SarchBar";
 import Button from '@mui/material/Button';
 import ModalLogin from '../large-components/modal-windows/ModalLogin';
 import ModalRegister from '../large-components/modal-windows/ModalRegister';
+import { Avatar, IconButton, Menu, MenuItem, Switch } from '@mui/material';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+
 function Header() {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showRegisterModal, setShowRegisterModal] = useState(false);
-    const isLogged = useAppSelector((state) => state.user.isLoggedIn);
+    const selectorColorTheme = useAppSelector((state) => state.user.colorMode);
+    const selectorLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+    const dispatch = useAppDispatch();
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+    const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
+    const [colorModeState, setColorModeState] = useState(selectorColorTheme == "dark" ? false : true);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    function switchColorModeHandler() : void{
+     setColorModeState((stite) => {
+        if (stite)
+        dispatch(setColorModeDark());
+        else
+        dispatch(setColorModeLight());
+        return !stite;
+      })   
+    } 
+    function logOutHandler() : void {
+      handleClose();
+      dispatch(setLoggedOut());
+      //window.location.href = "/";
+    }
     return (
         <StyledHeader>
           <StyledNav>
@@ -19,19 +50,72 @@ function Header() {
               <SearchBar />
             </StyledRightBox>
             <StyledRightBox>
-              <Button color="warning" variant="contained" onClick={() => setShowLoginModal(true)}>
-                Log In
-              </Button> 
-              <Button color="warning" variant="contained" onClick={() => setShowRegisterModal(true)}>
-                Register
-              </Button> 
-              <ModalLogin open={showLoginModal} close={() => {setShowLoginModal(false)}} />
-              <ModalRegister open={showRegisterModal} close={() => {setShowRegisterModal(false)}} />
-            </StyledRightBox>
-          </StyledNav>
-        </StyledHeader>
-    );
-}
+              {selectorColorTheme == "light" && "light"}
+              {selectorColorTheme == "dark" && "dark"}
+              {selectorLoggedIn && "user"}
+              {!selectorLoggedIn && "guest"}
+              {
+              !selectorLoggedIn &&  
+              <>
+                <Button color="warning" variant="contained" onClick={() => setShowLoginModal(true)}>
+                  Log In
+                </Button> 
+                <Button color="warning" variant="contained" onClick={() => setShowRegisterModal(true)}>
+                  Register
+                </Button> 
+                <ModalLogin open={showLoginModal} close={() => {setShowLoginModal(false)}} />
+                <ModalRegister open={showRegisterModal} close={() => {setShowRegisterModal(false)}} />
+              </>
+              }
+              {
+                selectorLoggedIn &&
+                <>
+                  <IconButton onClick={ handleClick }>
+                    <Avatar sx={{width: 32, height: 32}} />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={ open }
+                    onClose={ handleClose }
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  >
+                    <MenuItem>
+                      <Avatar sx={{height: 32, width: 32, mr: 1}} />
+                      <span>
+                        Creddible1337
+                      </span>
+                    </MenuItem>
+                    <MenuItem >
+                      <SettingsIcon sx={{height: 32, width: 32, mr: 1}}/>
+                      <span>
+                        Settings
+                      </span>
+                    </MenuItem>
+                    <MenuItem>
+                      <DarkModeIcon sx={{height: 32, width: 32, mr: 1}} />
+                      <span>
+                        Dark Mode
+                      </span>
+                      <Switch
+                        checked={!colorModeState}
+                        onChange={switchColorModeHandler}
+                      />
+                    </MenuItem>
+                    <MenuItem onClick={logOutHandler}>
+                      <LogoutIcon sx={{height: 32, width: 32, mr: 1}}/>
+                      <span>
+                        Log Out
+                      </span>
+                    </MenuItem>
+                  </Menu>
+                </>
+              }
+              </StyledRightBox>
+            </StyledNav>
+          </StyledHeader>
+      );
+  }
 
 const StyledHeader = styled.header`
     color: #aca9a9;
