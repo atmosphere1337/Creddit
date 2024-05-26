@@ -51,10 +51,22 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setColorModeDark : (state) => {state.colorMode = "dark"}, 
-        setColorModeLight : (state) => {state.colorMode = "light"}, 
-        setLoggedIn: (state) => {state.isLoggedIn = true},
-        setLoggedOut: (state) => {state.isLoggedIn = false},
+        setColorModeDark : (state) => {
+            setCookie(COLORTHEME_COOKIE_NAME, "dark");
+            state.colorMode = "dark";
+        }, 
+        setColorModeLight : (state) => {
+            setCookie(COLORTHEME_COOKIE_NAME, "light");
+            state.colorMode = "light";
+        }, 
+        setLoggedIn: (state) => {
+            setCookie(LOGGEDIN_COOKIE_NAME, "true");
+            state.isLoggedIn = true
+        },
+        setLoggedOut: (state) => {
+            setCookie(LOGGEDIN_COOKIE_NAME, "false");
+            state.isLoggedIn = false
+        },
     }
 
 })
