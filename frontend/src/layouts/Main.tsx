@@ -11,12 +11,18 @@ import ChannelWallpaper from "../large-components/ChannelWallpaper";
 import PopularCard from "../large-components/PopularCard";
 import ChannelInfoCard from "../large-components/ChannelInfoCard";
 import AddEditPostPage from './AddEditPostPage';
+import UserSettings from './UserSettings';
+import {UserProfileFeed, UserProfileInfoCard} from './UserProfile';
+import ModeratorPage from './ModeratorPage';
+
 function Main({type = "default"} : {type: string}) {
     let { channelUrl } = useParams();
     return (
         <StyledMain>
           <ApiFirstLoad />
           <Header />
+          { 
+          type != "usersettings" &&
           <StyledSidebarAndContent>
             <LeftSidebar />
             <StyledContentDiv>
@@ -25,20 +31,30 @@ function Main({type = "default"} : {type: string}) {
                 { ["channel", "default"].includes(type) && <Feed /> }
                 { type == "read_post" && <PostPage /> }
                 { type == "new_post" && <AddEditPostPage /> }
+                { type == "userprofile" && <UserProfileFeed /> }
+                { type == "moderator" && <ModeratorPage /> }
               </div>
               <StyledContentSidebarRightDiv>
-                { type == "default" && <PopularCard /> }
-                { type == "channel" && <ChannelInfoCard /> }
-                { type == "read_post" && <ChannelInfoCard /> }
+                { type == "default" && <><PopularCard /><AdFeed /></>}
+                { type == "channel" && <><ChannelInfoCard /><AdFeed /></>}
+                { type == "read_post" && <><ChannelInfoCard /><AdFeed /></>}
                 { type == "new_post" && <ChannelInfoCard /> }
+                { type == "userprofile" && <UserProfileInfoCard /> }
+                { type == "moderator" && <ChannelInfoCard /> }
+                { /*
                 <AdFeed />
+                */ }
               </StyledContentSidebarRightDiv>
             </StyledContentDiv>
           </StyledSidebarAndContent>
+          }
+          { type == "usersettings" && <UserSettings />}
+
         </StyledMain>
     );
 }
 const StyledMain = styled.div`
+    min-height: 100vh;
     color: white;
     background-color: #301515;
 `;
