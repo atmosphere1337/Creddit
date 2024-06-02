@@ -11,7 +11,9 @@ import { Avatar, IconButton, Menu, MenuItem, Switch } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import GavelIcon from '@mui/icons-material/Gavel';
 
 function Header() {
     const selectorColorTheme = useAppSelector((state) => state.user.colorMode);
@@ -70,6 +72,15 @@ function Header() {
               {
                 selectorLoggedIn &&
                 <>
+                  <IconButton href="/c/darksouls/moderator">
+                    <GavelIcon />
+                  </IconButton>
+                  <IconButton href="/admin">
+                    <AdminPanelSettingsIcon />
+                  </IconButton>
+                  <IconButton>
+                    <NotificationsNoneIcon />
+                  </IconButton>
                   <IconButton onClick={ handleClick }>
                     <Avatar sx={{width: 32, height: 32}} />
                   </IconButton>
@@ -80,13 +91,13 @@ function Header() {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   >
-                    <MenuItem>
+                    <MenuItem onClick={() => {document.location.href="/user/creddible1337"}}>
                       <Avatar sx={{height: 32, width: 32, mr: 1}} />
                       <span>
                         Creddible1337
                       </span>
                     </MenuItem>
-                    <MenuItem >
+                    <MenuItem onClick={() => {document.location.href = "/settings"} }>
                       <SettingsIcon sx={{height: 32, width: 32, mr: 1}}/>
                       <span>
                         Settings
