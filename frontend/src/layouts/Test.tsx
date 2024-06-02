@@ -1,5 +1,5 @@
 // hook check
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // material ui check
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card'
@@ -31,6 +31,15 @@ function Test() {
     const dispatch = useAppDispatch()
     const [value, setValue] = useState("Hello world")
     const [show, setShow] = useState(false);
+    const [colorSwitch, setColorSwitch] = useState<boolean>(false);
+    useEffect(() => {
+        let cookieName : string = "credditColorTheme";
+        const cookie : string | undefined = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(cookieName))
+            ?.split("=")[1];
+        console.log(cookie);
+    });
     return (
         <>
             <Styled>
@@ -70,10 +79,16 @@ function Test() {
                     }
                 </div>
             </div>
-            <Button variant="contained" color="c_orange">
+            <Button variant="contained" color="c_orange" onClick={() => {
+                document.cookie = `credditColorTheme=light; max-age=${60*60*24*365}; path=/; SameSite=Lax;`;
+                setColorSwitch((state) => !state);
+            }}>
                 Button
             </Button>
-            <Button variant="contained" color="c_gray">
+            <Button variant="contained" color="c_gray" onClick={() => {
+                document.cookie = `credditColorTheme=dark; max-age=${60*60*24*365}; path=/; SameSite=Lax;`;
+                setColorSwitch((state) => !state);
+            }}>
                 Button
             </Button>
             

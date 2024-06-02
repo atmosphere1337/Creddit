@@ -4,6 +4,8 @@ import {RootState} from './store';
 interface IUserState  {
     colorMode: "dark" | "light",
     isLoggedIn: boolean,
+    isModerator: boolean,
+    isAdmin: boolean,
 }
 
 //-----------------------------------------------------------------------------------------
@@ -46,6 +48,8 @@ function doWeRenderLightOrDarkMode() : "light" | "dark" {
 const initialState : IUserState = {
     colorMode: doWeRenderLightOrDarkMode(),
     isLoggedIn: doWeRenderGuestOrUserLayout(),
+    isModerator: true,
+    isAdmin: true,
 }
 export const userSlice = createSlice({
     name: "user",

@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import RatingButton from "../../small-components/RatingButton/RatingButton";
 import CommentsButton from "../../small-components/CommentsButton/CommentsButton";
-import GeneralButton from "../../small-components/GeneralButton";
+import ModalReport from "../modal-windows/ModalReport";
 import { StyledA } from "../../other/styles/CommonStyles";
 function PostSmall({name, comments, rating} : {name: string, comments: number, rating: number}) {
     const [color, setColor] = useState(Math.floor(100 * Math.random()));
@@ -22,7 +22,7 @@ function PostSmall({name, comments, rating} : {name: string, comments: number, r
           <StyledOptions>
             <RatingButton value={rating}/>
             <CommentsButton value={comments}></CommentsButton>
-            <GeneralButton value="Report" link="what" color="red"></GeneralButton>
+            <ModalReport />
           </StyledOptions>
         </Styleddiv>
     );

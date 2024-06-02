@@ -4,6 +4,12 @@ import RatingButton from "../small-components/RatingButton/RatingButton";
 import ReplyButton from "../small-components/ReplyButton/ReplyButton";
 import GeneralButton from "../small-components/GeneralButton";
 import CommentTextField from "../small-components/CommentTextField";
+import { StyledA } from "../other/styles/CommonStyles";
+import ModalReport from "./modal-windows/ModalReport";
+import { Modal } from "@mui/material";
+
+
+
 type TypeProps =  { name:string, comment:string, rating: number, age:number, id:number, children: ReactNode };
 function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, id = 0, children = <></>} : TypeProps) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
@@ -21,7 +27,9 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                     <div>
                         <div style={{display: "flex", marginBottom: "10px"}}>
                             <div style={{marginRight: "20px", fontWeight: "bold"}}>
-                                {name}
+                                <StyledA href={"/user/" + name}>
+                                    {name}
+                                </StyledA>
                             </div>
                             <div style={{ color: "#9f9e9e" }}>
                                 {age} minutes ago
@@ -35,7 +43,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                             <div onClick={ showComment }>
                                 <ReplyButton />
                             </div>
-                            <GeneralButton value={"Report"} link={"suckmydickd"} color={"red"} />
+                            <ModalReport />
                         </StyledButtonPadDiv>
                     </div>
                 </div>
