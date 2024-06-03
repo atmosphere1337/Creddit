@@ -4,11 +4,26 @@ import RatingButton from "../../small-components/RatingButton/RatingButton";
 import CommentsButton from "../../small-components/CommentsButton/CommentsButton";
 import ModalReport from "../modal-windows/ModalReport";
 import { StyledA } from "../../other/styles/CommonStyles";
-function PostSmall({name, comments, rating} : {name: string, comments: number, rating: number}) {
-    const [color, setColor] = useState(Math.floor(100 * Math.random()));
-    const colorize = () => {
-        const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
-        return colors[color % colors.length];
+function PostSmall({name, comments, rating, body} :
+                   {name: string, comments: number, rating: number, body: string}) {
+    function parseBody() {
+        const slices = body.split("***");
+        return (
+            <>
+                {
+                    slices.map(element => {
+                        element = element.trim();
+                        if (element.match("^image&color=[a-z]*$")) {
+                            const parsedColor = element.substring(12, element.length);
+                            return <StyledPicture style={{backgroundColor: parsedColor}} />;
+                        }
+                        else {
+                            return <div>{element}</div>
+                        }
+                    })
+                }
+            </>
+        );
     }
     return (
         <Styleddiv>
@@ -17,8 +32,7 @@ function PostSmall({name, comments, rating} : {name: string, comments: number, r
               {name}
             </StyledA>
           </div>
-          <StyledPicture style={{backgroundColor: colorize()}}>
-          </StyledPicture>
+            { parseBody() }
           <StyledOptions>
             <RatingButton value={rating}/>
             <CommentsButton value={comments}></CommentsButton>
@@ -29,10 +43,11 @@ function PostSmall({name, comments, rating} : {name: string, comments: number, r
 }
 
 const Styleddiv = styled.div`
-    background-color: #171733;
+    width: 765px;
     margin-bottom: 30px;
-    border-radius: 15px;
     padding: 15px;
+    background-color: #171733;
+    border-radius: 15px;
 
     & > div:first-child {
         margin-bottom: 15px;
