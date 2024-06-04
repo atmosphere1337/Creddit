@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
+import {useAppSelector} from "../other/hooks";
 import {StyledA} from "../other/styles/CommonStyles";
 import JoinButton from "../small-components/JoinButton";
 import CreatePostButton from "../small-components/CreatePostButton/CreatePostButton";
-
-const rawData = {
-    name: "DarkSouls"
-}
+import {IChannelInfoWallpaper} from "../other/widelyUsedTypes";
 
 function ChannelWallpaper() {
+    const selectWallpaperData : IChannelInfoWallpaper = useAppSelector(state => state.channelInfo.wallpaperInfo);
     return (
         <>
           <StyledDiv>
@@ -16,7 +15,7 @@ function ChannelWallpaper() {
           <StyledDiv2>
             <StyledCircle />
             <StyledSpan>
-              c/Channel
+                {"c/" + selectWallpaperData.name}
             </StyledSpan>
             <StyledRightButtonsDiv>
               <StyledA href="newpost/">
