@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const rawDataMany = [
     {name: "Article 1", rating: 666, comments: 42, body: `
-        image&color=orange***
+        <color orange>***
         xSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
         totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
         sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
@@ -26,7 +26,7 @@ const rawDataMany = [
         doloribus asperiores repellat.
     `},
     {name: "Article 3", rating: 322, comments: 137, body: `
-        image&color=blue***
+        <color blue>***
         Ut vehicula justo sit amet elementum tincidunt. Suspendisse eu mauris tempor, semper quam in,
         scelerisque libero. Aliquam accumsan arcu sit amet lorem consequat, a facilisis nisl molestie.
         Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In hac habitasse
@@ -48,10 +48,10 @@ const rawDataMany = [
         Orci varius natoque penatibus et magnis dis parturient montes 
     `},
     {name: "Article 6", rating: 321, comments: 456, body: `
-       image&color=green***
+       <color green>***
        Quisque venenatis hendrerit purus eget sagittis. Fusce dui neque, congue sit amet aliquet placerat,
        eleifend eget sapien. Sed placerat viverra massa, et hendrerit magna pulvinar non.
-       ***image&color=red
+       ***<color red>
     `},
 ]
 const rawDataOne = {
@@ -59,7 +59,7 @@ const rawDataOne = {
     comments: 1337,
     rating: 228,
     body: `
-        image&color=green***
+        <color green>***
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
         dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
         ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore

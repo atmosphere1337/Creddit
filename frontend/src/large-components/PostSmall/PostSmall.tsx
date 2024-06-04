@@ -13,8 +13,8 @@ function PostSmall({name, comments, rating, body} :
                 {
                     slices.map(element => {
                         element = element.trim();
-                        if (element.match("^image&color=[a-z]*$")) {
-                            const parsedColor = element.substring(12, element.length);
+                        if (element.match("^<color [a-z]*>$")) {
+                            const parsedColor = element.substring(7, element.length - 1);
                             return <StyledPicture style={{backgroundColor: parsedColor}} />;
                         }
                         else {
