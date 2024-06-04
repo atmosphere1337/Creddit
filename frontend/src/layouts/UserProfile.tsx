@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import {useAppSelector} from "../other/hooks";
 import { Typography, Divider, Box, Button, Grid, Stack, Paper, Chip, IconButton} from '@mui/material';
 import {Card, CardActions, CardContent} from '@mui/material';
 
@@ -13,33 +14,9 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import FlagIcon from '@mui/icons-material/Flag';
 import { setCommentRange } from 'typescript';
 
-interface CommentMiniCardType {
-    rating: number,
-    content: string,
-    channelName: string,
-    postName: string,
-    authorName: string,
-    avatarColor: string,
-}
-const rawData3 : CommentMiniCardType[] = [
-    {
-        rating: 12,
-        content: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-        channelName: "darksouls",
-        postName: "Excepteur sint",
-        authorName: "increddible1337",
-        avatarColor: "green",
-    },
-    {
-        rating: 20,
-        content: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam",
-        channelName: "eldenring",
-        postName: "de Finibus Bonorum et Malorum",
-        authorName: "increddible1337",
-        avatarColor: "green",
-    },
-];
-function CommentMiniCard({rating, content, avatarColor, channelName, postName, authorName} : CommentMiniCardType) {
+import {IPostMiniCardNew, ICommentMiniCardNew, IUserInfoCardNew} from "../other/widelyUsedTypes";
+
+function CommentMiniCard({rating, content, avatarColor, channelName, postName, authorName} : ICommentMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
@@ -87,16 +64,7 @@ function CommentMiniCard({rating, content, avatarColor, channelName, postName, a
     );
 }
 
-interface PostMiniCardNewType {
-    channelName: string,
-    age: number,
-    title: string,
-    postColor: string,
-    rating: number,
-    comments: number,
-    avatarColor: string,
-};
-function PostMiniCardNew({channelName, age, title, postColor, avatarColor, rating, comments}: PostMiniCardNewType) {
+function PostMiniCardNew({channelName, age, title, postColor, avatarColor, rating, comments}: IPostMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
@@ -139,36 +107,11 @@ function PostMiniCardNew({channelName, age, title, postColor, avatarColor, ratin
         </Card>
     );
 }
-const rawData : PostMiniCardNewType[]= [
-    {
-        channelName: "darksouls",
-        age: 8,
-        title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        rating: 123,
-        comments: 228,
-        avatarColor: "green",
-        postColor: "yellow",
-    },
-    {
-        channelName: "eldenring",
-        age: 10,
-        title: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        rating: 432,
-        comments: 666,
-        avatarColor: "red",
-        postColor: "blue",
-    },
-    {
-        channelName: "counterstrike2",
-        age: 12,
-        title: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-        rating: 79,
-        comments: 222,
-        avatarColor: "violet",
-        postColor: "aqua",
-    },
-]
+
 export function UserProfileFeed() {
+    const selectUserMainInfo: IUserInfoCardNew = useAppSelector(state => state.userData.userMainInfo);
+    const selectUserPosts: IPostMiniCardNew[] = useAppSelector(state => state.userData.userPosts);
+    const selectUserComments: ICommentMiniCardNew[] = useAppSelector(state => state.userData.userComments);
     const [showComments, setShowComments] = useState<boolean>(true);
     const [showPosts, setShowPosts] = useState<boolean>(true);
     return (
@@ -176,7 +119,7 @@ export function UserProfileFeed() {
             <Stack direction={"row"} alignItems={"center"} gap={3} sx={{mb: 2}}>
                 <Box sx={{backgroundColor: "green", height: "100px", width: "100px", borderRadius: "666px"}} />
                 <Typography>
-                    { rawData2.name }
+                    { selectUserMainInfo.name }
                 </Typography>
             </Stack>
             <Stack direction="row" gap={1} sx={{mb: 2}}>
@@ -193,20 +136,20 @@ export function UserProfileFeed() {
             <Stack gap={2}>
                 {
                     showComments &&
-                    rawData3.map(element =>
+                    selectUserComments.map((element : ICommentMiniCardNew) =>
                         <CommentMiniCard
                             rating = {element.rating}
                             content = {element.content}
                             channelName = {element.channelName}
                             postName = {element.postName}
-                            authorName =  {element.authorName}
+                            authorName = {element.authorName}
                             avatarColor = {element.avatarColor}
                          />
                     )
                 }
                 {
                     showPosts &&
-                    rawData.map(element => 
+                    selectUserPosts.map((element : IPostMiniCardNew) =>
                         <PostMiniCardNew 
                             channelName = {element.channelName}
                             age = {element.age }
@@ -223,12 +166,12 @@ export function UserProfileFeed() {
     );
 }
 
-const rawData2 = {name: "InCreddible1337", commentRating: 10, postRatin: 15, joinDate: "27.07.21"};
 export function UserProfileInfoCard() {
+    const selectUserMainInfo: IUserInfoCardNew = useAppSelector(state => state.userData.userMainInfo);
     return (
         <Box sx={{backgroundColor: "black", p: "15px", borderRadius: "15px" }}>
             <Typography component="div" sx={{pb: 1}}>
-                { rawData2.name }
+                { selectUserMainInfo.name }
             </Typography>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button>
@@ -248,13 +191,13 @@ export function UserProfileInfoCard() {
                 <Typography component="div" align="center" justifyContent="center">
                     <Grid container rowSpacing={0} columnSpacing={1}>
                         <Grid item xs={4}>
-                            {rawData2.commentRating}
+                            {selectUserMainInfo.commentRating}
                         </Grid>
                         <Grid item xs={4}>
-                            {rawData2.postRatin}
+                            {selectUserMainInfo.postRatin}
                         </Grid>
                         <Grid item xs={4}>
-                            {rawData2.joinDate}
+                            {selectUserMainInfo.joinDate}
                         </Grid>
                         <Grid item xs={4} sx={{fontSize: "12px", color: "gray"}}>
                             Comment rating
@@ -272,7 +215,3 @@ export function UserProfileInfoCard() {
         </Box>
     );
 }
-const StyledSmallGrayText = styled.span`
-    font-size: 12px;
-    color: gray;
-`;
