@@ -1,29 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useAppSelector} from "../other/hooks";
 import { Box, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, Typography } from '@mui/material';
-interface IReportData {
-    id: number,
-    target: string,
-    description: string,
-}
-const rawData : IReportData[] = [
-    {
-        id: 1,
-        target: "http://wtf.ru",
-        description: "he is bad person",
-    },
-    {
-        id: 2,
-        target: "http://wtf2.ru",
-        description: "this is tha bad post",
-    },
-    {
-        id: 3,
-        target: "http://wtf3.ru",
-        description: "this is tha bad post comment",
-    },
-]
+import {IReportData} from "../other/widelyUsedTypes";
+
 function ModeratorPage() {
+    const selectReports : IReportData[] = useAppSelector((state) => state.report.getAll);
     return (
         <Box sx={{minWidth: "765px", p: "30px"}}>
             <Typography>
@@ -46,7 +28,7 @@ function ModeratorPage() {
                     </TableHead>
                     <TableBody>
                         {
-                            rawData.map((element) =>
+                            selectReports.map((element : IReportData) =>
                                 <TableRow>
                                     <TableCell>
                                         {element.id}
