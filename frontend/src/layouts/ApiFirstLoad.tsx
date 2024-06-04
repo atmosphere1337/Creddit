@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
 import { useAppSelector, useAppDispatch } from "../other/hooks";
 import axios from "axios";
-import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
-import {IPostMini} from "../other/widelyUsedTypes";
+import { setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
+import { setListFirstLoad } from "../other/slices/commentSlice";
+import {
+    IPostMini,
+    IListedComment,
+} from "../other/widelyUsedTypes";
 
 
 const rawDataMany : IPostMini[] = [
@@ -72,6 +76,57 @@ const rawDataOne : IPostMini = {
     `
 
 }
+
+const rawListComments : IListedComment[] = [
+    {
+        id: 1,
+        parent: 0,
+        name: "igor",
+        comment: "ASSed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+        rating: -666,
+        age: 1111,
+    },
+    {
+        id: 2,
+        parent: 0,
+        name: "vlad",
+        comment: "totam rem aperiam eaque ipsa, quae ab illo inventore veritatis",
+        rating: 28,
+        age: 2222,
+    },
+    {
+        id: 3,
+        parent: 0,
+        name: "artem",
+        comment: "et quasi architecto beatae vitae dicta sunt, explicabo. Nemo",
+        rating: 30,
+        age: 7777,
+    },
+    {
+        id: 4,
+        parent: 0,
+        name: "andrew",
+        comment: "enim ipsam voluptatem, quia voluptas sit, aspernatur aut",
+        rating: 29,
+        age: 9999,
+    },
+    {
+        id: 5,
+        parent: 4,
+        name: "alexey",
+        comment: "enim ipsam voluptatem, quia voluptas sit, aspernatur aut",
+        rating: 32,
+        age: 666,
+    },
+    {
+        id: 6,
+        parent: 1,
+        name: "yegor",
+        comment: "et quasi architecto beatae vitae dicta sunt, explicabo. Nemo",
+        rating: 44,
+        age: 111,
+    }
+];
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -87,6 +142,8 @@ function ApiFirstLoad () {
         dispatch(setManyPostsFirstLoad(rawDataMany));
         // post page
         dispatch(setSinglePost(rawDataOne));
+        // comment list
+        dispatch(setListFirstLoad(rawListComments));
 
     });
     return (
