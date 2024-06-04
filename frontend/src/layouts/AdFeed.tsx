@@ -1,17 +1,13 @@
 import AdBanner from "../small-components/AdBanner/AdBanner";
 import styled from "styled-components";
-
-type rawDataType = {name: string, picture: string, link: string};
-const rawData: rawDataType[] = [
-    {name: "banner1", picture: "asdfasf", link: "asdfasdfasf"},
-    {name: "banner2", picture: "asdfasf", link: "asdfasdfasf"},
-    {name: "banner3", picture: "asdfasf", link: "asdfasdfasf"},
-];
+import {useAppSelector} from "../other/hooks";
+import {IAdvertisement} from "../other/widelyUsedTypes";
 
 function AdFeed() {
+    const getAds : IAdvertisement[] = useAppSelector(state => state.ads.allAdsPublic);
     return (
-        <StyledDiv>
-            {rawData.map ((element: rawDataType) =>
+        <div>
+            {getAds.map ((element: IAdvertisement) =>
                 <AdBanner
                     key = {element.name}
                     name = {element.name}
@@ -19,9 +15,7 @@ function AdFeed() {
                     link = {element.link}
                 />
             )}
-        </StyledDiv>
+        </div>
     );
 }
-const StyledDiv = styled.div`
-`;
 export default AdFeed;
