@@ -7,6 +7,7 @@ import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisement
 import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
 import {setReports} from "../other/slices/reportSlice";
 import {setChannelInfoCard, setChannelWallpaperInfo} from "../other/slices/channelInfoSlice";
+import {setPopularChannels} from "../other/slices/popularChannelsSlice";
 import {
     IPostMini,
     IListedComment,
@@ -18,6 +19,7 @@ import {
     IReportData,
     IChannelInfoWallpaper,
     IChannelInfoCard,
+    IPopularChannel,
 } from "../other/widelyUsedTypes";
 
 
@@ -239,6 +241,12 @@ const rawDataChannelInfoCard : IChannelInfoCard = {
         "4. no cringe",
     ]
 };
+
+const rawDataPopularChannels : IPopularChannel[] = [
+    { name: "c/DarkSouls", members: 228, link: "darksouls/" },
+    { name:  "c/EldenRing", members: 1337, link: "eldenring/" },
+    { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2/" },
+];
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -272,6 +280,8 @@ function ApiFirstLoad () {
         dispatch(setChannelWallpaperInfo(rawDataChannelInfoWallpaper));
         // channel card
         dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+        // popular channels in default feed
+        dispatch(setPopularChannels(rawDataPopularChannels));
     });
     return (
         <></>
