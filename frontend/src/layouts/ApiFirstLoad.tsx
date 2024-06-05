@@ -6,6 +6,7 @@ import {setListFirstLoad} from "../other/slices/commentSlice";
 import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
 import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
 import {setReports} from "../other/slices/reportSlice";
+import {setChannelInfoCard, setChannelWallpaperInfo} from "../other/slices/channelInfoSlice";
 import {
     IPostMini,
     IListedComment,
@@ -15,6 +16,8 @@ import {
     IPostMiniCardNew,
     IUserInfoCardNew,
     IReportData,
+    IChannelInfoWallpaper,
+    IChannelInfoCard,
 } from "../other/widelyUsedTypes";
 
 
@@ -219,7 +222,23 @@ const rawDataReports : IReportData[] = [
         target: "http://wtf3.ru",
         description: "this is tha bad post comment",
     },
-]
+];
+
+const rawDataChannelInfoWallpaper : IChannelInfoWallpaper = {
+    name: "DarkSouls"
+};
+const rawDataChannelInfoCard : IChannelInfoCard = {
+    name: "DarkSouls",
+    description: "A community dedicated to everything related to Dark Souls.",
+    members: 544,
+    online: 47,
+    rules: [
+        "1. No soy",
+        "2. Mewing 24/7",
+        "3. be based",
+        "4. no cringe",
+    ]
+};
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -249,7 +268,10 @@ function ApiFirstLoad () {
         dispatch(setProfileComments(rawDataProfileComments));
         // reports in moderator page
         dispatch(setReports(rawDataReports));
-
+        // channel wallpaper
+        dispatch(setChannelWallpaperInfo(rawDataChannelInfoWallpaper));
+        // channel card
+        dispatch(setChannelInfoCard(rawDataChannelInfoCard));
     });
     return (
         <></>
