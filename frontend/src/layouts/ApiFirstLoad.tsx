@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useAppSelector, useAppDispatch } from "../other/hooks";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
 import {setListFirstLoad} from "../other/slices/commentSlice";
 import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
@@ -20,6 +20,7 @@ import {
     IChannelInfoWallpaper,
     IChannelInfoCard,
     IPopularChannel,
+    pageType,
 } from "../other/widelyUsedTypes";
 
 
@@ -247,10 +248,55 @@ const rawDataPopularChannels : IPopularChannel[] = [
     { name:  "c/EldenRing", members: 1337, link: "eldenring/" },
     { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2/" },
 ];
-function ApiFirstLoad () {
+
+
+interface IApiResponseFirstLoadDefault {
+    corePayload : {
+        manyPosts : IPostMini[],
+        manyAdvertisementsPublic : IAdvertisementPublic[],
+        manyPopularChannels : IPopularChannel[],
+    }
+}
+interface IApiResponseFirstLoadAdmin {
+    corePayload: {
+        manyAdvertisementsPrivate: IAdvertisementPrivate[],
+    }
+}
+interface IApiResponseFirstLoadChannel {
+    corePayload: {
+        manyPosts: IPostMini[],
+        manyAdvertisementsPublic : IAdvertisementPublic[],
+        oneChannelInfoCard : IChannelInfoCard
+    }
+}
+interface IApiResponseFirstLoadReadPost {
+    corePayload : {
+        onePost : IPostMini,
+        manyAdvertisementsPublic : IAdvertisementPublic[],
+        oneChannelInfoCard : IChannelInfoCard,
+        manyComments : IListedComment[],
+    }
+}
+interface IApiResponseFirstLoadUserProfile {
+    corePayload : {
+        oneUserProfileMainInfo : IUserInfoCardNew,
+        manyUserProfilePosts: IPostMiniCardNew[],
+        manyUserProfileComments: ICommentMiniCardNew[],
+    }
+}
+interface IApiResponseFirstLoadModerator {
+    corePayload : {
+        manyReports: IReportData[],
+        oneChannelInfoCard : IChannelInfoCard
+    }
+}
+
+
+function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?: pageType}) {
     const dispatch = useAppDispatch();
     useEffect(() => {
-        let url : string = "/api/feed";
+        let url : string = "/api/mockup/feed";
+        const baseUrl : string = "/api/mockup/";
         axios.get(url).then( data => {
                 console.log("from axious success:", data.data);
             }
@@ -258,30 +304,117 @@ function ApiFirstLoad () {
                 console.log("from axious error:", error);
             }
         );
-        // feed posts
-        dispatch(setManyPostsFirstLoad(rawDataMany));
-        // post page
-        dispatch(setSinglePost(rawDataOne));
-        // comment list
-        dispatch(setListFirstLoad(rawListComments));
-        // ad private
-        dispatch(setPrivateBanners(rawData2AdvertisementPrivate));
-        // ad public
-        dispatch(setPublicBanners(rawDataAdvertisementPublic));
-        // profile main data
-        dispatch(setProfileMainInfo(rawDataProfileInfoMain));
-        // profile posts
-        dispatch(setProfilePosts(rawDataProfilePosts));
-        // profile comments
-        dispatch(setProfileComments(rawDataProfileComments));
-        // reports in moderator page
-        dispatch(setReports(rawDataReports));
-        // channel wallpaper
-        dispatch(setChannelWallpaperInfo(rawDataChannelInfoWallpaper));
-        // channel card
-        dispatch(setChannelInfoCard(rawDataChannelInfoCard));
-        // popular channels in default feed
-        dispatch(setPopularChannels(rawDataPopularChannels));
+        function errorHandling(error : any) : void {
+            console.log(error);
+        }
+        switch (layoutStructureType) {
+            case "default":
+                // posts
+                // ad public
+                // popularcard
+                axios.get<IApiResponseFirstLoadDefault>(baseUrl + "feed")
+                     .then((response : AxiosResponse<IApiResponseFirstLoadDefault>) : void  => {
+                         const payload : IApiResponseFirstLoadDefault["corePayload"] = response.data.corePayload;
+                         dispatch(setManyPostsFirstLoad(payload.manyPosts));
+                         dispatch(setPublicBanners(payload.manyAdvertisementsPublic));
+                         dispatch(setPopularChannels(payload.manyPopularChannels));
+                     })
+                     .catch( error => {
+                         dispatch(setManyPostsFirstLoad(rawDataMany));
+                         dispatch(setPublicBanners(rawDataAdvertisementPublic));
+                         dispatch(setPopularChannels(rawDataPopularChannels));
+                     });
+                break;
+            case "admin" :
+                // ad private
+                axios.get<IApiResponseFirstLoadAdmin>(baseUrl + "admin")
+                     .then((response : AxiosResponse<IApiResponseFirstLoadAdmin>) : void  => {
+                         const payload : IApiResponseFirstLoadAdmin["corePayload"] = response.data.corePayload;
+                         dispatch(setPrivateBanners(payload.manyAdvertisementsPrivate));
+                     })
+                     .catch( error => {
+                         dispatch(setPrivateBanners(rawData2AdvertisementPrivate));
+                     });
+                break;
+            case "usersettings":
+                // nothing
+                break;
+            case "channel":
+                // posts many
+                // ad public
+                // channelinfocard
+                axios.get<IApiResponseFirstLoadChannel>(baseUrl + "c/darksouls/")
+                     .then((response : AxiosResponse<IApiResponseFirstLoadChannel>) : void  => {
+                         const payload : IApiResponseFirstLoadChannel["corePayload"] = response.data.corePayload;
+                         dispatch(setManyPostsFirstLoad(payload.manyPosts));
+                         dispatch(setPublicBanners(payload.manyAdvertisementsPublic));
+                         dispatch(setChannelInfoCard(payload.oneChannelInfoCard));
+                     })
+                     .catch( error => {
+                         dispatch(setManyPostsFirstLoad(rawDataMany));
+                         dispatch(setPublicBanners(rawDataAdvertisementPublic));
+                         dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+                     });
+                break;
+            case  "read_post":
+                // post one
+                // ad public
+                // channelinfocard
+                // comments
+                dispatch(setListFirstLoad(rawListComments));
+                // DON'T FORGET TO CLEAR THE LINE ABOVE ^
+                axios.get<IApiResponseFirstLoadReadPost>(baseUrl + "posts/asjdhajdhsASD123123/")
+                    .then((response : AxiosResponse<IApiResponseFirstLoadReadPost>) : void  => {
+                        const payload : IApiResponseFirstLoadReadPost["corePayload"] = response.data.corePayload;
+                        dispatch(setSinglePost(payload.onePost));
+                        dispatch(setPublicBanners(payload.manyAdvertisementsPublic));
+                        dispatch(setChannelInfoCard(payload.oneChannelInfoCard));
+                        dispatch(setListFirstLoad(payload.manyComments));
+                    })
+                    .catch( error => {
+                        dispatch(setSinglePost(rawDataOne));
+                        dispatch(setPublicBanners(rawDataAdvertisementPublic));
+                        dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+                        // BUG BUG BUG IS HERE v
+                        dispatch(setListFirstLoad(rawListComments));
+                        // BUG BUG BUG IS HERE ^
+                    });
+                break;
+            case "new_post":
+                // nothing
+                break;
+            case "userprofile":
+                // profile main data
+                // profile posts
+                // profile comments
+                axios.get<IApiResponseFirstLoadUserProfile>(baseUrl + "user/Increddible1337/")
+                     .then((response : AxiosResponse<IApiResponseFirstLoadUserProfile>) : void  => {
+                         const payload : IApiResponseFirstLoadUserProfile["corePayload"] = response.data.corePayload;
+                         dispatch(setProfileMainInfo(payload.oneUserProfileMainInfo));
+                         dispatch(setProfilePosts(payload.manyUserProfilePosts));
+                         dispatch(setProfileComments(payload.manyUserProfileComments));
+                     })
+                     .catch( error => {
+                         dispatch(setProfileMainInfo(rawDataProfileInfoMain));
+                         dispatch(setProfilePosts(rawDataProfilePosts));
+                         dispatch(setProfileComments(rawDataProfileComments));
+                     });
+                break;
+            case "moderator":
+                // reports
+                // channelInfoCard
+                axios.get<IApiResponseFirstLoadModerator>(baseUrl + "user/settings/")
+                     .then((response : AxiosResponse<IApiResponseFirstLoadModerator>) : void  => {
+                         const payload : IApiResponseFirstLoadModerator["corePayload"] = response.data.corePayload;
+                         dispatch(setReports(payload.manyReports));
+                         dispatch(setChannelInfoCard(payload.oneChannelInfoCard));
+                     })
+                     .catch( error => {
+                         dispatch(setReports(rawDataReports));
+                         dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+                     });
+                break;
+        }
     });
     return (
         <></>
