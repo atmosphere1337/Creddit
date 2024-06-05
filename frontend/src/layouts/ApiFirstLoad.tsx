@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
 import { useAppSelector, useAppDispatch } from "../other/hooks";
 import axios from "axios";
-import { setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
-import { setListFirstLoad } from "../other/slices/commentSlice";
+import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
+import {setListFirstLoad} from "../other/slices/commentSlice";
 import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
+import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
 import {
     IPostMini,
     IListedComment,
     IAdvertisementPublic,
-    IAdvertisementPrivate,
+    IAdvertisementPrivate, ICommentMiniCardNew, IPostMiniCardNew, IUserInfoCardNew,
 } from "../other/widelyUsedTypes";
 
 
@@ -140,6 +141,63 @@ const rawDataAdvertisementPublic: IAdvertisementPublic[] = [
     {name: "banner2", picture: "asdfasf", link: "asdfasdfasf"},
     {name: "banner3", picture: "asdfasf", link: "asdfasdfasf"},
 ];
+
+
+const rawDataProfileComments : ICommentMiniCardNew[] = [
+    {
+        rating: 12,
+        content: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+        channelName: "darksouls",
+        postName: "Excepteur sint",
+        authorName: "increddible1337",
+        avatarColor: "green",
+    },
+    {
+        rating: 20,
+        content: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam",
+        channelName: "eldenring",
+        postName: "de Finibus Bonorum et Malorum",
+        authorName: "increddible1337",
+        avatarColor: "green",
+    },
+];
+const rawDataProfilePosts : IPostMiniCardNew[]= [
+    {
+        channelName: "darksouls",
+        age: 8,
+        title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        rating: 123,
+        comments: 228,
+        avatarColor: "green",
+        postColor: "yellow",
+    },
+    {
+        channelName: "eldenring",
+        age: 10,
+        title: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        rating: 432,
+        comments: 666,
+        avatarColor: "red",
+        postColor: "blue",
+    },
+    {
+        channelName: "counterstrike2",
+        age: 12,
+        title: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+        rating: 79,
+        comments: 222,
+        avatarColor: "violet",
+        postColor: "aqua",
+    },
+]
+const rawDataProfileInfoMain : IUserInfoCardNew = {
+    name: "InCreddible1337",
+    commentRating: 10,
+    postRatin: 15,
+    joinDate: "27.07.21"
+};
+
+
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -161,6 +219,12 @@ function ApiFirstLoad () {
         dispatch(setPrivateBanners(rawData2AdvertisementPrivate));
         // ad public
         dispatch(setPublicBanners(rawDataAdvertisementPublic));
+        // profile main data
+        dispatch(setProfileMainInfo(rawDataProfileInfoMain));
+        // profile posts
+        dispatch(setProfilePosts(rawDataProfilePosts));
+        // profile comments
+        dispatch(setProfileComments(rawDataProfileComments));
 
     });
     return (
