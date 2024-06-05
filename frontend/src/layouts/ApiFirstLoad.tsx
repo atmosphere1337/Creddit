@@ -3,9 +3,12 @@ import { useAppSelector, useAppDispatch } from "../other/hooks";
 import axios from "axios";
 import { setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
 import { setListFirstLoad } from "../other/slices/commentSlice";
+import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
 import {
     IPostMini,
     IListedComment,
+    IAdvertisementPublic,
+    IAdvertisementPrivate,
 } from "../other/widelyUsedTypes";
 
 
@@ -127,6 +130,16 @@ const rawListComments : IListedComment[] = [
         age: 111,
     }
 ];
+const rawData2AdvertisementPrivate : IAdvertisementPrivate[] = [
+    {id: 1, link: "www.googler.com", color: "blue", show: true},
+    {id: 2, link: "www.yandexx.ru", color: "green", show: false},
+    {id: 3, link: "www.redditt.com", color: "yellow", show: true},
+];
+const rawDataAdvertisementPublic: IAdvertisementPublic[] = [
+    {name: "banner11", picture: "asdfasf", link: "asdfasdfasf"},
+    {name: "banner2", picture: "asdfasf", link: "asdfasdfasf"},
+    {name: "banner3", picture: "asdfasf", link: "asdfasdfasf"},
+];
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -144,6 +157,10 @@ function ApiFirstLoad () {
         dispatch(setSinglePost(rawDataOne));
         // comment list
         dispatch(setListFirstLoad(rawListComments));
+        // ad private
+        dispatch(setPrivateBanners(rawData2AdvertisementPrivate));
+        // ad public
+        dispatch(setPublicBanners(rawDataAdvertisementPublic));
 
     });
     return (
