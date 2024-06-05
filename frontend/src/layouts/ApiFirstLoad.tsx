@@ -5,11 +5,16 @@ import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
 import {setListFirstLoad} from "../other/slices/commentSlice";
 import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
 import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
+import {setReports} from "../other/slices/reportSlice";
 import {
     IPostMini,
     IListedComment,
     IAdvertisementPublic,
-    IAdvertisementPrivate, ICommentMiniCardNew, IPostMiniCardNew, IUserInfoCardNew,
+    IAdvertisementPrivate,
+    ICommentMiniCardNew,
+    IPostMiniCardNew,
+    IUserInfoCardNew,
+    IReportData,
 } from "../other/widelyUsedTypes";
 
 
@@ -198,6 +203,23 @@ const rawDataProfileInfoMain : IUserInfoCardNew = {
 };
 
 
+const rawDataReports : IReportData[] = [
+    {
+        id: 1,
+        target: "http://wtf.ru",
+        description: "he is bad persoon",
+    },
+    {
+        id: 2,
+        target: "http://wtf2.ru",
+        description: "this is tha bad post",
+    },
+    {
+        id: 3,
+        target: "http://wtf3.ru",
+        description: "this is tha bad post comment",
+    },
+]
 function ApiFirstLoad () {
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -225,6 +247,8 @@ function ApiFirstLoad () {
         dispatch(setProfilePosts(rawDataProfilePosts));
         // profile comments
         dispatch(setProfileComments(rawDataProfileComments));
+        // reports in moderator page
+        dispatch(setReports(rawDataReports));
 
     });
     return (
