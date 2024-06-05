@@ -2,7 +2,6 @@ import  React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Test from './layouts/Test'
 import Main from './layouts/Main'
-import AdminPage from './layouts/AdminPage';
 
 function App() {
   return (
@@ -17,7 +16,7 @@ function App() {
         <Route path="/posts/:post" element={ <Main type="read_post" /> } />
         <Route path="/settings" element={ <Main type="usersettings" /> } />
         <Route path="/user/:username" element={ <Main type="userprofile" /> } />
-        <Route path="/admin" element={ <AdminPage /> } />
+        <Route path="/admin" element={ <Main type="admin" /> } />
       </Routes>
     </BrowserRouter>
   );
