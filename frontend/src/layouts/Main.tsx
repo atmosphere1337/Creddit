@@ -1,20 +1,20 @@
 import React, { useState, useEffect, } from 'react';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Feed from '../pages/Feed';
+import PostPage from "../pages/PostPage";
+import AddEditPostPage from '../pages/AddEditPostPage';
+import UserSettings from '../pages/UserSettings';
+import {UserProfileFeed, UserProfileInfoCard} from '../pages/UserProfile';
+import AdminPage from "../pages/AdminPage";
+import ModeratorPage from '../pages/ModeratorPage';
 import Header from './Header';
 import LeftSidebar from "./LeftSidebar";
-import Feed from './Feed';
 import AdFeed from "./AdFeed";
-import PostPage from "./PostPage";
 import ApiFirstLoad from "./ApiFirstLoad";
 import ChannelWallpaper from "../large-components/ChannelWallpaper";
 import PopularCard from "../large-components/PopularCard";
 import ChannelInfoCard from "../large-components/ChannelInfoCard";
-import AddEditPostPage from './AddEditPostPage';
-import UserSettings from './UserSettings';
-import {UserProfileFeed, UserProfileInfoCard} from './UserProfile';
-import ModeratorPage from './ModeratorPage';
-import AdminPage from "./AdminPage";
 import {pageType} from "../other/widelyUsedTypes";
 
 
