@@ -1,11 +1,11 @@
 import React, { useState, useEffect, } from 'react';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Feed from '../pages/Feed';
+import FeedPage from '../pages/FeedPage';
 import PostPage from "../pages/PostPage";
 import AddEditPostPage from '../pages/AddEditPostPage';
-import UserSettings from '../pages/UserSettings';
-import {UserProfileFeed, UserProfileInfoCard} from '../pages/UserProfile';
+import UserSettingsPage from '../pages/UserSettingsPage';
+import {UserProfileFeed, UserProfileInfoCard} from '../pages/UserProfilePage';
 import AdminPage from "../pages/AdminPage";
 import ModeratorPage from '../pages/ModeratorPage';
 import Header from './Header';
@@ -19,7 +19,6 @@ import {pageType} from "../other/widelyUsedTypes";
 
 
 function Main({type = "default"} : {type?: pageType}) {
-    //let { channelUrl } : {channelUrl : string | undefined} = useParams();
     return (
         <>
             <ApiFirstLoad layoutStructureType={type} />
@@ -33,7 +32,7 @@ function Main({type = "default"} : {type?: pageType}) {
                             <StyledContentDiv>
                                 <div>
                                     { type == "channel" && <ChannelWallpaper /> }
-                                    { ["channel", "default"].includes(type) && <Feed /> }
+                                    { ["channel", "default"].includes(type) && <FeedPage /> }
                                     { type == "read_post" && <PostPage /> }
                                     { type == "new_post" && <AddEditPostPage /> }
                                     { type == "userprofile" && <UserProfileFeed /> }
@@ -50,7 +49,7 @@ function Main({type = "default"} : {type?: pageType}) {
                             </StyledContentDiv>
                         </StyledSidebarAndContent>
                     }
-                    { type == "usersettings" && <UserSettings /> }
+                    { type == "usersettings" && <UserSettingsPage /> }
                 </StyledMain>
             }
             {   type == "admin" && <AdminPage /> }

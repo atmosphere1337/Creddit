@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {useAppSelector} from "../other/hooks";
 import PostSmall from  '../large-components/PostSmall/PostSmall';
 
-function Feed() {
+function FeedPage() {
     const allPosts = useAppSelector((state) => state.post.manyPosts);
     return (
         <StyledFeed>
@@ -22,4 +22,4 @@ const StyledFeed = styled.div`
     min-width: 765px;
     padding: 30px;
 `;
-export default Feed;
+export default FeedPage;

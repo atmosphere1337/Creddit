@@ -3,7 +3,7 @@ import { Box, Grid, Container, TextField, Button, Typography, Alert, Collapse, I
 import CloseIcon from '@mui/icons-material/Close';
 
 
-function UserSettings() {
+function UserSettingsPage() {
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [openCollapseAlert,setOpenCollapseAlert] = useState<boolean>(false);
@@ -76,4 +76,4 @@ function UserSettings() {
         </Container>
     );
 }
-export default UserSettings;
+export default UserSettingsPage;

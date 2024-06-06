@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import {useAppSelector} from "../other/hooks";
 import PostSmall from "../large-components/PostSmall/PostSmall";
-import CommentSection from "./CommentSection";
+import CommentSection from "../layouts/CommentSection";
 
 
 function PostPage() {
