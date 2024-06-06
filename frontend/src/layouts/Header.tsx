@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from "styled-components"
 import { useAppSelector, useAppDispatch } from '../other/hooks'
-import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from '../other/userSlice';
+import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from '../other/slices/userSlice';
 import CredditLogo from "../small-components/CredditLogo/CredditLogo";
 import SearchBar from "../small-components/SearchBar/SarchBar";
 import Button from '@mui/material/Button';

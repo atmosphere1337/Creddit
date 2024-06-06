@@ -1,13 +1,13 @@
 import AdBanner from "../small-components/AdBanner/AdBanner";
 import styled from "styled-components";
 import {useAppSelector} from "../other/hooks";
-import {IAdvertisement} from "../other/widelyUsedTypes";
+import {IAdvertisementPublic} from "../other/widelyUsedTypes";
 
 function AdFeed() {
-    const getAds : IAdvertisement[] = useAppSelector(state => state.ads.allAdsPublic);
+    const getAds : IAdvertisementPublic[] = useAppSelector(state => state.ads.allAdsPublic);
     return (
         <div>
-            {getAds.map ((element: IAdvertisement) =>
+            {getAds.map ((element: IAdvertisementPublic) =>
                 <AdBanner
                     key = {element.name}
                     name = {element.name}

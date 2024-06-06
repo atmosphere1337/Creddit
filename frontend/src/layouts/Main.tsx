@@ -15,12 +15,14 @@ import UserSettings from './UserSettings';
 import {UserProfileFeed, UserProfileInfoCard} from './UserProfile';
 import ModeratorPage from './ModeratorPage';
 import AdminPage from "./AdminPage";
+import {pageType} from "../other/widelyUsedTypes";
 
-function Main({type = "default"} : {type: string}) {
-    let { channelUrl } = useParams();
+
+function Main({type = "default"} : {type?: pageType}) {
+    //let { channelUrl } : {channelUrl : string | undefined} = useParams();
     return (
         <>
-            <ApiFirstLoad />
+            <ApiFirstLoad layoutStructureType={type} />
             {   type != "admin" &&
                 <StyledMain>
                     <Header />

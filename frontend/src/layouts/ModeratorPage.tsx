@@ -48,6 +48,9 @@ function ModeratorPage() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Typography>
+                Later: show member list, and track banned users
+            </Typography>
         </Box>
     );
 }

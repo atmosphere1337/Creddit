@@ -1,7 +1,24 @@
-export interface IAdvertisement {name: string, picture: string, link: string}
-export interface IAdvertisementPrivate {id: number, link: string, color: string, show: boolean}
-export interface IReportData { id: number, target: string, description: string }
-export interface IPopularChannel {name: string, members: number, link: string}
+export interface IAdvertisementPublic {
+    name: string,
+    picture: string,
+    link: string
+}
+export interface IAdvertisementPrivate {
+    id: number,
+    link: string,
+    color: string,
+    show: boolean
+}
+export interface IReportData {
+    id: number,
+    target: string,
+    description: string
+}
+export interface IPopularChannel {
+    name: string,
+    members: number,
+    link: string
+}
 export interface IChannelInfoWallpaper {name : string}
 export interface IChannelInfoCard {
     name: string,
@@ -33,3 +50,19 @@ export interface IUserInfoCardNew {
     postRatin: number,
     joinDate: string
 }
+export interface IPostMini {
+    name: string,
+    rating: number,
+    comments: number,
+    body: string,
+}
+export interface IListedComment {
+    id: number,
+    parent: number,
+    name: string,
+    comment: string,
+    rating: number,
+    age: number,
+}
+export type pageType = "default" | "admin" | "usersettings" | "channel" | "read_post" |
+                       "new_post" | "userprofile" | "moderator" ;

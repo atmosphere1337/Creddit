@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
-import {RootState} from './store';
+import {RootState} from '../store';
 
 interface IUserState  {
     colorMode: "dark" | "light",

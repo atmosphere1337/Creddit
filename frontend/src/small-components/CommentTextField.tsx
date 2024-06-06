@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, {useState} from "react";
-import { addComment, INewComment } from "../other/commentSlice";
+import { addComment, INewComment } from "../other/slices/commentSlice";
 import { useAppDispatch } from "../other/hooks";
 
 function CommentTextField({hide, parentCommentId}:{hide: () => void, parentCommentId: number}) {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useAppDispatch } from '../../other/hooks';
-import { setLoggedIn } from '../../other/userSlice';
+import { setLoggedIn } from '../../other/slices/userSlice';
 import { Box, Button, Dialog, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton'; 

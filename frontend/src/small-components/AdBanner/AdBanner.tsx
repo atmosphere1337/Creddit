@@ -1,8 +1,8 @@
-import styled from "styled-components";
 import {useState} from "react";
+import styled from "styled-components";
+import {IAdvertisementPublic} from "../../other/widelyUsedTypes";
 
-type rawDataType = {name: string, picture: string, link: string};
-function AdBanner({ name, picture, link } : rawDataType) {
+function AdBanner({ name, picture, link } : IAdvertisementPublic) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (

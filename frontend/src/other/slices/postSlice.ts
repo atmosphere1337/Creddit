@@ -17,7 +17,6 @@ export const postSlice =  createSlice( {
         setSinglePost : (state, action : {payload : IPostMini}) => {
             state.onePost = action.payload;
         },
-
     }
 });
 

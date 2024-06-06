@@ -1,13 +1,20 @@
 import React from 'react';
 import styled from "styled-components";
+import {useAppSelector} from "../other/hooks";
 import PostSmall from "../large-components/PostSmall/PostSmall";
 import CommentSection from "./CommentSection";
 
 
 function PostPage() {
+    const selectOnePost = useAppSelector((state) => state.post.onePost);
     return (
       <StyledDiv>
-        <PostSmall name={ "what" } comments={ 1337 } rating={ 228 } />
+        <PostSmall
+            name={ selectOnePost.name }
+            comments={ selectOnePost.comments }
+            rating={ selectOnePost.rating }
+            body={selectOnePost.body}
+        />
         <CommentSection />
       </StyledDiv>
     );

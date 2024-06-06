@@ -5,11 +5,6 @@ import {useAppSelector} from "../other/hooks";
 import { StyledA } from "../other/styles/CommonStyles";
 import {IPopularChannel} from "../other/widelyUsedTypes";
 
-const rawData : IPopularChannel[] = [
-    { name: "c/DarkSouls", members: 228, link: "darksouls/" },
-    { name:  "c/EldenRing", members: 1337, link: "eldenring/" },
-    { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2/" },
-];
 function PopularChannel({name, members, link}: IPopularChannel) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
