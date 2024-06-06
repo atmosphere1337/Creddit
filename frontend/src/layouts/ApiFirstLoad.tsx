@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useAppSelector, useAppDispatch } from "../other/hooks";
 import axios, {AxiosResponse} from "axios";
 import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
-import {setListFirstLoad} from "../other/slices/commentSlice";
+import {setListFirstLoad, treeFirstLoad} from "../other/slices/commentSlice";
 import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
 import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
 import {setReports} from "../other/slices/reportSlice";
@@ -361,8 +361,6 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 // ad public
                 // channelinfocard
                 // comments
-                dispatch(setListFirstLoad(rawListComments));
-                // DON'T FORGET TO CLEAR THE LINE ABOVE ^
                 axios.get<IApiResponseFirstLoadReadPost>(baseUrl + "posts/asjdhajdhsASD123123/")
                     .then((response : AxiosResponse<IApiResponseFirstLoadReadPost>) : void  => {
                         const payload : IApiResponseFirstLoadReadPost["corePayload"] = response.data.corePayload;
@@ -375,9 +373,8 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                         dispatch(setSinglePost(rawDataOne));
                         dispatch(setPublicBanners(rawDataAdvertisementPublic));
                         dispatch(setChannelInfoCard(rawDataChannelInfoCard));
-                        // BUG BUG BUG IS HERE v
                         dispatch(setListFirstLoad(rawListComments));
-                        // BUG BUG BUG IS HERE ^
+                        dispatch(treeFirstLoad());
                     });
                 break;
             case "new_post":

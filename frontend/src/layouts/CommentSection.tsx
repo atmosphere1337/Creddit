@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import { treeFirstLoad, ITreeComment } from '../other/commentSlice'
+import { treeFirstLoad, ITreeComment } from '../other/slices/commentSlice'
 import { useAppSelector, useAppDispatch } from '../other/hooks'
 import CommentCard from "../large-components/CommentCard";
 import CommentTextField from "../small-components/CommentTextField";
@@ -25,10 +25,6 @@ function CommentSection() {
     function switchDefaultComment() {
         setDefaultComment(x => !x);
     }
-    useEffect( () => {
-        dispatch(treeFirstLoad());
-    }, []);
-
     return (
         <StyledDiv>
             {
