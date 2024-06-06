@@ -25,7 +25,7 @@ import {
 import {
     rawData2AdvertisementPrivate,
     rawDataAdvertisementPublic,
-    rawDataChannelInfoCard,
+    rawDataChannelInfoCard, rawDataChannelInfoWallpaper,
     rawDataPopularChannels,
     rawDataPostMany,
     rawDataPostOne,
@@ -53,6 +53,7 @@ interface IApiResponseFirstLoadChannel {
         manyPosts: IPostMini[],
         manyAdvertisementsPublic : IAdvertisementPublic[],
         oneChannelInfoCard : IChannelInfoCard
+        oneChannelWallpaperInfo : IChannelInfoWallpaper
     }
 }
 interface IApiResponseFirstLoadReadPost {
@@ -129,17 +130,20 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 // posts many
                 // ad public
                 // channelinfocard
+                // wallpaper info
                 axios.get<IApiResponseFirstLoadChannel>(baseUrl + "c/darksouls/")
                      .then((response : AxiosResponse<IApiResponseFirstLoadChannel>) : void  => {
                          const payload : IApiResponseFirstLoadChannel["corePayload"] = response.data.corePayload;
                          dispatch(setManyPostsFirstLoad(payload.manyPosts));
                          dispatch(setPublicBanners(payload.manyAdvertisementsPublic));
                          dispatch(setChannelInfoCard(payload.oneChannelInfoCard));
+                         //dispatch(setChannelWallpaperInfo(payload.oneChannelWallpaperInfo));
                      })
                      .catch( error => {
                          dispatch(setManyPostsFirstLoad(rawDataPostMany));
                          dispatch(setPublicBanners(rawDataAdvertisementPublic));
                          dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+                         dispatch(setChannelWallpaperInfo(rawDataChannelInfoWallpaper));
                      });
                 break;
             case  "read_post":
