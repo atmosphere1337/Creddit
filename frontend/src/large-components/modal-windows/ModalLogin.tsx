@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-
+import { useAppDispatch } from 'other/hooks';
+import { setLoggedIn } from 'other/slices/userSlice';
 import { Box, Button, Dialog, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton'; 
@@ -7,11 +8,19 @@ import IconButton from '@mui/material/IconButton';
 function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: () => void}) {
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const dispatch = useAppDispatch();
     function validateInputFields() :boolean {
         return true;
     }
     function performLoginAttemptOnServer() :void {
         window.location.reload();
+    }
+    function submitLoggin() : void {
+        close();
+        if (!validateInputFields())
+            return;
+        dispatch(setLoggedIn());
+        //performLoginAttemptOnServer();
     }
     return (
         <>
@@ -49,12 +58,7 @@ function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: (
                             fullWidth={true}
                             variant="contained"
                             color="warning"
-                            onClick={() => {
-                                if (!validateInputFields())
-                                    return;
-                                alert('You are logged in now');
-                                performLoginAttemptOnServer();
-                            }}
+                            onClick={() => submitLoggin()}
                         >
                             Confirm
                         </Button>
@@ -64,4 +68,5 @@ function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: (
         </>
     );
 }
+
 export default ModalLogin;

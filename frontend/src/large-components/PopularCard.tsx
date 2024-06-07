@@ -1,20 +1,11 @@
 import React from 'react';
 import styled from "styled-components";
 import { useState } from "react";
-import { StyledA } from "../other/styles/CommonStyles";
+import {useAppSelector} from "other/hooks";
+import { StyledA } from "other/styles/CommonStyles";
+import {IPopularChannel} from "other/widelyUsedTypes";
 
-type RawDataType = {
-    name: string,
-    members: number,
-    link: string,
-}
-
-const rawData : RawDataType[] = [
-    { name: "c/DarkSouls", members: 228, link: "darksouls/" },
-    { name:  "c/EldenRing", members: 1337, link: "eldenring/" },
-    { name:  "c/CounterStrike2", members: 1488, link: "counterstrike2/" },
-];
-function PopularChannel({name, members, link}: RawDataType) {
+function PopularChannel({name, members, link}: IPopularChannel) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
@@ -35,23 +26,26 @@ function PopularChannel({name, members, link}: RawDataType) {
     );
 }
 
-
 function PopularCard() {
+    const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
     return (
         <StyledDiv>
             <div>
                 Popular Channels
             </div>
             <div>
-                { rawData.map((element) => <PopularChannel
-                                                            name = { element.name }
-                                                            members = { element.members }
-                                                            link = { element.link }
-                                                        />) }
+                { selectFewPopularChannels.map((element : IPopularChannel) =>
+                                                                                <PopularChannel
+                                                                                    name = { element.name }
+                                                                                    members = { element.members }
+                                                                                    link = { element.link }
+                                                                                />)
+                }
             </div>
         </StyledDiv>
     );
 }
+
 const StyledDiv = styled.div`
     padding: 20px;
     margin-bottom: 25px;
@@ -62,6 +56,7 @@ const StyledDiv = styled.div`
         margin-bottom: 20px;
     }
 `;
+
 const StyledAvatarChannel = styled.div`
     width: 35px;
     height: 35px;
@@ -70,8 +65,10 @@ const StyledAvatarChannel = styled.div`
     margin-left: auto;
     margin-right: 30px;
 `;
+
 const StyledChannel = styled.div`
     display: flex;
     margin-bottom: 10px;
 `;
+
 export default PopularCard;

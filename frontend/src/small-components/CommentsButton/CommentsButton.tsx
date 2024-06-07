@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CommentIconSVG from "./CommentIconSVG";
+import CommentIconSVG from "small-components/CommentsButton/CommentIconSVG";
 
 function CommentsButton({value} : {value: number}) {
     return (

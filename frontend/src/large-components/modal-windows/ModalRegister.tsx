@@ -51,4 +51,5 @@ function ModalRegister({open = false, close = () => {}}: {open: boolean, close: 
         </>
     );
 }
+
 export default ModalRegister;

@@ -1,30 +1,21 @@
 import styled from "styled-components";
+import {useAppSelector} from "other/hooks";
+import {IChannelInfoCard} from "other/widelyUsedTypes";
 
-const rawData = {
-    name: "DarkSouls",
-    description: "A community dedicated to everything about Dark Souls.",
-    members: 544,
-    online: 47,
-    rules: [
-        "1. No soy",
-        "2. Mewing 24/7",
-        "3. be based",
-        "4. no cringe",
-    ]
-}
 function ChannelInfoCard() {
+    const selectChannelInfoData : IChannelInfoCard = useAppSelector(state => state.channelInfo.cardInfo);
     return (
         <StyledDiv1>
           <div style={{ fontSize: "25px", marginBottom: "10px" }}>
-            { rawData.name }
+            { selectChannelInfoData.name }
           </div>
           <div style={{ color: "#777777", marginBottom: "15px" }}>
-            { rawData.description }
+            { selectChannelInfoData.description }
           </div>
             <div style={{ display: "flex", gap: "20px" }}>
               <div>
                 <div>
-                  { rawData.members }
+                  { selectChannelInfoData.members }
                 </div>
                 <div style={{ color: "#777777" }}>
                   Members
@@ -32,7 +23,7 @@ function ChannelInfoCard() {
               </div>
               <div>
                 <div>
-                  { rawData.online }
+                  { selectChannelInfoData.online }
                 </div>
                 <div style={{ color: "#777777" }}>
                   <StyledGreenCircle />
@@ -50,6 +41,7 @@ const StyledDiv1 = styled.div`
     border-radius: 15px;
     margin-bottom: 30px;
 `;
+
 const StyledGreenCircle = styled.div`
     display: inline-block;
     width: 10px;
@@ -57,7 +49,6 @@ const StyledGreenCircle = styled.div`
     margin-right: 7px;
     border-radius: 666px;
     background-color: lawngreen;
-    
 `;
 
 export default ChannelInfoCard;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { StyledA } from "../../other/styles/CommonStyles";
-import Picture  from './Picture';
-import TextWhite from './TextWhite';
+import Picture  from 'small-components/CredditLogo/Picture';
+import TextWhite from 'small-components/CredditLogo/TextWhite';
 
 function CredditLogo() {
     return (

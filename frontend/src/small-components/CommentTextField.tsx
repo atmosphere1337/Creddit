@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import React, {useState} from "react";
-import { addComment, INewComment } from "../other/commentSlice";
-import { useAppDispatch } from "../other/hooks";
+import styled from "styled-components";
+import { addComment, INewComment } from "other/slices/commentSlice";
+import { useAppDispatch } from "other/hooks";
 
 function CommentTextField({hide, parentCommentId}:{hide: () => void, parentCommentId: number}) {
     const [text, setText] = useState("");
@@ -35,6 +35,7 @@ function CommentTextField({hide, parentCommentId}:{hide: () => void, parentComme
         </div>
     );
 }
+
 const StyledTextArea = styled.textarea`
     box-sizing: border-box;
     padding: 15px 15px 50px 15px;
@@ -55,6 +56,7 @@ const StyledButtonDiv = styled.div`
     margin-top: -500px;
     cursor: pointer;
 `;
+
 const StyledCommentButtonDiv = styled(StyledButtonDiv)`
     background-color: blue;
 
@@ -62,6 +64,7 @@ const StyledCommentButtonDiv = styled(StyledButtonDiv)`
         background-color: #4646fa;
     }
 `;
+
 const StyledCancelButtonDiv = styled(StyledButtonDiv)`
     background-color: #333333;
     margin-right: 7px;
