@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
-import {RootState} from '../store';
-import {IListedComment} from "../widelyUsedTypes";
+import {IListedComment} from "other/widelyUsedTypes";
 
 let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: 0, children: []}, ];
 
@@ -13,12 +12,14 @@ const initialState : ICommentState = {
     list: [],
     tree: rawTree,
 }
+
 interface INewComment {
     id: number,
     parent: number,
     name: string,
     comment: string,
 }
+
 interface ITreeComment extends IListedComment {
     children: ITreeComment[]
 }
@@ -83,13 +84,9 @@ export const commentSlice = createSlice({
                 } else 
                     currentNode.children.forEach(x => queue.push(x));
             }
-
-
         }
     }
-
 });
-
 
 export const {
     treeFirstLoad,
@@ -97,5 +94,7 @@ export const {
     setListFirstLoad,
 
 } = commentSlice.actions;
+
 export type { ITreeComment, INewComment };
+
 export default commentSlice.reducer;

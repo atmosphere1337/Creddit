@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
-import GeneralButton from '../../small-components/GeneralButton';
+import GeneralButton from 'small-components/GeneralButton';
+
 function ModalReport() {
     const [show, setShow] = useState<boolean>(false);
     return (
@@ -28,6 +29,6 @@ function ModalReport() {
             </Dialog>
         </>
     )
-            
 }
+
 export default ModalReport;

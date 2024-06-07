@@ -1,6 +1,6 @@
 import {useState} from "react";
 import styled from "styled-components";
-import {IAdvertisementPublic} from "../../other/widelyUsedTypes";
+import {IAdvertisementPublic} from "other/widelyUsedTypes";
 
 function AdBanner({ name, picture, link } : IAdvertisementPublic) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
@@ -11,6 +11,7 @@ function AdBanner({ name, picture, link } : IAdvertisementPublic) {
         </StyledDiv>
     );
 }
+
 const StyledDiv = styled.div`
     padding: 10px;
     height: 400px;
@@ -18,4 +19,5 @@ const StyledDiv = styled.div`
     margin-bottom: 20px;
     border-radius: 15px;
 `;
+
 export default AdBanner;

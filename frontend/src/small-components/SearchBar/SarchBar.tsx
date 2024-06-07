@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import Magnifier from "./Magnifier";
 import { useState } from 'react';
+import styled from 'styled-components';
+import Magnifier from "small-components/SearchBar/Magnifier";
+
 function SearchBar() {
     const [searchQuery, setSearchQuery] = useState("");
     return (
@@ -13,6 +14,7 @@ function SearchBar() {
         </Styleddiv>
     );
 }
+
 const Styleddiv = styled.div`
     background-color: #49270c;
     border-radius: 200px;
@@ -22,6 +24,7 @@ const Styleddiv = styled.div`
     padding-bottom: 5px;
     color: aqua;
 `;
+
 const Styledinput = styled.input`
     border-style: none;
     color: white;
@@ -34,4 +37,5 @@ const Styledinput = styled.input`
         outline: none;
     }
 `;
+
 export default SearchBar;

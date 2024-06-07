@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import PlusIconSVG from "./PlusIconSVG";
+import PlusIconSVG from "small-components/CreatePostButton/PlusIconSVG";
 
 function CreatePostButton() {
     return (
@@ -12,6 +12,7 @@ function CreatePostButton() {
         </StyledDiv>
     );
 }
+
 const StyledDiv = styled.div`
     display: flex;
     align-items: center;
@@ -19,10 +20,12 @@ const StyledDiv = styled.div`
     padding: 10px 20px;
     border-radius: 666px;
 `;
+
 const StyledDiv2 = styled.div`
     margin-bottom: -150px;
     margin-top: -150px;
 `;
+
 export default CreatePostButton;
 
 

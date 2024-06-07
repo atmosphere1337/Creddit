@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import {useAppSelector} from "../other/hooks";
-import PostSmall from  '../large-components/PostSmall/PostSmall';
+import PostSmall from  'large-components/PostSmall/PostSmall';
+import {useAppSelector} from "other/hooks";
 
 function FeedPage() {
     const allPosts = useAppSelector((state) => state.post.manyPosts);

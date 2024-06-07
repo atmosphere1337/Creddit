@@ -1,21 +1,21 @@
 import React, { useState, useEffect, } from 'react';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import FeedPage from '../pages/FeedPage';
-import PostPage from "../pages/PostPage";
-import AddEditPostPage from '../pages/AddEditPostPage';
-import UserSettingsPage from '../pages/UserSettingsPage';
-import {UserProfileFeed, UserProfileInfoCard} from '../pages/UserProfilePage';
-import AdminPage from "../pages/AdminPage";
-import ModeratorPage from '../pages/ModeratorPage';
-import Header from './Header';
-import LeftSidebar from "./LeftSidebar";
-import AdFeed from "./AdFeed";
-import ApiFirstLoad from "./ApiFirstLoad";
-import ChannelWallpaper from "../large-components/ChannelWallpaper";
-import PopularCard from "../large-components/PopularCard";
-import ChannelInfoCard from "../large-components/ChannelInfoCard";
-import {pageType} from "../other/widelyUsedTypes";
+import FeedPage from 'pages/FeedPage';
+import PostPage from "pages/PostPage";
+import AddEditPostPage from 'pages/AddEditPostPage';
+import UserSettingsPage from 'pages/UserSettingsPage';
+import {UserProfileFeed, UserProfileInfoCard} from 'pages/UserProfilePage';
+import AdminPage from "pages/AdminPage";
+import ModeratorPage from 'pages/ModeratorPage';
+import Header from 'large-components/Header';
+import LeftSidebar from "large-components/LeftSidebar";
+import AdFeed from "large-components/AdFeed";
+import ChannelWallpaper from "large-components/ChannelWallpaper";
+import PopularCard from "large-components/PopularCard";
+import ChannelInfoCard from "large-components/ChannelInfoCard";
+import ApiFirstLoad from "other/ApiFirstLoad";
+import {pageType} from "other/widelyUsedTypes";
 
 
 function Main({type = "default"} : {type?: pageType}) {

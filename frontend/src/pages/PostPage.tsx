@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
-import {useAppSelector} from "../other/hooks";
-import PostSmall from "../large-components/PostSmall/PostSmall";
-import CommentSection from "../layouts/CommentSection";
-
+import PostSmall from "large-components/PostSmall/PostSmall";
+import CommentSection from "large-components/CommentSection";
+import {useAppSelector} from "other/hooks";
 
 function PostPage() {
     const selectOnePost = useAppSelector((state) => state.post.onePost);
@@ -19,8 +18,10 @@ function PostPage() {
       </StyledDiv>
     );
 }
+
 const StyledDiv = styled.div`
     min-width: 765px;
     padding: 30px;
 `;
+
 export default PostPage;

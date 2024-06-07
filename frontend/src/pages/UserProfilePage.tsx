@@ -1,18 +1,14 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
-import {useAppSelector} from "../other/hooks";
+import {useAppSelector} from "other/hooks";
 import { Typography, Divider, Box, Button, Grid, Stack, Paper, Chip, IconButton} from '@mui/material';
 import {Card, CardActions, CardContent} from '@mui/material';
-
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
-import { Paragliding } from '@mui/icons-material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import FlagIcon from '@mui/icons-material/Flag';
-import { setCommentRange } from 'typescript';
 
 import {IPostMiniCardNew, ICommentMiniCardNew, IUserInfoCardNew} from "../other/widelyUsedTypes";
 
@@ -211,7 +207,6 @@ export function UserProfileInfoCard() {
                     </Grid>               
                 </Typography>
             <Divider />
-
         </Box>
     );
 }

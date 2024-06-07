@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import styled from "styled-components"
-import { useAppSelector, useAppDispatch } from '../other/hooks'
-import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from '../other/slices/userSlice';
-import CredditLogo from "../small-components/CredditLogo/CredditLogo";
-import SearchBar from "../small-components/SearchBar/SarchBar";
-import Button from '@mui/material/Button';
-import ModalLogin from '../large-components/modal-windows/ModalLogin';
-import ModalRegister from '../large-components/modal-windows/ModalRegister';
-import { Avatar, IconButton, Menu, MenuItem, Switch } from '@mui/material';
+import { useAppSelector, useAppDispatch } from 'other/hooks'
+import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from 'other/slices/userSlice';
+import ModalLogin from 'large-components/modal-windows/ModalLogin';
+import ModalRegister from 'large-components/modal-windows/ModalRegister';
+import CredditLogo from "small-components/CredditLogo/CredditLogo";
+import SearchBar from "small-components/SearchBar/SarchBar";
+import { Avatar, IconButton, Menu, MenuItem, Switch, Button } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -138,10 +137,12 @@ const StyledHeader = styled.header`
     padding-top: 5px;
     padding-bottom: 5px;
 `;
+
 const StyledNav = styled.nav`
     display: flex; 
     align-items: center;
 `;
+
 const StyledRightBox = styled.div`
     padding-right: 20px;
     padding-left: 20px;
@@ -150,7 +151,9 @@ const StyledRightBox = styled.div`
     margin-left: auto;
     gap: 10px;
 `;
+
 const StyledSearchBarBox = styled.div`
     margin-left: auto;
 `;
+
 export default Header;

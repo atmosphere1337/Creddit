@@ -1,6 +1,6 @@
 import React from 'react';
-import {useAppSelector} from "../other/hooks";
-import {IAdvertisementPrivate} from "../other/widelyUsedTypes";
+import {useAppSelector} from "other/hooks";
+import {IAdvertisementPrivate} from "other/widelyUsedTypes";
 import {
     Box,
     Checkbox,
@@ -87,6 +87,5 @@ function AdTable() {
         </TableContainer>
     );
 }
-
 
 export default AdminPage;

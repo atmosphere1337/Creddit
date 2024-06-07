@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
-import {RootState} from '../store';
 
 interface IUserState  {
     colorMode: "dark" | "light",
@@ -8,7 +7,6 @@ interface IUserState  {
     isAdmin: boolean,
 }
 
-//-----------------------------------------------------------------------------------------
 const LOGGEDIN_COOKIE_NAME : string = "credditLoggedIn";
 const COLORTHEME_COOKIE_NAME : string = "credditColorTheme";
 
@@ -44,13 +42,13 @@ function doWeRenderLightOrDarkMode() : "light" | "dark" {
     return "dark";
 }
 
-//-----------------------------------------------------------------------------------------
 const initialState : IUserState = {
     colorMode: doWeRenderLightOrDarkMode(),
     isLoggedIn: doWeRenderGuestOrUserLayout(),
     isModerator: true,
     isAdmin: true,
 }
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -72,11 +70,12 @@ export const userSlice = createSlice({
             state.isLoggedIn = false
         },
     }
-
 })
+
 export const { setColorModeDark,
                setColorModeLight,
                setLoggedIn,
                setLoggedOut,
              } = userSlice.actions;
+
 export default userSlice.reducer;

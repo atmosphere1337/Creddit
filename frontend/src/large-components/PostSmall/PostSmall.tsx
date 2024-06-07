@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import RatingButton from "../../small-components/RatingButton/RatingButton";
-import CommentsButton from "../../small-components/CommentsButton/CommentsButton";
-import ModalReport from "../modal-windows/ModalReport";
-import { StyledA } from "../../other/styles/CommonStyles";
+import ModalReport from "large-components/modal-windows/ModalReport";
+import RatingButton from "small-components/RatingButton/RatingButton";
+import CommentsButton from "small-components/CommentsButton/CommentsButton";
+import { StyledA } from "other/styles/CommonStyles";
+
 function PostSmall({name, comments, rating, body} :
                    {name: string, comments: number, rating: number, body: string}) {
     function parseBody() {
@@ -53,16 +54,19 @@ const Styleddiv = styled.div`
         margin-bottom: 15px;
     }
 `;
+
 const StyledPicture = styled.div`
     width: 500px;
     height: 500px;
     background-color: darkred;
     border-radius: 15px;
 `;
+
 const StyledOptions = styled.div`
     margin-top: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
 `;
+
 export default PostSmall;

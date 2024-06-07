@@ -1,7 +1,6 @@
-import AdBanner from "../small-components/AdBanner/AdBanner";
-import styled from "styled-components";
-import {useAppSelector} from "../other/hooks";
-import {IAdvertisementPublic} from "../other/widelyUsedTypes";
+import AdBanner from "small-components/AdBanner/AdBanner";
+import {useAppSelector} from "other/hooks";
+import {IAdvertisementPublic} from "other/widelyUsedTypes";
 
 function AdFeed() {
     const getAds : IAdvertisementPublic[] = useAppSelector(state => state.ads.allAdsPublic);

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import { useAppSelector, useAppDispatch } from "../other/hooks";
 import axios, {AxiosResponse} from "axios";
-import {setManyPostsFirstLoad, setSinglePost} from "../other/slices/postSlice";
-import {setListFirstLoad, treeFirstLoad} from "../other/slices/commentSlice";
-import {setPublicBanners, setPrivateBanners} from "../other/slices/advertisementSlice";
-import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "../other/slices/userDataSlice"
-import {setReports} from "../other/slices/reportSlice";
-import {setChannelInfoCard, setChannelWallpaperInfo} from "../other/slices/channelInfoSlice";
-import {setPopularChannels} from "../other/slices/popularChannelsSlice";
+import { useAppSelector, useAppDispatch } from "other/hooks";
+import {setManyPostsFirstLoad, setSinglePost} from "other/slices/postSlice";
+import {setListFirstLoad, treeFirstLoad} from "other/slices/commentSlice";
+import {setPublicBanners, setPrivateBanners} from "other/slices/advertisementSlice";
+import {setProfileMainInfo, setProfileComments, setProfilePosts} from  "other/slices/userDataSlice"
+import {setReports} from "other/slices/reportSlice";
+import {setChannelInfoCard, setChannelWallpaperInfo} from "other/slices/channelInfoSlice";
+import {setPopularChannels} from "other/slices/popularChannelsSlice";
 import {
     IPostMini,
     IListedComment,
@@ -78,19 +78,11 @@ interface IApiResponseFirstLoadModerator {
     }
 }
 
-
 function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?: pageType}) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         let url : string = "/api/mockup/feed";
         const baseUrl : string = "/api/mockup/";
-        axios.get(url).then( data => {
-                console.log("from axious success:", data.data);
-            }
-        ).catch( error => {
-                console.log("from axious error:", error);
-            }
-        );
         function errorHandling(error : any) : void {
             console.log(error);
         }
@@ -158,6 +150,7 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                         dispatch(setPublicBanners(payload.manyAdvertisementsPublic));
                         dispatch(setChannelInfoCard(payload.oneChannelInfoCard));
                         dispatch(setListFirstLoad(payload.manyComments));
+                        dispatch(treeFirstLoad());
                     })
                     .catch( error => {
                         dispatch(setSinglePost(rawDataPostOne));
@@ -190,7 +183,7 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
             case "moderator":
                 // reports
                 // channelInfoCard
-                axios.get<IApiResponseFirstLoadModerator>(baseUrl + "user/settings/")
+                axios.get<IApiResponseFirstLoadModerator>(baseUrl + "c/darksouls/moderator/")
                      .then((response : AxiosResponse<IApiResponseFirstLoadModerator>) : void  => {
                          const payload : IApiResponseFirstLoadModerator["corePayload"] = response.data.corePayload;
                          dispatch(setReports(payload.manyReports));
@@ -202,9 +195,10 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                      });
                 break;
         }
-    });
+    }, []);
     return (
         <></>
     );
 }
+
 export default ApiFirstLoad;

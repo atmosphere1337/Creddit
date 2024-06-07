@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {useAppSelector} from "../other/hooks";
-import {IChannelInfoCard} from "../other/widelyUsedTypes";
+import {useAppSelector} from "other/hooks";
+import {IChannelInfoCard} from "other/widelyUsedTypes";
 
 function ChannelInfoCard() {
     const selectChannelInfoData : IChannelInfoCard = useAppSelector(state => state.channelInfo.cardInfo);
@@ -41,6 +41,7 @@ const StyledDiv1 = styled.div`
     border-radius: 15px;
     margin-bottom: 30px;
 `;
+
 const StyledGreenCircle = styled.div`
     display: inline-block;
     width: 10px;
@@ -48,7 +49,6 @@ const StyledGreenCircle = styled.div`
     margin-right: 7px;
     border-radius: 666px;
     background-color: lawngreen;
-    
 `;
 
 export default ChannelInfoCard;

@@ -1,13 +1,14 @@
 import styled from "styled-components"
 import React, { FC } from 'react';
-import Business from "../small-components/TagLeft/svg/Business";
-import Gaming from "../small-components/TagLeft/svg/Gaming";
-import Sports from "../small-components/TagLeft/svg/Sports";
+import Business from "small-components/TagLeft/svg/Business";
+import Gaming from "small-components/TagLeft/svg/Gaming";
+import Sports from "small-components/TagLeft/svg/Sports";
 
 type rawDataType = {
     name: string,
     logo: React.ReactNode,
 };
+
 function LeftTag({name, logo} : rawDataType) {
     return (
         <StyledLeftTag>
@@ -20,6 +21,7 @@ function LeftTag({name, logo} : rawDataType) {
         </StyledLeftTag>
     );
 }
+
 const rawData : rawDataType[] = [
     { name: "Gaming", logo: <Gaming /> },
     { name: "Sport", logo: <Sports /> },

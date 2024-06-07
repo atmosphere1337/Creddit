@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { Box, Grid, Container, TextField, Button, Typography, Alert, Collapse, IconButton, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-
 function UserSettingsPage() {
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
@@ -76,4 +75,5 @@ function UserSettingsPage() {
         </Container>
     );
 }
+
 export default UserSettingsPage;

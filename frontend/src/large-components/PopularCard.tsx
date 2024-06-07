@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
 import { useState } from "react";
-import {useAppSelector} from "../other/hooks";
-import { StyledA } from "../other/styles/CommonStyles";
-import {IPopularChannel} from "../other/widelyUsedTypes";
+import {useAppSelector} from "other/hooks";
+import { StyledA } from "other/styles/CommonStyles";
+import {IPopularChannel} from "other/widelyUsedTypes";
 
 function PopularChannel({name, members, link}: IPopularChannel) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
@@ -26,7 +26,6 @@ function PopularChannel({name, members, link}: IPopularChannel) {
     );
 }
 
-
 function PopularCard() {
     const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
     return (
@@ -46,6 +45,7 @@ function PopularCard() {
         </StyledDiv>
     );
 }
+
 const StyledDiv = styled.div`
     padding: 20px;
     margin-bottom: 25px;
@@ -56,6 +56,7 @@ const StyledDiv = styled.div`
         margin-bottom: 20px;
     }
 `;
+
 const StyledAvatarChannel = styled.div`
     width: 35px;
     height: 35px;
@@ -64,8 +65,10 @@ const StyledAvatarChannel = styled.div`
     margin-left: auto;
     margin-right: 30px;
 `;
+
 const StyledChannel = styled.div`
     display: flex;
     margin-bottom: 10px;
 `;
+
 export default PopularCard;

@@ -1,7 +1,7 @@
 import  React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Test from './layouts/Test'
-import Main from './layouts/Main'
+import Test from 'other/Test'
+import Main from 'Main'
 
 function App() {
   return (
