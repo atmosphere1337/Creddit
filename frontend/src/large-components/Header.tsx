@@ -6,6 +6,7 @@ import ModalLogin from 'large-components/modal-windows/ModalLogin';
 import ModalRegister from 'large-components/modal-windows/ModalRegister';
 import CredditLogo from "small-components/CredditLogo/CredditLogo";
 import SearchBar from "small-components/SearchBar/SarchBar";
+import { deleteCookie } from "other/widelyUsedFunctions";
 import { Avatar, IconButton, Menu, MenuItem, Switch, Button } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -40,8 +41,8 @@ function Header() {
     } 
     function logOutHandler() : void {
       handleClose();
+      deleteCookie("token");
       dispatch(setLoggedOut());
-      //window.location.href = "/";
     }
     return (
         <StyledHeader>
