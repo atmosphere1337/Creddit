@@ -43,6 +43,7 @@ function Header() {
       handleClose();
       deleteCookie("token");
       dispatch(setLoggedOut());
+      document.location.href="/";
     }
     return (
         <StyledHeader>

@@ -32,6 +32,7 @@ function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: (
              .then((response) : void  => {
                  setCookie("token", response.data.token);
                  dispatch(setLoggedIn());
+                 document.location.href="/";
              })
              .catch( error => {
                  if (error.response.status == 401) {
