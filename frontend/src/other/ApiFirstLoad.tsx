@@ -35,6 +35,7 @@ import {
     rawDataReports,
     rawListComments
 } from "../other/mocking-data/firstLoadData";
+import {getCookie} from "./widelyUsedFunctions";
 
 interface IApiResponseFirstLoadDefault {
     corePayload : {
@@ -81,17 +82,21 @@ interface IApiResponseFirstLoadModerator {
 function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?: pageType}) {
     const dispatch = useAppDispatch();
     useEffect(() => {
-        let url : string = "/api/mockup/feed";
         const baseUrl : string = "/api/mockup/";
         function errorHandling(error : any) : void {
             console.log(error);
+        }
+        const tokenSendingHeader : {headers : {Authorization : string}} = {
+            headers : {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
         }
         switch (layoutStructureType) {
             case "default":
                 // posts
                 // ad public
                 // popularcard
-                axios.get<IApiResponseFirstLoadDefault>(baseUrl + "feed")
+                axios.get<IApiResponseFirstLoadDefault>(baseUrl + "feed", tokenSendingHeader)
                      .then((response : AxiosResponse<IApiResponseFirstLoadDefault>) : void  => {
                          const payload : IApiResponseFirstLoadDefault["corePayload"] = response.data.corePayload;
                          dispatch(setManyPostsFirstLoad(payload.manyPosts));
@@ -106,13 +111,15 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 break;
             case "admin" :
                 // ad private
-                axios.get<IApiResponseFirstLoadAdmin>(baseUrl + "admin")
+                axios.get<IApiResponseFirstLoadAdmin>(baseUrl + "admin", tokenSendingHeader)
                      .then((response : AxiosResponse<IApiResponseFirstLoadAdmin>) : void  => {
                          const payload : IApiResponseFirstLoadAdmin["corePayload"] = response.data.corePayload;
                          dispatch(setPrivateBanners(payload.manyAdvertisementsPrivate));
                      })
                      .catch( error => {
                          dispatch(setPrivateBanners(rawData2AdvertisementPrivate));
+                         if (error.response.status == 401)
+                             document.location.href="/";
                      });
                 break;
             case "usersettings":
@@ -123,7 +130,7 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 // ad public
                 // channelinfocard
                 // wallpaper info
-                axios.get<IApiResponseFirstLoadChannel>(baseUrl + "c/darksouls/")
+                axios.get<IApiResponseFirstLoadChannel>(baseUrl + "c/darksouls/", tokenSendingHeader)
                      .then((response : AxiosResponse<IApiResponseFirstLoadChannel>) : void  => {
                          const payload : IApiResponseFirstLoadChannel["corePayload"] = response.data.corePayload;
                          dispatch(setManyPostsFirstLoad(payload.manyPosts));
@@ -143,7 +150,7 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 // ad public
                 // channelinfocard
                 // comments
-                axios.get<IApiResponseFirstLoadReadPost>(baseUrl + "posts/asjdhajdhsASD123123/")
+                axios.get<IApiResponseFirstLoadReadPost>(baseUrl + "posts/asjdhajdhsASD123123/", tokenSendingHeader)
                     .then((response : AxiosResponse<IApiResponseFirstLoadReadPost>) : void  => {
                         const payload : IApiResponseFirstLoadReadPost["corePayload"] = response.data.corePayload;
                         dispatch(setSinglePost(payload.onePost));
@@ -162,12 +169,15 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                 break;
             case "new_post":
                 // nothing
+                // route is protected as well
+                //if (error.response.status == 401)
+                //    document.location.href="/";
                 break;
             case "userprofile":
                 // profile main data
                 // profile posts
                 // profile comments
-                axios.get<IApiResponseFirstLoadUserProfile>(baseUrl + "user/Increddible1337/")
+                axios.get<IApiResponseFirstLoadUserProfile>(baseUrl + "user/Increddible1337/", tokenSendingHeader)
                      .then((response : AxiosResponse<IApiResponseFirstLoadUserProfile>) : void  => {
                          const payload : IApiResponseFirstLoadUserProfile["corePayload"] = response.data.corePayload;
                          dispatch(setProfileMainInfo(payload.oneUserProfileMainInfo));
@@ -178,12 +188,14 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                          dispatch(setProfileMainInfo(rawDataProfileInfoMain));
                          dispatch(setProfilePosts(rawDataProfilePosts));
                          dispatch(setProfileComments(rawDataProfileComments));
+                         if (error.response.status == 401)
+                             document.location.href="/";
                      });
                 break;
             case "moderator":
                 // reports
                 // channelInfoCard
-                axios.get<IApiResponseFirstLoadModerator>(baseUrl + "c/darksouls/moderator/")
+                axios.get<IApiResponseFirstLoadModerator>(baseUrl + "c/darksouls/moderator/", tokenSendingHeader)
                      .then((response : AxiosResponse<IApiResponseFirstLoadModerator>) : void  => {
                          const payload : IApiResponseFirstLoadModerator["corePayload"] = response.data.corePayload;
                          dispatch(setReports(payload.manyReports));
@@ -192,6 +204,8 @@ function ApiFirstLoad ({layoutStructureType = "default"} : {layoutStructureType?
                      .catch( error => {
                          dispatch(setReports(rawDataReports));
                          dispatch(setChannelInfoCard(rawDataChannelInfoCard));
+                         if (error.response.status == 401)
+                             document.location.href="/";
                      });
                 break;
         }
