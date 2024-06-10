@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
+import {getCookie, setCookie} from "../widelyUsedFunctions";
 
 interface IUserState  {
     colorMode: "dark" | "light",
@@ -9,18 +10,6 @@ interface IUserState  {
 
 const LOGGEDIN_COOKIE_NAME : string = "credditLoggedIn";
 const COLORTHEME_COOKIE_NAME : string = "credditColorTheme";
-
-function getCookie(cookieName : string) : string | undefined {
-    const cookie : string | undefined = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(cookieName))
-        ?.split("=")[1];
-    return cookie;
-}
-
-function setCookie(cookieName : string, cookieValue : string) : void {
-    document.cookie = `${cookieName}=${cookieValue}; max-age=${60*60*24*365}; path=/; SameSite=Lax;`;
-}
 
 function doWeRenderGuestOrUserLayout() : boolean {
     let loggedInCookieValue : string | undefined = getCookie(LOGGEDIN_COOKIE_NAME);
