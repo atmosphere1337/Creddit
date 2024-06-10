@@ -10,6 +10,6 @@ export function setCookie(cookieName : string, cookieValue : string) : void {
     document.cookie = `${cookieName}=${cookieValue}; max-age=${60*60*24*365}; path=/; SameSite=Lax;`;
 }
 
-export function deleteCookie(cookieName : string) {
+export function deleteCookie(cookieName : string) : void {
     document.cookie = `${cookieName}=; Max-Age=0; path=/; SameSite=Lax;`;
 }
