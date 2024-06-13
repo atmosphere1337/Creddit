@@ -27,6 +27,15 @@ security:
             stateless: true
             jwt: ~
 
+        admin:
+            pattern:   ^/admin
+            provider: app_user_provider
+            custom_authenticator: App\Security\AdminLoginFormAuthenticator
+            access_denied_handler: App\Security\AccessDeniedHandler
+            logout:
+                path: app_logout
+                target: app_login
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -45,6 +54,8 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin/login,       roles: PUBLIC_ACCESS }
+        - { path: ^/admin,       roles: ROLE_ADMIN }
 
 when@test:
     security:
