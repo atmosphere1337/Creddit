@@ -18,7 +18,14 @@ module.exports = function (app) {
         '/_wdt',
         createProxyMiddleware({
             target: 'http://symfony:8000/_wdt',
-            changeOrigin: true,
+            changeOrigin: false,
+        })
+    );
+    app.use(
+        '/_profiler',
+        createProxyMiddleware({
+            target: 'http://symfony:8000/_profiler',
+            changeOrigin: false,
         })
     );
     app.use(
