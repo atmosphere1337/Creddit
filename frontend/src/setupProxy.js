@@ -4,7 +4,6 @@ module.exports = function (app) {
         '/admin',
         createProxyMiddleware({
             target: 'http://symfony:8000/admin/',
-            followRedirects: true,
             changeOrigin: false,
         })
     );
@@ -12,7 +11,6 @@ module.exports = function (app) {
         '/bundles',
         createProxyMiddleware({
             target: 'http://symfony:8000/bundles',
-            followRedirects: true,
             changeOrigin: true,
         })
     );
@@ -20,7 +18,6 @@ module.exports = function (app) {
         '/_wdt',
         createProxyMiddleware({
             target: 'http://symfony:8000/_wdt',
-            followRedirects: true,
             changeOrigin: true,
         })
     );
