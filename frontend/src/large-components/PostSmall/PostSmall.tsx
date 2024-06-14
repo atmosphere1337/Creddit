@@ -29,7 +29,7 @@ function PostSmall({props} : {props: IPostMini}) {
     return (
         <Styleddiv>
           <div>
-            <StyledA href={ "/posts/" + props.name.replace(' ', '') }>
+            <StyledA href={ "/posts/" + props.id }>
               {props.name}
             </StyledA>
           </div>
