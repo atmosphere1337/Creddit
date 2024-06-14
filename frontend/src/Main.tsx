@@ -21,7 +21,6 @@ import {pageType} from "other/widelyUsedTypes";
 function Main({type = "default"} : {type?: pageType}) {
     return (
         <>
-            <ApiFirstLoad layoutStructureType={type} />
             {   type != "admin" &&
                 <StyledMain>
                     <Header />
