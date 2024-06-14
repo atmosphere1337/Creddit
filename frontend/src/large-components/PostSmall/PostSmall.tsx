@@ -4,11 +4,11 @@ import ModalReport from "large-components/modal-windows/ModalReport";
 import RatingButton from "small-components/RatingButton/RatingButton";
 import CommentsButton from "small-components/CommentsButton/CommentsButton";
 import { StyledA } from "other/styles/CommonStyles";
+import {IPostMini} from "../../other/widelyUsedTypes";
 
-function PostSmall({name, comments, rating, body} :
-                   {name: string, comments: number, rating: number, body: string}) {
+function PostSmall({props} : {props: IPostMini}) {
     function parseBody() {
-        const slices = body.split("***");
+        const slices : string[] = props.body.split("***");
         return (
             <>
                 {
@@ -29,14 +29,14 @@ function PostSmall({name, comments, rating, body} :
     return (
         <Styleddiv>
           <div>
-            <StyledA href={ "/posts/" + name.replace(' ', '') }>
-              {name}
+            <StyledA href={ "/posts/" + props.name.replace(' ', '') }>
+              {props.name}
             </StyledA>
           </div>
             { parseBody() }
           <StyledOptions>
-            <RatingButton value={rating}/>
-            <CommentsButton value={comments}></CommentsButton>
+            <RatingButton value={props.rating}/>
+            <CommentsButton value={props.comments}></CommentsButton>
             <ModalReport />
           </StyledOptions>
         </Styleddiv>

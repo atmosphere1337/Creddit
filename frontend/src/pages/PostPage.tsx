@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from "styled-components";
 import PostSmall from "large-components/PostSmall/PostSmall";
 import CommentSection from "large-components/CommentSection";
 import {useAppSelector} from "other/hooks";
+import { useParams } from 'react-router';
 
 function PostPage() {
     const selectOnePost = useAppSelector((state) => state.post.onePost);
+    const params = useParams();
+    useEffect(() => {
+        alert(params.post);
+    }, []);
     return (
       <StyledDiv>
-        <PostSmall
-            name={ selectOnePost.name }
-            comments={ selectOnePost.comments }
-            rating={ selectOnePost.rating }
-            body={selectOnePost.body}
-        />
+        <PostSmall props={selectOnePost} />
         <CommentSection />
       </StyledDiv>
     );
