@@ -51,6 +51,7 @@ export interface IUserInfoCardNew {
     joinDate: string
 }
 export interface IPostMini {
+    id: number,
     name: string,
     rating: number,
     comments: number,
