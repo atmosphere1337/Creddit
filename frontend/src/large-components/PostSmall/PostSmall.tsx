@@ -29,7 +29,7 @@ function PostSmall({props} : {props: IPostMini}) {
     return (
         <Styleddiv>
           <div>
-            <StyledA href={ "/posts/" + props.id }>
+            <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
               {props.name}
             </StyledA>
           </div>

@@ -11,7 +11,7 @@ function FeedPage() {
     //const dispatch  = useAppDispatch();
     const [posts, setPosts] = useState<IPostMini[]>([]);
     useEffect(() : void => {
-        axios.get('/api/public/post')
+        axios.get('/api/post')
              .then((response) : void  => {
                  const payload : IPostMini[] = response.data.map(
                      (post : any) : IPostMini => {
@@ -19,7 +19,9 @@ function FeedPage() {
                              id : post.id,
                              name: post.title,
                              rating: post.rating,
-                             comments: post.amountOfChildComments,
+                             comments: post.amountOfComments,
+                             channelId: post.channelId, /* go to controller */
+                             channelName: post.channelName, /* go to controller */
                              body: post.body,
                          }
                      }
@@ -27,7 +29,6 @@ function FeedPage() {
                  setPosts(payload);
              })
              .catch( error => {
-                 //dispatch(setManyPostsFirstLoad(rawDataPostMany));
                  setPosts(rawDataPostMany);
              });
     }, []);
