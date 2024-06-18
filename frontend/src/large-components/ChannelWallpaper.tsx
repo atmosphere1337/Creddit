@@ -1,13 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import JoinButton from "small-components/JoinButton";
 import CreatePostButton from "small-components/CreatePostButton/CreatePostButton";
-import {useAppSelector} from "other/hooks";
 import {StyledA} from "other/styles/CommonStyles";
-import {IChannelInfoWallpaper} from "other/widelyUsedTypes";
+import {IChannelInfoWallpaper, IPopularChannel} from "other/widelyUsedTypes";
+import axios from "axios";
+import {rawDataChannelInfoWallpaper, rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
+import {useParams} from "react-router-dom";
 
 function ChannelWallpaper() {
-    const selectWallpaperData : IChannelInfoWallpaper = useAppSelector(state => state.channelInfo.wallpaperInfo);
+    const [wallpaperData, setWallpaperData] = useState<IChannelInfoWallpaper>({name: ""});
+    const params = useParams();
+    useEffect(() : void => {
+        axios.get('/api/channel/' + params.channel)
+            .then((response) : void  => {
+                const payload : IChannelInfoWallpaper = {
+                    name: response.data.name
+                }
+                setWallpaperData(payload);
+            })
+            .catch( error => {
+                setWallpaperData(rawDataChannelInfoWallpaper);
+            });
+    }, []);
     return (
         <>
           <StyledDiv>
@@ -15,7 +30,7 @@ function ChannelWallpaper() {
           <StyledDiv2>
             <StyledCircle />
             <StyledSpan>
-                {"c/" + selectWallpaperData.name}
+                {"c/" + wallpaperData.name}
             </StyledSpan>
             <StyledRightButtonsDiv>
               <StyledA href="newpost/">

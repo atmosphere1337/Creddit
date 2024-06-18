@@ -1,22 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from "styled-components";
 import { useState } from "react";
 import {useAppSelector} from "other/hooks";
 import { StyledA } from "other/styles/CommonStyles";
 import {IPopularChannel} from "other/widelyUsedTypes";
+import axios from "axios";
+import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
+import popularCard from "./PopularCard";
 
-function PopularChannel({name, members, link}: IPopularChannel) {
+function PopularChannel({name, members, id}: IPopularChannel) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
-        <StyledA href={"/c/" + link}>
+        <StyledA href={"/c/" + id}>
           <StyledChannel>
             <div>
               <div>
-                {name}
+                c/{name}
               </div>
               <div>
                 {members}
+                  <div style={{display: 'inline-block', marginLeft: "10px"}}>
+                      Members
+                  </div>
               </div>
             </div>
             <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
@@ -27,18 +33,37 @@ function PopularChannel({name, members, link}: IPopularChannel) {
 }
 
 function PopularCard() {
-    const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
+    //const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
+    const [fewPopularChannels, setFewPopularChannels] = useState<IPopularChannel[]>([]);
+    useEffect(() : void => {
+        axios.get('/api/popularchannels')
+            .then((response) : void  => {
+                const payload : IPopularChannel[] = response.data.map(
+                    (onePopularChannel : any) : IPopularChannel => {
+                        return {
+                            id: onePopularChannel.id,
+                            name : onePopularChannel.name,
+                            members: onePopularChannel.members,
+                        }
+                    }
+                );
+                setFewPopularChannels(payload);
+            })
+            .catch( error => {
+                setFewPopularChannels(rawDataPopularChannels);
+            });
+    }, []);
     return (
         <StyledDiv>
             <div>
                 Popular Channels
             </div>
             <div>
-                { selectFewPopularChannels.map((element : IPopularChannel) =>
+                { fewPopularChannels.map((element : IPopularChannel) =>
                                                                                 <PopularChannel
                                                                                     name = { element.name }
                                                                                     members = { element.members }
-                                                                                    link = { element.link }
+                                                                                    id = { element.id }
                                                                                 />)
                 }
             </div>
