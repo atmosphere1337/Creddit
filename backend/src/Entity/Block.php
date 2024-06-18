@@ -12,6 +12,11 @@ class Block
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    private ?string $type = "user"; // user or channel or post maybe
+    private ?int $initiatorUserId = null;
+    private ?int $targetUserId = null;
+    private ?int $targetChannelId = null;
+    private ?int $targetPostId = null;
 
     public function getId(): ?int
     {

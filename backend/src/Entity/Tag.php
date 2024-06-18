@@ -12,6 +12,7 @@ class Tag
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    private ?string $name = null;
 
     public function getId(): ?int
     {

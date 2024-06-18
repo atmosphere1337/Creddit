@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,6 +29,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 120, unique: true)]
+    private ?string $username = null;
+
+    #[ORM\Column(type:'datetime')]
+
+    private DateTime $lastVisit;
     public function getId(): ?int
     {
         return $this->id;
@@ -88,7 +95,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+    public function getUsername(): ?string {
+        return $this->username;
+    }
+    public function setUsername(string $newUsername): void {
+        $this->username = $newUsername;
+    }
     /**
      * @see UserInterface
      */
@@ -96,5 +108,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+    public function getLastVisit(): ?DateTime
+    {
+        return $this->lastVisit;
     }
 }

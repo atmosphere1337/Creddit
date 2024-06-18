@@ -12,7 +12,12 @@ class Report
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    private ?string $type = "user"; // channel user or post
+    private ?int $initiatorUserId = null;
+    private ?int $targetUserId = null;
+    private ?int $targetChannelId = null;
+    private ?int $targetPostId = null;
+    private ?int $body = null;
     public function getId(): ?int
     {
         return $this->id;
