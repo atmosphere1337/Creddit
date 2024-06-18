@@ -2,8 +2,13 @@ import React, {useEffect, useState}  from "react";
 import styled from "styled-components";
 import CommentCard from "large-components/CommentCard";
 import CommentTextField from "small-components/CommentTextField";
-import { ITreeComment } from 'other/slices/commentSlice'
+import {ITreeComment, setListFirstLoad, treeFirstLoad} from 'other/slices/commentSlice'
 import { useAppSelector, useAppDispatch } from 'other/hooks'
+import axios from "axios";
+import {ICommentCard, IListedComment, IPostMini} from "../other/widelyUsedTypes";
+import {rawDataPostMany, rawListComments} from "../other/mocking-data/firstLoadData";
+import {useParams} from "react-router";
+import {getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFunctions";
 
 function RecursiveComment( { node } : {node: ITreeComment}) {
     return (
@@ -18,9 +23,43 @@ function RecursiveComment( { node } : {node: ITreeComment}) {
 }
 
 function CommentSection() {
+    const params = useParams();
     const [defaultComment, setDefaultComment] = useState(false);
     const treeState = useAppSelector((state) => state.comment.tree);
     const dispatch = useAppDispatch()
+    useEffect(() : void => {
+        axios.get('/api/comment/' + params.post)
+            .then((response) : void  => {
+                const payload : IListedComment[] = response.data.map(
+                    (comment : any) : IListedComment => {
+                        const age: string = getDateTimeStringAndTranslateItToAgeString(comment.createdAt);
+                        return {
+                            id: comment.id,
+                            parent: comment.parentCommentId,
+                            name: comment.username,
+                            comment: comment.body,
+                            rating: comment.rating,
+                            age: age,
+                            /*
+                            "id": 1,
+                            "body": "Hi backend. It is the first comment.",
+                            "userId": 1,
+                            "postId": 1,
+                            "parentCommentId": 0,
+                            "rating": 0,
+                            "amountOfChildComments": 1
+                             */
+                        }
+                    }
+                );
+                dispatch(setListFirstLoad(payload));
+                dispatch(treeFirstLoad());
+            })
+            .catch( error => {
+                dispatch(setListFirstLoad(rawListComments));
+                dispatch(treeFirstLoad());
+            });
+    }, []);
     function switchDefaultComment() {
         setDefaultComment(x => !x);
     }

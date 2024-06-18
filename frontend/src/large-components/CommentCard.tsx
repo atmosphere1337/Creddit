@@ -6,9 +6,9 @@ import ReplyButton from "small-components/ReplyButton/ReplyButton";
 import CommentTextField from "small-components/CommentTextField";
 import { StyledA } from "other/styles/CommonStyles";
 
-type TypeProps =  { name:string, comment:string, rating: number, age:number, id:number, children: ReactNode };
+type TypeProps =  { name:string, comment:string, rating: number, age:string, id:number, children: ReactNode };
 
-function CommentCard({ name = "default", comment = "default", rating = 0, age = 0, id = 0, children = <></>} : TypeProps) {
+function CommentCard({ name = "default", comment = "default", rating = 0, age = "0", id = 0, children = <></>} : TypeProps) {
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()) % colors.length);
     const [showCommentSwitch, setShowCommentSwitch] = useState(false);
@@ -29,7 +29,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                                 </StyledA>
                             </div>
                             <div style={{ color: "#9f9e9e" }}>
-                                {age} minutes ago
+                                {age}
                             </div>
                         </div>
                         <div>

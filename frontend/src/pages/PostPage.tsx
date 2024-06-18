@@ -10,16 +10,19 @@ import {rawDataPostOne} from "../other/mocking-data/firstLoadData";
 
 function PostPage() {
     const params = useParams();
-    const [post, setPost] = useState<IPostMini>({id: 0, name: "", body: "", comments: 0, rating: 0});
+    const initialPostState : IPostMini = {id: 0, name: "", body: "", comments: 0, rating: 0, channelName: "", channelId: 0};
+    const [post, setPost] = useState<IPostMini>(initialPostState);
     useEffect(() : void => {
-        axios.get('/api/public/post/' + params.post)
+        axios.get('/api/post/' + params.post)
             .then((response) : void  => {
                 const payload : IPostMini = {
                     id : response.data.id,
                     name: response.data.title,
                     rating: response.data.rating,
-                    comments: response.data.amountOfChildComments,
+                    comments: response.data.amountOfComments,
                     body: response.data.body,
+                    channelId: response.data.channelId, /* go to controller */
+                    channelName: response.data.channelName, /* go to controller */
                 };
                 setPost(payload);
             })
