@@ -12,9 +12,27 @@ class Advertisement
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    #[ORM\Column]
+    private ?string $pictureLink = null;
+    #[ORM\Column]
+    private ?string $refLink = null;
+    #[ORM\Column]
+    private ?bool $visible = true;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getPictureLink(): ?string
+    {
+        return $this->pictureLink;
+    }
+    public function getRefLink(): ?string
+    {
+        return $this->refLink;
+    }
+    public function getVisible(): ?bool
+    {
+        return $this->visible;
     }
 }

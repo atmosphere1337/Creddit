@@ -1,14 +1,20 @@
 import {useState} from "react";
 import styled from "styled-components";
 import {IAdvertisementPublic} from "other/widelyUsedTypes";
+import {StyledA} from "../../other/styles/CommonStyles";
 
-function AdBanner({ name, picture, link } : IAdvertisementPublic) {
+function AdBanner({ name, pictureLink, refLink } : IAdvertisementPublic) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     return (
-        <StyledDiv style={{backgroundColor: colors[randomColor % colors.length]}}>
-            { name }
-        </StyledDiv>
+        <StyledA href={refLink}>
+            { /*
+                <StyledDiv style={{backgroundColor: colors[randomColor % colors.length]}}>
+            */ }
+            <StyledDiv style={{backgroundImage: `url(${pictureLink})`, backgroundSize: "100% 100%"}}>
+                { refLink }
+            </StyledDiv>
+        </StyledA>
     );
 }
 

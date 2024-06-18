@@ -1,17 +1,37 @@
 import AdBanner from "small-components/AdBanner/AdBanner";
-import {useAppSelector} from "other/hooks";
-import {IAdvertisementPublic} from "other/widelyUsedTypes";
+import {IAdvertisementPublic, IChannelInfoWallpaper} from "other/widelyUsedTypes";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {rawDataAdvertisementPublic, rawDataChannelInfoWallpaper} from "../other/mocking-data/firstLoadData";
 
 function AdFeed() {
-    const getAds : IAdvertisementPublic[] = useAppSelector(state => state.ads.allAdsPublic);
+    const [ads, setAds] = useState<IAdvertisementPublic[]>([]);
+    useEffect(() : void => {
+        axios.get('/api/advertisements/all')
+            .then((response) : void  => {
+                const payload : IAdvertisementPublic[] = response.data.map(
+                    (advertisement : any):IAdvertisementPublic => {
+                        return {
+                            name:"",
+                            refLink: advertisement.refLink,
+                            pictureLink: advertisement.pictureLink,
+                        }
+                    }
+                );
+                setAds(payload);
+            })
+            .catch( error => {
+                setAds(rawDataAdvertisementPublic);
+            });
+    }, []);
     return (
         <div>
-            {getAds.map ((element: IAdvertisementPublic) =>
+            {ads.map ((element: IAdvertisementPublic) =>
                 <AdBanner
                     key = {element.name}
                     name = {element.name}
-                    picture = {element.picture}
-                    link = {element.link}
+                    pictureLink = {element.pictureLink}
+                    refLink = {element.refLink}
                 />
             )}
         </div>
