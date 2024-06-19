@@ -68,7 +68,11 @@ function CommentSection() {
             {
                 defaultComment &&
                 <div>
-                    <CommentTextField hide={ switchDefaultComment } parentCommentId={ 0 }/> 
+                    <CommentTextField
+                        hide={ switchDefaultComment }
+                        parentCommentId={ 0 }
+                        postId={params.post ? params.post : ""}
+                    />
                 </div>
             }
             {

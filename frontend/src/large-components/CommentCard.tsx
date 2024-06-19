@@ -5,10 +5,12 @@ import RatingButton from "small-components/RatingButton/RatingButton";
 import ReplyButton from "small-components/ReplyButton/ReplyButton";
 import CommentTextField from "small-components/CommentTextField";
 import { StyledA } from "other/styles/CommonStyles";
+import {useParams} from "react-router-dom";
 
 type TypeProps =  { name:string, comment:string, rating: number, age:string, id:number, children: ReactNode };
 
 function CommentCard({ name = "default", comment = "default", rating = 0, age = "0", id = 0, children = <></>} : TypeProps) {
+    const params = useParams();
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()) % colors.length);
     const [showCommentSwitch, setShowCommentSwitch] = useState(false);
@@ -46,7 +48,14 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                 </div>
             </StyledDiv>
             <StyledDiv2>
-                { showCommentSwitch && <CommentTextField hide={ hideComment } parentCommentId={ id }/> } 
+                {
+                    showCommentSwitch &&
+                    <CommentTextField
+                        hide={ hideComment }
+                        parentCommentId={ id }
+                        postId={params.post ? params.post : ""}
+                    />
+                }
                 {children}
             </StyledDiv2>
         </>
