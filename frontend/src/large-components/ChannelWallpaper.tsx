@@ -33,7 +33,7 @@ function ChannelWallpaper() {
                 {"c/" + wallpaperData.name}
             </StyledSpan>
             <StyledRightButtonsDiv>
-              <StyledA href="newpost/">
+              <StyledA href={`/c/${params.channel}/newpost/`}>
                 <CreatePostButton />
               </StyledA>
               <StyledA>
