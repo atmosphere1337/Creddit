@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Essentials;
 
 use DateTime;
@@ -14,13 +15,13 @@ use App\Entity\User;
 class CommentController extends AbstractController
 {
     #[Route('api/comment/{postId}', methods: ['GET'])]
-    public function getMany(int $postId, EntityManagerInterface $entityManager) : Response
+    public function getMany(int $postId, EntityManagerInterface $entityManager): Response
     {
         $comments = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postId]);
         foreach ($comments as $comment) {
             $votes = $entityManager
                 ->getRepository(Vote::class)
-                ->findBy(['type' => 2,'targetId' => $comment->getId()]);
+                ->findBy(['type' => 2, 'targetId' => $comment->getId()]);
             $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
             $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
             $childrenCommentsFound = $entityManager
@@ -33,8 +34,9 @@ class CommentController extends AbstractController
         }
         return $this->json($comments);
     }
+
     #[Route('api/comment', methods: ['POST'])]
-    public function addOne(Request $request, EntityManagerInterface $entityManager) : Response
+    public function addOne(Request $request, EntityManagerInterface $entityManager): Response
     {
         $newComment = new Comment();
         $newComment->setBody($request->request->get('commentBody'));
@@ -44,16 +46,32 @@ class CommentController extends AbstractController
         $newComment->setUserId(1); // change on $user->getId()
         $entityManager->persist($newComment);
         $entityManager->flush();
-        return $this->json(["idOfCreatedComment"=>$newComment->getId()]);
+        return $this->json(["idOfCreatedComment" => $newComment->getId()]);
     }
+
     #[Route('api/comment/{id}', methods: ['DELETE'])]
-    public function deleteOne(int $id, EntityManagerInterface $entityManager) : Response
+    public function deleteOne(int $id, EntityManagerInterface $entityManager): Response
     {
-        $deletedComment = $entityManager
+        $result = ["deletedCommentId" => $id,];
+        $deletingComment = $entityManager
             ->getRepository(Comment::class)
             ->find($id);
-        $entityManager->remove($deletedComment);
+        $deletingComment->setIsDeleted(true);
+        $entityManager
+            ->getRepository(Vote::class)
+            ->deleteAllVotesUnderComment($id);
+        $childrenOfDeletingComment = $entityManager
+            ->getRepository(Comment::class)
+            ->findBy(['parentCommentId' => $deletingComment->getId()]);
+        if (count($childrenOfDeletingComment) > 0) {
+            $deletingComment->setIsDeleted(true);
+            $entityManager->persist($deletingComment);
+            $result["EraseOrMark"] = 1;
+        } else {
+            $entityManager->remove($deletingComment);
+            $result["EraseOrMark"] = 2;
+        }
         $entityManager->flush();
-        return $this->json(["deletedCommentId" => $id]);
+        return $this->json($result);
     }
 }

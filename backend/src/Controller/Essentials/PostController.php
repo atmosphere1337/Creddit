@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Essentials;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,9 +12,11 @@ use App\Entity\Comment;
 use App\Entity\Vote;
 
 
-class PostController extends AbstractController  {
+class PostController extends AbstractController
+{
     #[Route('api/post', methods: ['GET'])]
-    public function getMany(EntityManagerInterface $entityManager) : Response {
+    public function getMany(EntityManagerInterface $entityManager): Response
+    {
         $posts = $entityManager->getRepository(Post::class)->findAll();
         foreach ($posts as $post) {
             $votes = $entityManager
@@ -27,7 +30,7 @@ class PostController extends AbstractController  {
             $channelName = $entityManager
                 ->getRepository(Channel::class)
                 ->findOneBy(['id' => $post
-                ->getChannelId()])
+                    ->getChannelId()])
                 ->getName();
             $post->setRating(count($upVotes) - count($downVotes));
             $post->setAmountOfComments($amountOfCommentsFound);
@@ -35,12 +38,14 @@ class PostController extends AbstractController  {
         }
         return $this->json($posts);
     }
+
     #[Route('api/post/{id}', methods: ['GET'])]
-    public function getOne(int $id, EntityManagerInterface $entityManager) : Response {
+    public function getOne(int $id, EntityManagerInterface $entityManager): Response
+    {
         $post = $entityManager->getRepository(Post::class)->find($id);
         $votes = $entityManager
             ->getRepository(Vote::class)
-            ->findBy(['type' => 1,'targetId' => $post]);
+            ->findBy(['type' => 1, 'targetId' => $post]);
         $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
         $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
         $amountOfCommentsFound = $entityManager
@@ -59,11 +64,8 @@ class PostController extends AbstractController  {
         );
 
 
-
-
-
-
     }
+
     #[Route('kekapi/public/post/{id}', methods: ['GET'])]
     public function getNone()
     {

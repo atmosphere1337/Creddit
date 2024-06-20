@@ -25,6 +25,8 @@ class Comment
     private DateTime $createdAt;
     #[ORM\Column]
     private ?bool $isEdited = false;
+    #[ORM\Column(nullable: true)]
+    private ?bool $isDeleted = null;
     private ?int $rating = 0;
     private ?int $amountOfChildComments = 0;
     private ?string $username = null;
@@ -79,6 +81,10 @@ class Comment
         return $this->isEdited;
     }
 
+    public function getIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
 
     public function setRating(int $newRating): void
     {
@@ -118,5 +124,10 @@ class Comment
     public function setCreatedAt(DateTime $newCreatedAt): void
     {
         $this->createdAt = $newCreatedAt;
+    }
+
+    public function setIsDeleted(bool $newIsDeleted): void
+    {
+        $this->isDeleted = $newIsDeleted;
     }
 }

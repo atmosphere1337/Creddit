@@ -16,6 +16,18 @@ class VoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vote::class);
     }
 
+    public function deleteAllVotesUnderComment(int $commentIdWhoseVotesToBeDeleted) : void
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            DELETE FROM vote
+            WHERE type = 1
+            AND target_id = :target_id 
+         ';
+        $conn->executeQuery($sql, ['target_id' => $commentIdWhoseVotesToBeDeleted]);
+    }
+
+
 //    /**
 //     * @return Vote[] Returns an array of Vote objects
 //     */
