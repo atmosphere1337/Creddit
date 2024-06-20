@@ -12,7 +12,15 @@ import {getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFun
 
 function RecursiveComment( { node } : {node: ITreeComment}) {
     return (
-        <CommentCard key={node.id} id={node.id} name={node.name} comment={node.comment} rating={node.rating} age={node.age}>
+        <CommentCard
+            key={node.id}
+            id={node.id}
+            name={node.name}
+            comment={node.comment}
+            rating={node.rating}
+            age={node.age}
+            isDeleted={node.isDeleted}
+        >
             {
                 node.children.map(
                     (x : ITreeComment) => <RecursiveComment key={x.id} node={x} />
@@ -40,6 +48,7 @@ function CommentSection() {
                             comment: comment.body,
                             rating: comment.rating,
                             age: age,
+                            isDeleted: comment.isDeleted
                             /*
                             "id": 1,
                             "body": "Hi backend. It is the first comment.",

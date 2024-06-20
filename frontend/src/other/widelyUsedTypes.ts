@@ -68,6 +68,7 @@ export interface IListedComment {
     comment: string,
     rating: number,
     age: string,
+    isDeleted: boolean,
 }
 export interface ICommentCard {
     name:string,

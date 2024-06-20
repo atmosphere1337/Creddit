@@ -91,6 +91,7 @@ export const rawListComments : IListedComment[] = [
         comment: "ASSed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
         rating: -666,
         age: "1111",
+        isDeleted: false,
     },
     {
         id: 2,
@@ -99,6 +100,7 @@ export const rawListComments : IListedComment[] = [
         comment: "totam rem aperiam eaque ipsa, quae ab illo inventore veritatis",
         rating: 28,
         age: "2222",
+        isDeleted: false,
     },
     {
         id: 3,
@@ -107,6 +109,7 @@ export const rawListComments : IListedComment[] = [
         comment: "et quasi architecto beatae vitae dicta sunt, explicabo. Nemo",
         rating: 30,
         age: "7777",
+        isDeleted: false,
     },
     {
         id: 4,
@@ -115,6 +118,7 @@ export const rawListComments : IListedComment[] = [
         comment: "enim ipsam voluptatem, quia voluptas sit, aspernatur aut",
         rating: 29,
         age: "9999",
+        isDeleted: false,
     },
     {
         id: 5,
@@ -123,6 +127,7 @@ export const rawListComments : IListedComment[] = [
         comment: "enim ipsam voluptatem, quia voluptas sit, aspernatur aut",
         rating: 32,
         age: "666",
+        isDeleted: false,
     },
     {
         id: 6,
@@ -131,6 +136,7 @@ export const rawListComments : IListedComment[] = [
         comment: "et quasi architecto beatae vitae dicta sunt, explicabo. Nemo",
         rating: 44,
         age: "111",
+        isDeleted: false,
     }
 ];
 
