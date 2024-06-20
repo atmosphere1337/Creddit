@@ -3,6 +3,7 @@
 namespace App\Controller\Essentials;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,18 +67,17 @@ class PostController extends AbstractController
 
     }
 
-    #[Route('kekapi/public/post/{id}', methods: ['GET'])]
-    public function getNone()
-    {
-        return $this->json([
-            "id" => 1,
-            "body" => "This is body for this article",
-            "userId" => 3,
-            "channelId" => 4,
-            "rating" => 2,
-            "amountOfComments" => 3,
-            "title" => "Elden ring new dlc when ",
-            "channelName" => "React"
-        ]);
+    #[Route('api/post', methods: ['POST'])]
+    public function addOne(Request $request, EntityManagerInterface $entityManager): Response {
+        $newPost = new Post();
+        $newPost->setTitle($request->get('postTitle'));
+        $newPost->setBody($request->get('postBody'));
+        $newPost->setChannelId($request->get('channelId'));
+        $newPost->setUserId(1); /* update it with authenticated user id value */
+        $newPost->setCreatedAt(new \DateTime('now'));
+
+        $entityManager->persist($newPost);
+        $entityManager->flush();
+        return $this->json(["createdPostId" => $newPost->getId()]);
     }
 }

@@ -88,4 +88,28 @@ class Post
     {
         $this->channelName = $newChannelName;
     }
+    public function setTitle(string $newTitle) : void
+    {
+        $this->title = $newTitle;
+    }
+    public function setBody(string $newBody) : void
+    {
+        $this->body = $newBody;
+    }
+    public function setUserId(?int $newUserId) : void
+    {
+        $this->userId = $newUserId;
+    }
+    public function setChannelId(?int $newChannelId) : void
+    {
+        $this->channelId = $newChannelId;
+    }
+    public function setCreatedAt(DateTime $newCreatedAt) : void
+    {
+        $this->createdAt = $newCreatedAt;
+    }
+    public function setIsEdited(bool $newIsEdited) : void
+    {
+        $this->isEdited = $newIsEdited;
+    }
 }
