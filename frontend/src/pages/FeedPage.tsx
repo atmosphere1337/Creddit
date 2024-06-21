@@ -5,13 +5,15 @@ import {useAppSelector, useAppDispatch} from "other/hooks";
 import axios, {AxiosResponse} from "axios";
 import {setManyPostsFirstLoad, setSinglePost} from "other/slices/postSlice";
 import {rawDataPostMany} from "../other/mocking-data/firstLoadData";
-import {IPostMini} from "../other/widelyUsedTypes";
+import {IPostMini, pageType} from "../other/widelyUsedTypes";
+import {useParams} from "react-router-dom";
 
-function FeedPage() {
-    //const dispatch  = useAppDispatch();
+function FeedPage({type = "default"} : | { type: pageType}) {
+    const params = useParams();
     const [posts, setPosts] = useState<IPostMini[]>([]);
     useEffect(() : void => {
-        axios.get('/api/post')
+        const url : string = type == "channel" ? `/api/channel/${params.channel}/posts` : '/api/post' ;
+        axios.get(url)
              .then((response) : void  => {
                  const payload : IPostMini[] = response.data.map(
                      (post : any) : IPostMini => {

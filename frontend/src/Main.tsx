@@ -31,7 +31,7 @@ function Main({type = "default"} : {type?: pageType}) {
                             <StyledContentDiv>
                                 <div>
                                     { type == "channel" && <ChannelWallpaper /> }
-                                    { ["channel", "default"].includes(type) && <FeedPage /> }
+                                    { ["channel", "default"].includes(type) && <FeedPage type={type} /> }
                                     { type == "read_post" && <PostPage /> }
                                     { type == "new_post" && <AddEditPostPage /> }
                                     { type == "userprofile" && <UserProfileFeed /> }
