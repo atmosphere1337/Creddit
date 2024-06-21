@@ -28,15 +28,16 @@ function CommentTextField({hide, parentCommentId, postId}:{hide: () => void, par
             commentBody: text,
             postId: parseInt(postId),
             setParentCommentId : parentCommentId,
-        }, config
-            )
-            .then((response) : void  => { })
+        }, config)
+            .then((response) : void  => {
+                payload.id = response.data.idOfCreatedComment;
+                dispatch(addComment(payload));
+                hide();
+            })
             .catch( error => {
                 alert('error');
                 console.log(error);
             });
-        dispatch(addComment(payload));
-        hide();
     }
     return (
         <div>
