@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Essentials;
+namespace App\Controller\ApiEndpoints;
 
 use App\Entity\Advertisement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

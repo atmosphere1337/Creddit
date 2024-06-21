@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Essentials;
+namespace App\Controller\ApiEndpoints;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Essentials;
+namespace App\Controller\ApiEndpoints;
 
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

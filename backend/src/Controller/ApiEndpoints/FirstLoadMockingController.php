@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\mocking;
+namespace App\Controller\ApiEndpoints;
 use App\Other\MockdataConstants\FirstLoadApiResponseMockData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
