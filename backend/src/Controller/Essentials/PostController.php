@@ -16,7 +16,7 @@ use App\Entity\Vote;
 class PostController extends AbstractController
 {
     #[Route('api/post', methods: ['GET'])]
-    public function getMany(EntityManagerInterface $entityManager): Response
+    public function getAll(EntityManagerInterface $entityManager): Response
     {
         $posts = $entityManager->getRepository(Post::class)->findAll();
         foreach ($posts as $post) {
@@ -97,4 +97,29 @@ class PostController extends AbstractController
         $entityManager->flush();
         return $this->json(["deletedPostId" => $id]);
     }
+
+    #[Route('api/channel/{channelId}/posts', methods: ['GET'])]
+    public function getManyForSpecificChannel(int $channelId, EntityManagerInterface $entityManager): Response {
+        $posts = $entityManager->getRepository(Post::class)->findBy(['channelId' => $channelId]);
+        foreach ($posts as $post) {
+            $votes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['targetId' => $post, 'type' => 1]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $amountOfCommentsFound = $entityManager
+                ->getRepository(Comment::class)
+                ->getAmountOfCommentsOfPost($post->getId());
+            $channelName = $entityManager
+                ->getRepository(Channel::class)
+                ->findOneBy(['id' => $post
+                    ->getChannelId()])
+                ->getName();
+            $post->setRating(count($upVotes) - count($downVotes));
+            $post->setAmountOfComments($amountOfCommentsFound);
+            $post->setChannelName($channelName);
+        }
+        return $this->json($posts);
+    }
+
 }
