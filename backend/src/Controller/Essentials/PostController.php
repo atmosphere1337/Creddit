@@ -68,7 +68,8 @@ class PostController extends AbstractController
     }
 
     #[Route('api/post', methods: ['POST'])]
-    public function addOne(Request $request, EntityManagerInterface $entityManager): Response {
+    public function addOne(Request $request, EntityManagerInterface $entityManager): Response
+    {
         $newPost = new Post();
         $newPost->setTitle($request->get('postTitle'));
         $newPost->setBody($request->get('postBody'));
@@ -79,5 +80,21 @@ class PostController extends AbstractController
         $entityManager->persist($newPost);
         $entityManager->flush();
         return $this->json(["createdPostId" => $newPost->getId()]);
+    }
+
+    #[Route('api/post/{id}', methods: ['DELETE'])]
+    public function deleteOne(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $postToDelete = $entityManager->getRepository(Post::class)->find($id);
+        $manyCommentsToDelete = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postToDelete->getId()]);
+        foreach ($manyCommentsToDelete as $oneCommentToDelete) {
+            $entityManager->getRepository(Vote::class)->deleteAllVotesUnderComment($oneCommentToDelete->getId());
+            $entityManager->remove($oneCommentToDelete);
+        }
+        $entityManager->getRepository(Vote::class)->deleteAllVotesUnderPost($id);
+        $post = $entityManager->getRepository(Post::class)->find($id);
+        $entityManager->remove($post);
+        $entityManager->flush();
+        return $this->json(["deletedPostId" => $id]);
     }
 }

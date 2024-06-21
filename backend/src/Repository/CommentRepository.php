@@ -34,4 +34,13 @@ class CommentRepository extends ServiceEntityRepository
         $resultSet = $conn->executeQuery($sql, ['post_id' => $post_id]);
         return $resultSet->fetchAllAssociative()[0]['count'];
     }
+    public function deleteAllCommentsOfPost($post_id) : void
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            DELETE FROM comment
+            WHERE post_id = :post_id 
+        ';
+        $conn->executeQuery($sql, ['post_id' => $post_id]);
+    }
 }
