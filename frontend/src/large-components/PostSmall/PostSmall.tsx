@@ -60,7 +60,9 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
             { parseBody() }
             <StyledOptions>
                 <RatingButton value={props.rating} type={1} targetId={props.id} preVote={props.preVote}/>
-                <CommentsButton value={props.comments}></CommentsButton>
+                <StyledA href={`/c/${props.channelId}/posts/${props.id}#comments`}>
+                    <CommentsButton value={props.comments}></CommentsButton>
+                </StyledA>
                 <ModalReport />
             </StyledOptions>
         </Styleddiv>

@@ -76,6 +76,8 @@ function CommentSection() {
     }
     return (
         <StyledDiv>
+            <div id="comments">
+            </div>
             {
                 defaultComment &&
                 <div>
