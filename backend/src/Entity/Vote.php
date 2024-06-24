@@ -45,4 +45,21 @@ class Vote
     {
         return $this->type;
     }
+    //----------------------------
+    public function setType(int $newType): void
+    {
+        $this->type = $newType;
+    }
+    public function setTargetId(?int $newTargetId): void
+    {
+        $this->targetId = $newTargetId;
+    }
+    public function setInitiatorUserId(?int $newInitiatorUserId): void
+    {
+        $this->initiatorUserId = $newInitiatorUserId;
+    }
+    public function setUpDown(?bool $newUpDown): void
+    {
+        $this->upDown = $newUpDown;
+    }
 }

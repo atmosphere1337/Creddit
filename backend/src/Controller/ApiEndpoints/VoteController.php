@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\ApiEndpoints;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -7,26 +8,98 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Vote;
 
-/*
-class VoteController extends AbstractController  {
-    #[Route('api/public/vote/{postId}', methods: ['GET'])]
-    public function getMany(int $postId, EntityManagerInterface $entityManager) : Response {
-        $comments = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postId]);
-        foreach ($comments as $comment) {
-            $votes = $entityManager
-                ->getRepository(Vote::class)
-                ->findBy(['type' => 2,'targetId' => $comment->getId()]);
-            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
-            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
-            $childrenCommentsFound = $entityManager
-                ->getRepository(Comment::class)
-                ->findBy(['parentCommentId' => $comment->getId()]);
-            $comment->setRating(count($upVotes) - count($downVotes));
-            $comment->setAmountOfChildComments(count($childrenCommentsFound));
-            $authorOfComment = $entityManager->getRepository(User::class)->find($comment->getUserId());
-            $comment->setUsername($authorOfComment->getUsername());
+class VoteController extends AbstractController
+{
+    // post/comment upvote/downvote
+    public const POST_TYPE = 1;
+    public const COMMENT_TYPE = 2;
+    public const UPVOTE_TYPE = true;
+    public const DOWNVOTE_TYPE = false;
+
+    public function setVoteOn(int $targetId, int $PostOrCommentType, bool $UpOrDownType, EntityManagerInterface &$entityManager): int
+    {
+        $mockedUserId = 1; /* Change on auth user id later */
+        $filters = ['targetId' => $targetId, 'initiatorUserId' => $mockedUserId, 'type' => $PostOrCommentType];
+        $conflictingVotes = $entityManager->getRepository(Vote::class)->findBy($filters);
+        if (count($conflictingVotes) > 0) {
+            return Response::HTTP_BAD_REQUEST;
         }
-        return $this->json($comments);
+        $newVote = new Vote();
+        $newVote->setType($PostOrCommentType);
+        $newVote->setTargetId($targetId);
+        $newVote->setInitiatorUserId($mockedUserId);
+        $newVote->setUpDown($UpOrDownType);
+        $entityManager->persist($newVote);
+        $entityManager->flush();
+        return Response::HTTP_CREATED;
+    }
+
+    public function setVoteOff(int $targetId, int $PostOrCommentType, bool $UpOrDownType, EntityManagerInterface &$entityManager): int
+    {
+        $mockedUserId = 1; /* Change on auth user id later */
+        $filters = ['targetId' => $targetId, 'initiatorUserId' => $mockedUserId, 'type' => $PostOrCommentType, 'upDown' => $UpOrDownType];
+        $upVotesFound = $entityManager->getRepository(Vote::class)->findBy($filters);
+        foreach ($upVotesFound as $singleUpVote) {
+            $entityManager->remove($singleUpVote);
+        }
+        $entityManager->flush();
+        return Response::HTTP_NO_CONTENT;
+    }
+
+    #[Route('api/post/{postId}/upvote', methods: ['POST'])]
+    public function setPostUpvoteOn(int $postId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOn($postId, self::POST_TYPE, self::UPVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/post/{postId}/upvote', methods: ['DELETE'])]
+    public function setPostUpvoteOff(int $postId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOff($postId, self::POST_TYPE, self::UPVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/post/{postId}/downvote', methods: ['POST'])]
+    public function setPostDownvoteOn(int $postId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOn($postId, self::POST_TYPE, self::DOWNVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/post/{postId}/downvote', methods: ['DELETE'])]
+    public function setPostDownvoteOff(int $postId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOff($postId, self::POST_TYPE, self::DOWNVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+//------------------------------------------------------------------------------
+    #[Route('api/comment/{commentId}/upvote', methods: ['POST'])]
+    public function setCommentUpvoteOn(int $commentId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOn($commentId, self::COMMENT_TYPE, self::UPVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/comment/{commentId}/upvote', methods: ['DELETE'])]
+    public function setCommentUpvoteOff(int $commentId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOff($commentId, self::COMMENT_TYPE, self::UPVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/comment/{commentId}/downvote', methods: ['POST'])]
+    public function setCommentDownvoteOn(int $commentId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOn($commentId, self::COMMENT_TYPE, self::DOWNVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
+    }
+
+    #[Route('api/comment/{commentId}/downvote', methods: ['DELETE'])]
+    public function setCommentDownvoteOff(int $commentId, EntityManagerInterface $entityManager): Response
+    {
+        $responseCode = $this->setVoteOff($commentId, self::COMMENT_TYPE, self::DOWNVOTE_TYPE, $entityManager);
+        return $this->json([], $responseCode);
     }
 }
-*/
