@@ -17,6 +17,7 @@ class CommentController extends AbstractController
     #[Route('api/comment/{postId}', methods: ['GET'])]
     public function getMany(int $postId, EntityManagerInterface $entityManager): Response
     {
+        $userId = 1; // mocking user id
         $comments = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postId]);
         foreach ($comments as $comment) {
             $votes = $entityManager
@@ -27,6 +28,13 @@ class CommentController extends AbstractController
             $childrenCommentsFound = $entityManager
                 ->getRepository(Comment::class)
                 ->findBy(['parentCommentId' => $comment->getId()]);
+            $userSpecificVotes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['targetId' => $comment->getId(), 'type' => 2, 'initiatorUserId' => $userId]);
+            if (count($userSpecificVotes) > 0)
+                $comment->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
+            else
+                $comment->setHasUserEverVoted(0);
             $comment->setRating(count($upVotes) - count($downVotes));
             $comment->setAmountOfChildComments(count($childrenCommentsFound));
             $authorOfComment = $entityManager->getRepository(User::class)->find($comment->getUserId());

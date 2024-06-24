@@ -30,9 +30,7 @@ class PostController extends AbstractController
     {
         $post = $entityManager->getRepository(Post::class)->find($id);
         $this->fetchPost($post, $entityManager);
-        return $this->json(
-            $post
-        );
+        return $this->json($post);
     }
 
     #[Route('api/channel/{channelId}/posts', methods: ['GET'])]
@@ -78,6 +76,7 @@ class PostController extends AbstractController
 
     public function fetchPost(&$post, EntityManagerInterface &$entityManager): void
     {
+        $userId = 1; // mocking user id
         $votes = $entityManager
             ->getRepository(Vote::class)
             ->findBy(['targetId' => $post, 'type' => 1]);
@@ -91,6 +90,13 @@ class PostController extends AbstractController
             ->findOneBy(['id' => $post
                 ->getChannelId()])
             ->getName();
+        $userSpecificVotes = $entityManager
+            ->getRepository(Vote::class)
+            ->findBy(['targetId' => $post->getId(), 'type' => 1, 'initiatorUserId' => $userId]);
+        if (count($userSpecificVotes) > 0)
+            $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
+        else
+            $post->setHasUserEverVoted(0);
         $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
         $post->setChannelName($channelName);
