@@ -4,3 +4,8 @@ controllers:
 
 api_login_check:
     path: /api/login
+
+app.swagger_ui:
+    path: /admin/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
