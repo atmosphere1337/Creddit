@@ -10,6 +10,7 @@ function App() {
         <Route path="/test" element={ <Test /> } />
         <Route path="/main" element={ <Main type="default" /> } />
         <Route path="/" element={ <Main type="default" /> } />
+        <Route path="/c" element={ <Main type="many_channels" /> } />
         <Route path="/c/:channel/" element={ <Main type="channel" /> } />
         <Route path="/c/:channel/newpost" element={ <Main type="new_post" /> } />
         <Route path="/c/:channel/moderator" element={ <Main type="moderator" /> } />
