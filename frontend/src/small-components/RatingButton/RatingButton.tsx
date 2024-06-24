@@ -6,10 +6,10 @@ import {IconButton} from "@mui/material";
 import axios from "axios";
 import {current} from "@reduxjs/toolkit";
 
-function RatingButton( {value, targetId, type = 1} : {value: number, targetId: number, type: number}) : JSX.Element {
+function RatingButton( {value, targetId, type = 1, preVote = 0} : {value: number, targetId: number, type: number, preVote: number}) : JSX.Element {
     const [currentRating, setCurrentRating] = useState<number>(value);
-    const [isPressedUpVote, setIsPressedUpVote] = useState<boolean>(false);
-    const [isPressedDownVote, setIsPressedDownVote] = useState<boolean>(false);
+    const [isPressedUpVote, setIsPressedUpVote] = useState<boolean>(preVote == 1);
+    const [isPressedDownVote, setIsPressedDownVote] = useState<boolean>(preVote == 2);
     const postOrCommentType : "post" | "comment" = type == 1 ? "post" : "comment";
     const inc = () : void => { setCurrentRating( currentRating + 1) };
     const dec = () : void => { setCurrentRating( currentRating - 1) };

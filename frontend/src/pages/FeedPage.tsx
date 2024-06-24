@@ -25,6 +25,7 @@ function FeedPage({type = "default"} : | { type: pageType}) {
                              channelId: post.channelId, /* go to controller */
                              channelName: post.channelName, /* go to controller */
                              body: post.body,
+                             preVote: post.hasUserEverVoted,
                          }
                      }
                  );

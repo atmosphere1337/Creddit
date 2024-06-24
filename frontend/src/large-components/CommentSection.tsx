@@ -20,6 +20,7 @@ function RecursiveComment( { node } : {node: ITreeComment}) {
             rating={node.rating}
             age={node.age}
             isDeleted={node.isDeleted}
+            preVote={node.preVote}
         >
             {
                 node.children.map(
@@ -48,7 +49,8 @@ function CommentSection() {
                             comment: comment.body,
                             rating: comment.rating,
                             age: age,
-                            isDeleted: comment.isDeleted
+                            isDeleted: comment.isDeleted,
+                            preVote: comment.preVote,
                             /*
                             "id": 1,
                             "body": "Hi backend. It is the first comment.",

@@ -20,10 +20,11 @@ type TypeProps =  {
     id:number,
     children: ReactNode,
     isDeleted: boolean,
+    preVote: number,
 };
 
 
-function CommentCard({ name = "default", comment = "default", rating = 0, age = "0", id = 0, children = <></>, isDeleted = false} : TypeProps) {
+function CommentCard({ name = "default", comment = "default", rating = 0, age = "0", id = 0, children = <></>, isDeleted = false, preVote } : TypeProps) {
     const dispatch = useAppDispatch();
     const params = useParams();
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
@@ -84,7 +85,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                                 {comment}
                             </div>
                             <StyledButtonPadDiv>
-                                <RatingButton value={rating} type={2} targetId={id}/>
+                                <RatingButton value={rating} type={2} targetId={id} preVote={preVote}/>
                                 <div onClick={ showComment }>
                                     <ReplyButton />
                                 </div>
