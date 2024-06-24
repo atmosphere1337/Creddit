@@ -31,4 +31,10 @@ class ChannelController extends AbstractController  {
         $channel->setMembersOnline($numberOfMembersOnlineFound);
         return $this->json($channel);
     }
+    #[Route('/api/channel', methods: ['GET'])]
+    public function getAll(EntityManagerInterface $entityManager) : Response
+    {
+        $channelsFound = $entityManager->getRepository(Channel::class)->findAll();
+        return $this->json($channelsFound);
+    }
 }
