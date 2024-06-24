@@ -30,6 +30,7 @@ class Comment
     private ?int $rating = 0;
     private ?int $amountOfChildComments = 0;
     private ?string $username = null;
+    private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
 
     public function getId(): ?int
     {
@@ -86,6 +87,11 @@ class Comment
         return $this->isDeleted;
     }
 
+    public function getHasUserEverVoted(): ?int
+    {
+        return $this->hasUserEverVoted;
+    }
+//------------------------------------------------------------------------------------------------
     public function setRating(int $newRating): void
     {
         $this->rating = $newRating;
@@ -130,4 +136,10 @@ class Comment
     {
         $this->isDeleted = $newIsDeleted;
     }
+
+    public function setHasUserEverVoted(int $newHasUserEverVoted) : void
+    {
+        $this->hasUserEverVoted = $newHasUserEverVoted;
+    }
+
 }

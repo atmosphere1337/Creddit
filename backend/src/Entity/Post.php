@@ -29,7 +29,7 @@ class Post
     private ?string $channelName = null;
     private ?int $rating = 0;
     private ?int $amountOfComments = 0;
-
+    private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
     public function getId(): ?int
     {
         return $this->id;
@@ -69,7 +69,10 @@ class Post
     {
         return $this->isEdited;
     }
-
+    public function getHasUserEverVoted(): ?int
+    {
+        return $this->hasUserEverVoted;
+    }
 
 
 
@@ -112,4 +115,9 @@ class Post
     {
         $this->isEdited = $newIsEdited;
     }
+    public function setHasUserEverVoted(int $newHasUserEverVoted) : void
+    {
+        $this->hasUserEverVoted = $newHasUserEverVoted;
+    }
+
 }
