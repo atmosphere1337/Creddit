@@ -60,11 +60,11 @@ function PopularCard() {
             </div>
             <div>
                 { fewPopularChannels.map((element : IPopularChannel) =>
-                                                                                <PopularChannel
-                                                                                    name = { element.name }
-                                                                                    members = { element.members }
-                                                                                    id = { element.id }
-                                                                                />)
+                                                                            <PopularChannel
+                                                                                name = { element.name }
+                                                                                members = { element.members }
+                                                                                id = { element.id }
+                                                                            />)
                 }
             </div>
         </StyledDiv>

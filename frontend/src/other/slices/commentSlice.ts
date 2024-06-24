@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
 import {IListedComment} from "other/widelyUsedTypes";
 
-let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: "0", children: [], isDeleted: false}];
+let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: "0", children: [], isDeleted: false, preVote: 0}];
 
 interface ICommentState {
     list: IListedComment[],
@@ -49,7 +49,7 @@ export const commentSlice = createSlice({
         treeFirstLoad : (state : ICommentState) => {
             let currentNode : ITreeComment;
             let filtered : ITreeComment[];
-            let fatherNode : ITreeComment = {id: 0, parent: -1, name:"FatherNode", comment:"", rating: 0, age: "0", children: [], isDeleted: false};
+            let fatherNode : ITreeComment = {id: 0, parent: -1, name:"FatherNode", comment:"", rating: 0, age: "0", children: [], isDeleted: false, preVote: 0};
             state.tree = [ fatherNode ];
             let queue : ITreeComment [] = [ fatherNode ];
             while (queue.length != 0) {
@@ -80,6 +80,7 @@ export const commentSlice = createSlice({
                         age: "0",
                         children: [],
                         isDeleted: false,
+                        preVote: 0,
                     };
                     currentNode.children.unshift(newComment);
                     break;

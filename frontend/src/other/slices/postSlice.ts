@@ -4,7 +4,7 @@ import {IPostMini} from "../widelyUsedTypes";
 
 const initialState : {manyPosts: IPostMini[], onePost: IPostMini} = {
     manyPosts: [],
-    onePost: {id: 2, name: "", rating: 0, comments: 0, channelId: 0, channelName: "", body: ""},
+    onePost: {id: 2, name: "", rating: 0, comments: 0, channelId: 0, channelName: "", body: "", preVote: 0},
 }
 export const postSlice =  createSlice( {
     name: "pagePayload",

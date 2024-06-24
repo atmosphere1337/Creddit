@@ -60,6 +60,7 @@ export interface IPostMini {
     body: string,
     channelId: number,
     channelName: string,
+    preVote: number,
 }
 export interface IListedComment {
     id: number,
@@ -69,6 +70,7 @@ export interface IListedComment {
     rating: number,
     age: string,
     isDeleted: boolean,
+    preVote: number,
 }
 export interface ICommentCard {
     name:string,
