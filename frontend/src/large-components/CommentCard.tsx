@@ -84,7 +84,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                                 {comment}
                             </div>
                             <StyledButtonPadDiv>
-                                <RatingButton value={rating}/>
+                                <RatingButton value={rating} type={2} targetId={id}/>
                                 <div onClick={ showComment }>
                                     <ReplyButton />
                                 </div>

@@ -59,7 +59,7 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
             </div>
             { parseBody() }
             <StyledOptions>
-                <RatingButton value={props.rating}/>
+                <RatingButton value={props.rating} type={1} targetId={props.id}/>
                 <CommentsButton value={props.comments}></CommentsButton>
                 <ModalReport />
             </StyledOptions>
