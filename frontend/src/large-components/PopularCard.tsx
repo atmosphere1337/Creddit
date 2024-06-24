@@ -7,6 +7,7 @@ import {IPopularChannel} from "other/widelyUsedTypes";
 import axios from "axios";
 import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
 import popularCard from "./PopularCard";
+import Box from "@mui/material/Box";
 
 function PopularChannel({name, members, id}: IPopularChannel) {
     const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
@@ -67,6 +68,11 @@ function PopularCard() {
                                                                             />)
                 }
             </div>
+            <StyledA href={"/c"}>
+                <Box sx={{p: 1, mt: 3, border: "solid", borderRadius: "666px", textAlign:"center"}}>
+                    Browse channels
+                </Box>
+            </StyledA>
         </StyledDiv>
     );
 }
