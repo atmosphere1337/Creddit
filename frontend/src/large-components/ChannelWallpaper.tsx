@@ -37,7 +37,10 @@ function ChannelWallpaper() {
                 <CreatePostButton />
               </StyledA>
               <StyledA>
-                <JoinButton />
+                <JoinButton
+                    channelId={params.channel ? parseInt(params.channel) : 0}
+                    joinOrLeave={2}
+                />
               </StyledA>
             </StyledRightButtonsDiv>
           </StyledDiv2>
