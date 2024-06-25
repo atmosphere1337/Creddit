@@ -234,7 +234,8 @@ export const rawDataReports : IReportData[] = [
 ];
 
 export const rawDataChannelInfoWallpaper : IChannelInfoWallpaper = {
-    name: "DarkSouls"
+    name: "DarkSouls",
+    subscribeLevel: 1,
 };
 
 export const rawDataChannelInfoCard : IChannelInfoCard = {

@@ -21,7 +21,10 @@ export interface IPopularChannel {
     name: string,
     members: number,
 }
-export interface IChannelInfoWallpaper {name : string}
+export interface IChannelInfoWallpaper {
+    name : string,
+    subscribeLevel: number // 1 for unsub 2 for sub
+}
 export interface IChannelInfoCard {
     name: string,
     description: string,
