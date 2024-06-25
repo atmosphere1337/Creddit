@@ -18,7 +18,12 @@ class Subscription
     private ?int $initiatorUserId = null;
     #[ORM\Column]
     private ?int $targetId = null;
-
+    public function __construct(int $newType, int $newInitiatorUserId, int $newTargetId)
+    {
+        $this->type = $newType;
+        $this->initiatorUserId = $newInitiatorUserId;
+        $this->targetId = $newTargetId;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -35,4 +40,5 @@ class Subscription
     {
         return $this->targetId;
     }
+
 }
