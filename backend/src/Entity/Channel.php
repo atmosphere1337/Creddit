@@ -19,6 +19,7 @@ class Channel
     //private ?string $rules = null; // just string or maybe array or even external table?
     private ?int $membersOnline = null;
     private ?int $members = null;
+    private ?int $subscriptionLevel = 1; // 1 is for "non-subscriber", 2 is for "subscriber"
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +40,10 @@ class Channel
     {
         return $this->membersOnline;
     }
+    public function getSubscriptionLevel(): ?int
+    {
+        return $this->subscriptionLevel;
+    }
 
 
 
@@ -53,5 +58,9 @@ class Channel
    public function setMembersOnline(int $newMembersOnline) : void
    {
        $this->membersOnline = $newMembersOnline;
+   }
+   public function setSubscriptionLevel(int $newSubscriptionLevel) : void
+   {
+       $this->subscriptionLevel = $newSubscriptionLevel;
    }
 }

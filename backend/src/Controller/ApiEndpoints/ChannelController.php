@@ -20,13 +20,16 @@ class ChannelController extends AbstractController  {
         }
         return $this->json($channels);
     }
-    #[Route('/api/channel/{id}', methods: ['GET'])]
-    public function getOne(EntityManagerInterface $entityManager, int $id) : Response {
-        $channel = $entityManager->getRepository(Channel::class)->find($id);
+    #[Route('/api/channel/{channelId}', methods: ['GET'])]
+    public function getOne(EntityManagerInterface $entityManager, int $channelId) : Response {
+        $userId = 1; // imitating authenticated user
+        $channel = $entityManager->getRepository(Channel::class)->find($channelId);
         // the performance can be optimized later using raw sql query, e.g. like count(*), so we don't have to retrieve entities themselves
-        $membersFound = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $id]);
+        $membersFound = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId]);
         $numberOfMembersFound = count($membersFound);
         $numberOfMembersOnlineFound = 777;
+        $subs = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId, 'initiatorUserId' => $userId]);
+        $channel->setSubscriptionLevel(count($subs) > 0 ? 2 : 1);
         $channel->setMembers($numberOfMembersFound);
         $channel->setMembersOnline($numberOfMembersOnlineFound);
         return $this->json($channel);
