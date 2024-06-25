@@ -9,18 +9,22 @@ import {rawDataChannelInfoWallpaper, rawDataPopularChannels} from "../other/mock
 import {useParams} from "react-router-dom";
 
 function ChannelWallpaper() {
-    const [wallpaperData, setWallpaperData] = useState<IChannelInfoWallpaper>({name: ""});
+    const [wallpaperData, setWallpaperData] = useState<IChannelInfoWallpaper>({name: "", subscribeLevel: 1});
+    const [joinButtonRender, setJoinButtonRender] = useState<boolean>(false);
     const params = useParams();
     useEffect(() : void => {
         axios.get('/api/channel/' + params.channel)
             .then((response) : void  => {
                 const payload : IChannelInfoWallpaper = {
-                    name: response.data.name
+                    name: response.data.name,
+                    subscribeLevel: response.data.subscriptionLevel,
                 }
                 setWallpaperData(payload);
+                setJoinButtonRender(true);
             })
             .catch( error => {
                 setWallpaperData(rawDataChannelInfoWallpaper);
+                setJoinButtonRender(true);
             });
     }, []);
     return (
@@ -36,12 +40,14 @@ function ChannelWallpaper() {
               <StyledA href={`/c/${params.channel}/newpost/`}>
                 <CreatePostButton />
               </StyledA>
-              <StyledA>
-                <JoinButton
-                    channelId={params.channel ? parseInt(params.channel) : 0}
-                    joinOrLeave={2}
-                />
-              </StyledA>
+              { joinButtonRender &&
+                  <StyledA>
+                      <JoinButton
+                          channelId={params.channel ? parseInt(params.channel) : 0}
+                          joinOrLeave={wallpaperData.subscribeLevel}
+                      />
+                  </StyledA>
+              }
             </StyledRightButtonsDiv>
           </StyledDiv2>
         </>

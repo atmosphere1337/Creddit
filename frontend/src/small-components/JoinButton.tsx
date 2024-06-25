@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import {JSX, useState} from "react";
 
-function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave: number}) {
+function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave: number}) : JSX.Element {
     const [switchJoinOrLeaveState, setSwitchJoinOrLeaveState] = useState<number>(joinOrLeave);
     function subscribeHandler() : void {
         const url : string = `/api/channel/${channelId}/subscribe`;
@@ -15,7 +15,7 @@ function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave:
                 )
                 .catch(
                     error => {
-                        alert("During sending subscription request an error has occured");
+                        alert("During sending subscription request an error has occurred");
                     }
                 );
         else
@@ -27,7 +27,7 @@ function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave:
                 )
                 .catch(
                     error => {
-                        alert("During sending unsubscribe request an error has occured");
+                        alert("During sending unsubscribe request an error has occurred");
                     }
                 );
     }
@@ -53,8 +53,9 @@ const JoinButtonStyled = styled.div`
 const LeaveButtonStyled = styled.div`
     background-color: black;
     border: solid;
-    padding: 10px 20px;
+    padding: 7px 17px;
     border-radius: 666px;
+    box-sizing: border-box;
 `;
 
 export default JoinButton;
