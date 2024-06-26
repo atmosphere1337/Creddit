@@ -113,4 +113,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->lastVisit;
     }
+    public function setLastVisit(DateTime $newLastVisit): void
+    {
+        $this->lastVisit = $newLastVisit;
+    }
 }
