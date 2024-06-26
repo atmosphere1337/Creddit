@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\ApiEndpoints;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +28,9 @@ class ChannelController extends AbstractController  {
         // the performance can be optimized later using raw sql query, e.g. like count(*), so we don't have to retrieve entities themselves
         $membersFound = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId]);
         $numberOfMembersFound = count($membersFound);
-        $numberOfMembersOnlineFound = 777;
+        $numberOfMembersOnlineFound = $entityManager
+            ->getRepository(Subscription::class)
+            ->getNumberOfChannelSubscribersOnline($channelId);
         $subs = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId, 'initiatorUserId' => $userId]);
         $channel->setSubscriptionLevel(count($subs) > 0 ? 2 : 1);
         $channel->setMembers($numberOfMembersFound);
