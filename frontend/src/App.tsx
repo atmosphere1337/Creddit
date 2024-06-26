@@ -18,6 +18,7 @@ function App() {
         <Route path="/settings" element={ <Main type="usersettings" /> } />
         <Route path="/user/:username" element={ <Main type="userprofile" /> } />
         <Route path="/admin" element={ <Main type="admin" /> } />
+        <Route path="/createchannel" element={ <Main type="create_channel" /> } />
       </Routes>
     </BrowserRouter>
   );

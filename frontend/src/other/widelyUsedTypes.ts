@@ -84,4 +84,4 @@ export interface ICommentCard {
     children: ReactNode
 }
 export type pageType = "default" | "admin" | "usersettings" | "channel" | "read_post" |
-                       "new_post" | "userprofile" | "moderator" | "many_channels";
+                       "new_post" | "userprofile" | "moderator" | "many_channels" | "create_channel";

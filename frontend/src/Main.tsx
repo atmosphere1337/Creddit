@@ -17,6 +17,7 @@ import ChannelInfoCard from "large-components/ChannelInfoCard";
 import {pageType} from "other/widelyUsedTypes";
 import ChannelBrowserPage from "pages/ChannelBrowserPage";
 import ChannelBrowserCard from "./small-components/ChannelBrowserCard";
+import ChannelCreateEditPage from "./pages/ChannelCreateEditPage";
 
 
 function Main({type = "default"} : {type?: pageType}) {
@@ -26,7 +27,7 @@ function Main({type = "default"} : {type?: pageType}) {
                 <StyledMain>
                     <Header />
                     {
-                        type != "usersettings" &&
+                        type != "usersettings" && type != "create_channel" &&
                         <StyledSidebarAndContent>
                             <LeftSidebar />
                             <StyledContentDiv>
@@ -38,6 +39,7 @@ function Main({type = "default"} : {type?: pageType}) {
                                     { type == "new_post" && <AddEditPostPage /> }
                                     { type == "userprofile" && <UserProfileFeed /> }
                                     { type == "moderator" && <ModeratorPage /> }
+
                                 </div>
                                 <StyledContentSidebarRightDiv>
                                     { type == "many_channels" && <><ChannelBrowserCard /><AdFeed /></> }
@@ -52,6 +54,7 @@ function Main({type = "default"} : {type?: pageType}) {
                         </StyledSidebarAndContent>
                     }
                     { type == "usersettings" && <UserSettingsPage /> }
+                    { type == "create_channel" && <ChannelCreateEditPage /> }
                 </StyledMain>
             }
             {   type == "admin" && <AdminPage /> }
