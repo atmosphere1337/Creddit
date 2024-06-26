@@ -3,6 +3,7 @@ namespace App\Controller\ApiEndpoints;
 
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,5 +46,13 @@ class ChannelController extends AbstractController  {
         $entityManager->getRepository(Channel::class)
             ->retrieveSubscriptionAwareChannels($channelsFound, $userId, $entityManager);
         return $this->json($channelsFound);
+    }
+    #[Route('/api/channel', methods: ['POST'])]
+    public function addOne(EntityManagerInterface $entityManager, Request $request) : Response
+    {
+        $newChannel = new Channel($request->get('name'), $request->get('description'));
+        $entityManager->persist($newChannel);
+        $entityManager->flush();
+        return $this->json(['id' => $newChannel->getId()], Response::HTTP_CREATED);
     }
 }

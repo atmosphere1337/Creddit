@@ -44,13 +44,12 @@ class Channel
     {
         return $this->subscriptionLevel;
     }
-
-
-
-
-
-
-
+//------------------------------------------------------------------------------------------------
+    public function __construct(string $newName, $newDescription)
+    {
+        $this->name = $newName;
+        $this->description = $newDescription;
+    }
    public function setMembers(int $newMembers) : void
    {
        $this->members = $newMembers;
