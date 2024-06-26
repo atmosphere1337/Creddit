@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import PostSmall from  'large-components/PostSmall/PostSmall';
-import {useAppSelector, useAppDispatch} from "other/hooks";
 import axios, {AxiosResponse} from "axios";
-import {setManyPostsFirstLoad, setSinglePost} from "other/slices/postSlice";
 import {rawDataPostMany} from "../other/mocking-data/firstLoadData";
 import {IPostMini, pageType} from "../other/widelyUsedTypes";
 import {useParams} from "react-router-dom";
@@ -35,7 +33,6 @@ function FeedPage({type = "default"} : | { type: pageType}) {
                  setPosts(rawDataPostMany);
              });
     }, []);
-    const allPosts = useAppSelector((state) => state.post.manyPosts);
     return (
         <StyledFeed>
             {  posts.map((element : IPostMini) => <PostSmall props={element}/>) }
