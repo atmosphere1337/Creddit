@@ -16,6 +16,7 @@ import PopularCard from "large-components/PopularCard";
 import ChannelInfoCard from "large-components/ChannelInfoCard";
 import {pageType} from "other/widelyUsedTypes";
 import ChannelBrowserPage from "pages/ChannelBrowserPage";
+import ChannelBrowserCard from "./small-components/ChannelBrowserCard";
 
 
 function Main({type = "default"} : {type?: pageType}) {
@@ -39,7 +40,7 @@ function Main({type = "default"} : {type?: pageType}) {
                                     { type == "moderator" && <ModeratorPage /> }
                                 </div>
                                 <StyledContentSidebarRightDiv>
-                                    { type == "many_channels" && <AdFeed /> }
+                                    { type == "many_channels" && <><ChannelBrowserCard /><AdFeed /></> }
                                     { type == "default" && <><PopularCard /><AdFeed /></>}
                                     { type == "channel" && <><ChannelInfoCard /><AdFeed /></>}
                                     { type == "read_post" && <><ChannelInfoCard /><AdFeed /></>}
