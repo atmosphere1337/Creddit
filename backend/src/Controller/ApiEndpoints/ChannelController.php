@@ -40,7 +40,10 @@ class ChannelController extends AbstractController  {
     #[Route('/api/channel', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager) : Response
     {
+        $userId = 1; // imitating authenticated user
         $channelsFound = $entityManager->getRepository(Channel::class)->findAll();
+        $entityManager->getRepository(Channel::class)
+            ->retrieveSubscriptionAwareChannels($channelsFound, $userId, $entityManager);
         return $this->json($channelsFound);
     }
 }

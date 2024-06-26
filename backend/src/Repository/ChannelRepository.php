@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Channel;
+use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,28 +17,15 @@ class ChannelRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Channel::class);
     }
-//    /**
-//     * @return Channel[] Returns an array of Channel objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Channel
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // param type = Array of Channels
+    public function retrieveSubscriptionAwareChannels(&$channels, $userId, EntityManagerInterface &$em): void
+    {
+        foreach ($channels as $channel) {
+            $filters = ['initiatorUserId' => $userId, 'targetId' => $channel->getId(), 'type' => 1];
+            $isThereASub = $em->getRepository(Subscription::class)->findOneBy($filters);
+            if ($isThereASub)
+                $channel->setSubscriptionLevel(2);
+        }
+    }
 }
