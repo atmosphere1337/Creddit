@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components"
 import { useAppSelector, useAppDispatch } from 'other/hooks'
 import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from 'other/slices/userSlice';
@@ -6,37 +6,64 @@ import ModalLogin from 'large-components/modal-windows/ModalLogin';
 import ModalRegister from 'large-components/modal-windows/ModalRegister';
 import CredditLogo from "small-components/CredditLogo/CredditLogo";
 import SearchBar from "small-components/SearchBar/SarchBar";
-import { deleteCookie } from "other/widelyUsedFunctions";
-import { Avatar, IconButton, Menu, MenuItem, Switch, Button } from '@mui/material';
+import {deleteCookie, getCookie} from "other/widelyUsedFunctions";
+import {Avatar, IconButton, Menu, MenuItem, Switch, Button, Badge} from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
+import axios from "axios";
 
 function Header() {
     const selectorColorTheme = useAppSelector((state) => state.user.colorMode);
-    const selectorLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
     const dispatch = useAppDispatch();
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
     const [showRegisterModal, setShowRegisterModal] = useState<boolean>(false);
     const [colorModeState, setColorModeState] = useState(selectorColorTheme == "dark" ? false : true);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const [headerAuth, setHeaderAuth] = useState<boolean>(false);
+    const open: boolean = Boolean(anchorEl);
+    const userInfoSmallInit: IUserInfoSmall = {id: 0, name: "default", profilePictureUrl: "default", notCheckedNotificationAmount: 0};
+    const [userHeaderSmallInfoState, setUserHeaderSmallInfoState] = useState<IUserInfoSmall>(userInfoSmallInit);
+    interface IUserInfoSmall { id: number, name: string, profilePictureUrl: string, notCheckedNotificationAmount: number }
+    useEffect((): void=> {
+        const tokenSendingHeader : {headers : {Authorization : string}} = {
+            headers : {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        const url : string = "/api/usersmall";
+        axios.get(url, tokenSendingHeader)
+            .then(
+                (response): void => {
+                    const payload : IUserInfoSmall = {
+                        id: response.data.id,
+                        name: response.data.username,
+                        profilePictureUrl: response.data.profilePictureUrl,
+                        notCheckedNotificationAmount: response.data.notCheckedNotificationAmount,
+                    };
+                    setUserHeaderSmallInfoState(payload);
+                    setHeaderAuth(true);
+                }
+            )
+            .catch( () => setHeaderAuth(false)
+        );
+    }, []);
+    const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
       setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
+    const handleClose = (): void => {
       setAnchorEl(null);
     };
-    function switchColorModeHandler() : void{
-     setColorModeState((stite) => {
-        if (stite)
+    function switchColorModeHandler(): void {
+     setColorModeState((state) => {
+        if (state)
         dispatch(setColorModeDark());
         else
         dispatch(setColorModeLight());
-        return !stite;
+        return !state;
       })   
     } 
     function logOutHandler() : void {
@@ -55,10 +82,10 @@ function Header() {
             <StyledRightBox>
               {selectorColorTheme == "light" && "light"}
               {selectorColorTheme == "dark" && "dark"}
-              {selectorLoggedIn && "user"}
-              {!selectorLoggedIn && "guest"}
+              {headerAuth && "user"}
+              {!headerAuth && "guest"}
               {
-              !selectorLoggedIn &&  
+              !headerAuth &&
               <>
                 <Button color="warning" variant="contained" onClick={() => setShowLoginModal(true)}>
                   Log In
@@ -71,7 +98,7 @@ function Header() {
               </>
               }
               {
-                selectorLoggedIn &&
+                headerAuth &&
                 <>
                   <IconButton href="/c/darksouls/moderator">
                     <GavelIcon />
@@ -80,7 +107,9 @@ function Header() {
                     <AdminPanelSettingsIcon />
                   </IconButton>
                   <IconButton>
-                    <NotificationsNoneIcon />
+                      <Badge badgeContent={userHeaderSmallInfoState.notCheckedNotificationAmount} color="primary">
+                        <NotificationsNoneIcon />
+                      </Badge>
                   </IconButton>
                   <IconButton onClick={ handleClick }>
                     <Avatar sx={{width: 32, height: 32}} />
@@ -92,10 +121,17 @@ function Header() {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   >
-                    <MenuItem onClick={() => {document.location.href="/user/creddible1337"}}>
-                      <Avatar sx={{height: 32, width: 32, mr: 1}} />
+                    <MenuItem onClick={(): void => {document.location.href=`/user/${userHeaderSmallInfoState.id}`}}>
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl == "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} />
+                      }
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl != "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} src={userHeaderSmallInfoState.profilePictureUrl}/>
+                      }
                       <span>
-                        Creddible1337
+                        {userHeaderSmallInfoState.name}
                       </span>
                     </MenuItem>
                     <MenuItem onClick={() => {document.location.href = "/settings"} }>
