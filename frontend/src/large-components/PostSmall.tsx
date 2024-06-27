@@ -1,14 +1,14 @@
 import React, {FC, JSX, useState} from "react";
+import axios, {AxiosResponse} from "axios";
 import styled from "styled-components";
+import {useParams} from "react-router-dom";
 import ModalReport from "large-components/modal-windows/ModalReport";
 import RatingButton from "small-components/RatingButton/RatingButton";
 import CommentsButton from "small-components/CommentsButton/CommentsButton";
 import { StyledA } from "other/styles/CommonStyles";
-import {IPostMini} from "../../other/widelyUsedTypes";
+import {IPostMini} from "other/widelyUsedTypes";
 import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios, {AxiosResponse} from "axios";
-import {useParams} from "react-router-dom";
 
 function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const [isHidden, setIsHidden] = useState<boolean>(false);

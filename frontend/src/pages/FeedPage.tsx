@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
-import PostSmall from  'large-components/PostSmall/PostSmall';
 import axios, {AxiosResponse} from "axios";
-import {rawDataPostMany} from "../other/mocking-data/firstLoadData";
-import {IPostMini, pageType} from "../other/widelyUsedTypes";
+import styled from "styled-components";
 import {useParams} from "react-router-dom";
+import PostSmall from  'large-components/PostSmall';
+import {rawDataPostMany} from "other/mocking-data/firstLoadData";
+import {IPostMini, pageType} from "other/widelyUsedTypes";
 
 function FeedPage({type = "default"} : | { type: pageType}) {
     const params = useParams();
