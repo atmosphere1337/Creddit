@@ -30,4 +30,21 @@ class UserController extends AbstractController
         $entityManager->flush();
         return $this->json(['id' => $newUser->getId()], Response::HTTP_CREATED);
     }
+    #[Route('/api/usersmall', methods: ['GET'])]
+    public function getUserInfo(EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $thisUser = $entityManager->getRepository(User::class)->find($userId);
+        $thisUser->setNotCheckedNotificationAmount(0); // replace here notification load later
+        $response = [
+            'id' => $thisUser->getId(),
+            'username' => $thisUser->getUsername(),
+            'profilePictureUrl' => $thisUser->getProfilePictureUrl(),
+            'notCheckedNotificationAmount' => $thisUser->getNotCheckedNotificationAmount(),
+        ];
+        return $this->json($response, Response::HTTP_OK);
+    }
+
 }

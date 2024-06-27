@@ -35,6 +35,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:'datetime')]
 
     private DateTime $lastVisit;
+
+    #[ORM\Column(length: 700, nullable: true)]
+
+    private ?string $profilePictureUrl = null;
+
+    private ?int $notCheckedNotificationAmount = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -116,5 +123,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastVisit(DateTime $newLastVisit): void
     {
         $this->lastVisit = $newLastVisit;
+    }
+    public function getProfilePictureUrl(): ?string
+    {
+        return $this->profilePictureUrl;
+    }
+    public function setProfilePictureUrl(string $newProfilePictureUrl): void
+    {
+        $this->profilePictureUrl = $newProfilePictureUrl;
+    }
+    public function getNotCheckedNotificationAmount(): ?int
+    {
+        return $this->notCheckedNotificationAmount;
+    }
+    public function setNotCheckedNotificationAmount(int $newNotCheckedNotificationAmount): void
+    {
+        $this->notCheckedNotificationAmount = $newNotCheckedNotificationAmount;
     }
 }
