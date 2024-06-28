@@ -77,7 +77,7 @@ export const commentSlice = createSlice({
                         name: action.payload.name,
                         comment: action.payload.comment,
                         rating: 0,
-                        age: "0",
+                        age: "0 seconds ago",
                         children: [],
                         isDeleted: false,
                         preVote: 0,
