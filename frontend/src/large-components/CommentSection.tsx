@@ -8,7 +8,7 @@ import axios from "axios";
 import {ICommentCard, IListedComment, IPostMini} from "../other/widelyUsedTypes";
 import {rawDataPostMany, rawListComments} from "../other/mocking-data/firstLoadData";
 import {useParams} from "react-router";
-import {getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFunctions";
+import {getCookie, getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFunctions";
 
 function RecursiveComment( { node } : {node: ITreeComment}) {
     return (
@@ -37,38 +37,40 @@ function CommentSection() {
     const treeState = useAppSelector((state) => state.comment.tree);
     const dispatch = useAppDispatch()
     useEffect(() : void => {
-        axios.get('/api/comment/' + params.post)
-            .then((response) : void  => {
-                const payload : IListedComment[] = response.data.map(
-                    (comment : any) : IListedComment => {
-                        const age: string = getDateTimeStringAndTranslateItToAgeString(comment.createdAt);
-                        return {
-                            id: comment.id,
-                            parent: comment.parentCommentId,
-                            name: comment.username,
-                            comment: comment.body,
-                            rating: comment.rating,
-                            age: age,
-                            isDeleted: comment.isDeleted,
-                            preVote: comment.preVote,
-                            /*
-                            "id": 1,
-                            "body": "Hi backend. It is the first comment.",
-                            "userId": 1,
-                            "postId": 1,
-                            "parentCommentId": 0,
-                            "rating": 0,
-                            "amountOfChildComments": 1
-                             */
-                        }
+        const successResponseCallback = (response : any) : void  => {
+            const payload : IListedComment[] = response.data.map(
+                (comment : any) : IListedComment => {
+                    const age: string = getDateTimeStringAndTranslateItToAgeString(comment.createdAt);
+                    return {
+                        id: comment.id,
+                        parent: comment.parentCommentId,
+                        name: comment.username,
+                        comment: comment.body,
+                        rating: comment.rating,
+                        age: age,
+                        isDeleted: comment.isDeleted,
+                        preVote: comment.preVote,
                     }
-                );
-                dispatch(setListFirstLoad(payload));
-                dispatch(treeFirstLoad());
-            })
-            .catch( error => {
-                dispatch(setListFirstLoad(rawListComments));
-                dispatch(treeFirstLoad());
+                }
+            );
+            dispatch(setListFirstLoad(payload));
+            dispatch(treeFirstLoad());
+        };
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        const url : string = '/api/comment/' + params.post;
+        axios.get(url, config)
+            .then(successResponseCallback)
+            .catch( (): void => {
+                axios.get(url)
+                    .then(successResponseCallback)
+                    .catch((): void => {
+                        dispatch(setListFirstLoad(rawListComments));
+                        dispatch(treeFirstLoad());
+                    });
             });
     }, []);
     function switchDefaultComment() {

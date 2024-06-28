@@ -4,13 +4,19 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import {rawDataChannelInfoCard, rawDataChannelInfoWallpaper} from "../other/mocking-data/firstLoadData";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelInfoCard() {
     const emptyData : IChannelInfoCard = {name: "", description: "", rules: [""], online: 0, members: 0}
     const [channelInfoData, setChannelInfoData] = useState<IChannelInfoCard>(emptyData);
     const params = useParams();
     useEffect(() : void => {
-        axios.get('/api/channel/' + params.channel)
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.get('/api/channel/' + params.channel, config)
             .then((response) : void  => {
                 const payload : IChannelInfoCard = {
                     name: response.data.name,

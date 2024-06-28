@@ -3,12 +3,18 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {StyledA} from "../other/styles/CommonStyles";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelBrowserPage() : JSX.Element {
     const [retrievedChannels, setRetrievedChannels] = useState([]);
     useEffect(() => {
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
         const url : string = `/api/channel`;
-        axios.get(url).then(response  => {
+        axios.get(url, config).then(response  => {
             setRetrievedChannels(response.data);
 
         }).catch(

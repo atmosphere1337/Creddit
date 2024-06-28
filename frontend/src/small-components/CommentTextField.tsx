@@ -5,6 +5,7 @@ import { useAppDispatch } from "other/hooks";
 import axios from "axios";
 import {IPopularChannel} from "../other/widelyUsedTypes";
 import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function CommentTextField({hide, parentCommentId, postId}:{hide: () => void, parentCommentId: number, postId: string}) {
     const [text, setText] = useState("");
@@ -21,7 +22,8 @@ function CommentTextField({hide, parentCommentId, postId}:{hide: () => void, par
 
         const config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
             }
         };
         axios.post('/api/comment', {

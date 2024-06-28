@@ -1,13 +1,19 @@
 import styled from "styled-components";
 import axios from "axios";
 import {JSX, useState} from "react";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave: number}) : JSX.Element {
     const [switchJoinOrLeaveState, setSwitchJoinOrLeaveState] = useState<number>(joinOrLeave);
     function subscribeHandler() : void {
+        const config: {headers: {"Authorization" : string} } = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            },
+        };
         const url : string = `/api/channel/${channelId}/subscribe`;
         if (switchJoinOrLeaveState == 1)
-            axios.post(url)
+            axios.post(url, {}, config)
                 .then(
                     response => {
                         setSwitchJoinOrLeaveState(2);
@@ -19,7 +25,7 @@ function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave:
                     }
                 );
         else
-            axios.delete(url)
+            axios.delete(url, config)
                 .then(
                     response => {
                         setSwitchJoinOrLeaveState(1);

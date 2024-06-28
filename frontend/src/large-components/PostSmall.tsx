@@ -9,12 +9,18 @@ import { StyledA } from "other/styles/CommonStyles";
 import {IPostMini} from "other/widelyUsedTypes";
 import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const [isHidden, setIsHidden] = useState<boolean>(false);
     const params = useParams();
     function deletePostHandler(): void {
-        axios.delete(`/api/post/${props.id}`)
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.delete(`/api/post/${props.id}`, config)
             .then(
                 (response : AxiosResponse<any>) : void => {
                     setIsHidden(true);

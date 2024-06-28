@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styled, { css } from 'styled-components';
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function AddEditPostPage() {
     const params = useParams();
@@ -13,9 +14,10 @@ function AddEditPostPage() {
             postBody: body,
             channelId: params.channel,
         };
-        const config : {headers: {"Content-Type": string}} = {
+        const config : {headers: {"Content-Type": string, "Authorization" : string}} = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
             }
         }
         axios.post("/api/post", payload, config)

@@ -7,13 +7,20 @@ import {IChannelInfoWallpaper, IPopularChannel} from "other/widelyUsedTypes";
 import axios from "axios";
 import {rawDataChannelInfoWallpaper, rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
 import {useParams} from "react-router-dom";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelWallpaper() {
     const [wallpaperData, setWallpaperData] = useState<IChannelInfoWallpaper>({name: "", subscribeLevel: 1});
     const [joinButtonRender, setJoinButtonRender] = useState<boolean>(false);
     const params = useParams();
+
     useEffect(() : void => {
-        axios.get('/api/channel/' + params.channel)
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.get('/api/channel/' + params.channel, config)
             .then((response) : void  => {
                 const payload : IChannelInfoWallpaper = {
                     name: response.data.name,

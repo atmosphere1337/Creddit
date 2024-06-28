@@ -13,14 +13,16 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelCreateEditPage() : JSX.Element {
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     function handleSubmition(): void  {
-        const options : {headers: {"Content-Type" : string}} = {
+        const options : {headers: {"Content-Type" : string, "Authorization" : string}} = {
             headers: {
-                "Content-Type" : "application/x-www-form-urlencoded"
+                "Content-Type" : "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
             }
         }
         const payload : {description: string, name: string} = {
