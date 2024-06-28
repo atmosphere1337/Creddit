@@ -2,6 +2,7 @@
 
 namespace App\Controller\ApiEndpoints;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,8 +19,10 @@ class VoteController extends AbstractController
 
     public function setVoteOn(int $targetId, int $PostOrCommentType, bool $UpOrDownType, EntityManagerInterface &$entityManager): int
     {
-        $mockedUserId = 1; /* Change on auth user id later */
-        $filters = ['targetId' => $targetId, 'initiatorUserId' => $mockedUserId, 'type' => $PostOrCommentType];
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $filters = ['targetId' => $targetId, 'initiatorUserId' => $userId, 'type' => $PostOrCommentType];
         $conflictingVotes = $entityManager->getRepository(Vote::class)->findBy($filters);
         if (count($conflictingVotes) > 0) {
             return Response::HTTP_BAD_REQUEST;
@@ -27,7 +30,7 @@ class VoteController extends AbstractController
         $newVote = new Vote();
         $newVote->setType($PostOrCommentType);
         $newVote->setTargetId($targetId);
-        $newVote->setInitiatorUserId($mockedUserId);
+        $newVote->setInitiatorUserId($userId);
         $newVote->setUpDown($UpOrDownType);
         $entityManager->persist($newVote);
         $entityManager->flush();
@@ -36,8 +39,10 @@ class VoteController extends AbstractController
 
     public function setVoteOff(int $targetId, int $PostOrCommentType, bool $UpOrDownType, EntityManagerInterface &$entityManager): int
     {
-        $mockedUserId = 1; /* Change on auth user id later */
-        $filters = ['targetId' => $targetId, 'initiatorUserId' => $mockedUserId, 'type' => $PostOrCommentType, 'upDown' => $UpOrDownType];
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $filters = ['targetId' => $targetId, 'initiatorUserId' => $userId, 'type' => $PostOrCommentType, 'upDown' => $UpOrDownType];
         $upVotesFound = $entityManager->getRepository(Vote::class)->findBy($filters);
         foreach ($upVotesFound as $singleUpVote) {
             $entityManager->remove($singleUpVote);

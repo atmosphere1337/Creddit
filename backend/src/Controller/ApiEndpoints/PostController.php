@@ -2,6 +2,7 @@
 
 namespace App\Controller\ApiEndpoints;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,7 +77,9 @@ class PostController extends AbstractController
 
     public function fetchPost(&$post, EntityManagerInterface &$entityManager): void
     {
-        $userId = 1; // mocking user id
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user ? $user->getId() : 0;
         $votes = $entityManager
             ->getRepository(Vote::class)
             ->findBy(['targetId' => $post, 'type' => 1]);
@@ -90,13 +93,15 @@ class PostController extends AbstractController
             ->findOneBy(['id' => $post
                 ->getChannelId()])
             ->getName();
-        $userSpecificVotes = $entityManager
-            ->getRepository(Vote::class)
-            ->findBy(['targetId' => $post->getId(), 'type' => 1, 'initiatorUserId' => $userId]);
-        if (count($userSpecificVotes) > 0)
-            $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
-        else
-            $post->setHasUserEverVoted(0);
+        if ($user) {
+            $userSpecificVotes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['targetId' => $post->getId(), 'type' => 1, 'initiatorUserId' => $userId]);
+            if (count($userSpecificVotes) > 0)
+                $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
+            else
+                $post->setHasUserEverVoted(0);
+        }
         $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
         $post->setChannelName($channelName);

@@ -3,6 +3,7 @@
 namespace App\Controller\ApiEndpoints;
 
 use App\Entity\Subscription;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,9 @@ class SubscriptionController extends AbstractController
     )]
     public function channelCreateOne(int $channelId, EntityManagerInterface $entityManager): Response
     {
-        $userId = 1; // emulated authenticated user
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $filters = ['targetId' => $channelId, 'type'=> 1, 'initiatorUserId' =>  $userId];
         $subsForSpecificChannelFound = $entityManager->getRepository(Subscription::class)->findBy($filters);
         if (count($subsForSpecificChannelFound) > 0)
@@ -31,7 +34,9 @@ class SubscriptionController extends AbstractController
     #[Route('/api/channel/{channelId}/subscribe', methods: ['DELETE'])]
     public function channelDeleteOne(int $channelId, EntityManagerInterface $entityManager): Response
     {
-        $userId = 1; // emulated authenticated user
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $filters = ['targetId' => $channelId, 'type'=> 1, 'initiatorUserId' =>  $userId];
         $subsForSpecificChannelFound = $entityManager->getRepository(Subscription::class)->findBy($filters);
         if (count($subsForSpecificChannelFound) == 0)

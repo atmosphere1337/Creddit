@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\ApiEndpoints;
 
+use App\Entity\User;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,6 @@ class ChannelController extends AbstractController  {
     }
     #[Route('/api/channel/{channelId}', methods: ['GET'])]
     public function getOne(EntityManagerInterface $entityManager, int $channelId) : Response {
-        $userId = 1; // imitating authenticated user
         $channel = $entityManager->getRepository(Channel::class)->find($channelId);
         // the performance can be optimized later using raw sql query, e.g. like count(*), so we don't have to retrieve entities themselves
         $membersFound = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId]);
@@ -32,7 +32,10 @@ class ChannelController extends AbstractController  {
         $numberOfMembersOnlineFound = $entityManager
             ->getRepository(Subscription::class)
             ->getNumberOfChannelSubscribersOnline($channelId);
-        $subs = $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId, 'initiatorUserId' => $userId]);
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user ? $user->getId() : 0;
+        $subs = $user ? $entityManager->getRepository(Subscription::class)->findBy(['type' => 1, 'targetId' => $channelId, 'initiatorUserId' => $userId]) : [];
         $channel->setSubscriptionLevel(count($subs) > 0 ? 2 : 1);
         $channel->setMembers($numberOfMembersFound);
         $channel->setMembersOnline($numberOfMembersOnlineFound);
@@ -41,7 +44,9 @@ class ChannelController extends AbstractController  {
     #[Route('/api/channel', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager) : Response
     {
-        $userId = 1; // imitating authenticated user
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $channelsFound = $entityManager->getRepository(Channel::class)->findAll();
         $entityManager->getRepository(Channel::class)
             ->retrieveSubscriptionAwareChannels($channelsFound, $userId, $entityManager);
