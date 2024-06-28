@@ -2,8 +2,12 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import { addComment, INewComment } from "other/slices/commentSlice";
 import { useAppDispatch } from "other/hooks";
+import axios from "axios";
+import {IPopularChannel} from "../other/widelyUsedTypes";
+import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
+import {getCookie} from "../other/widelyUsedFunctions";
 
-function CommentTextField({hide, parentCommentId}:{hide: () => void, parentCommentId: number}) {
+function CommentTextField({hide, parentCommentId, postId}:{hide: () => void, parentCommentId: number, postId: string}) {
     const [text, setText] = useState("");
     const dispatch = useAppDispatch();
     function refreshField(element : any) {
@@ -15,8 +19,27 @@ function CommentTextField({hide, parentCommentId}:{hide: () => void, parentComme
         let getId : number = -1 * Math.floor(Math.random() * 1000) -3; // get from api?
         let getName : string = "Creddible1337"; // get from what?
         let payload : INewComment = {id: getId, comment: text, name: getName, parent: parentCommentId};
-        dispatch(addComment(payload));
-        hide();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        };
+        axios.post('/api/comment', {
+            commentBody: text,
+            postId: parseInt(postId),
+            setParentCommentId : parentCommentId,
+        }, config)
+            .then((response) : void  => {
+                payload.id = response.data.idOfCreatedComment;
+                dispatch(addComment(payload));
+                hide();
+            })
+            .catch( error => {
+                alert('error');
+                console.log(error);
+            });
     }
     return (
         <div>

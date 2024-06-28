@@ -14,31 +14,35 @@ import AdFeed from "large-components/AdFeed";
 import ChannelWallpaper from "large-components/ChannelWallpaper";
 import PopularCard from "large-components/PopularCard";
 import ChannelInfoCard from "large-components/ChannelInfoCard";
-import ApiFirstLoad from "other/ApiFirstLoad";
 import {pageType} from "other/widelyUsedTypes";
+import ChannelBrowserPage from "pages/ChannelBrowserPage";
+import ChannelBrowserCard from "./small-components/ChannelBrowserCard";
+import ChannelCreateEditPage from "./pages/ChannelCreateEditPage";
 
 
 function Main({type = "default"} : {type?: pageType}) {
     return (
         <>
-            <ApiFirstLoad layoutStructureType={type} />
             {   type != "admin" &&
                 <StyledMain>
                     <Header />
                     {
-                        type != "usersettings" &&
+                        type != "usersettings" && type != "create_channel" &&
                         <StyledSidebarAndContent>
                             <LeftSidebar />
                             <StyledContentDiv>
                                 <div>
+                                    { type == "many_channels" && <ChannelBrowserPage /> }
                                     { type == "channel" && <ChannelWallpaper /> }
-                                    { ["channel", "default"].includes(type) && <FeedPage /> }
+                                    { ["channel", "default"].includes(type) && <FeedPage type={type} /> }
                                     { type == "read_post" && <PostPage /> }
                                     { type == "new_post" && <AddEditPostPage /> }
                                     { type == "userprofile" && <UserProfileFeed /> }
                                     { type == "moderator" && <ModeratorPage /> }
+
                                 </div>
                                 <StyledContentSidebarRightDiv>
+                                    { type == "many_channels" && <><ChannelBrowserCard /><AdFeed /></> }
                                     { type == "default" && <><PopularCard /><AdFeed /></>}
                                     { type == "channel" && <><ChannelInfoCard /><AdFeed /></>}
                                     { type == "read_post" && <><ChannelInfoCard /><AdFeed /></>}
@@ -50,6 +54,7 @@ function Main({type = "default"} : {type?: pageType}) {
                         </StyledSidebarAndContent>
                     }
                     { type == "usersettings" && <UserSettingsPage /> }
+                    { type == "create_channel" && <ChannelCreateEditPage /> }
                 </StyledMain>
             }
             {   type == "admin" && <AdminPage /> }

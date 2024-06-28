@@ -1,21 +1,48 @@
 import styled from "styled-components";
-import {useAppSelector} from "other/hooks";
-import {IChannelInfoCard} from "other/widelyUsedTypes";
+import {IChannelInfoCard, IChannelInfoWallpaper} from "other/widelyUsedTypes";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import axios from "axios";
+import {rawDataChannelInfoCard, rawDataChannelInfoWallpaper} from "../other/mocking-data/firstLoadData";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelInfoCard() {
-    const selectChannelInfoData : IChannelInfoCard = useAppSelector(state => state.channelInfo.cardInfo);
+    const emptyData : IChannelInfoCard = {name: "", description: "", rules: [""], online: 0, members: 0}
+    const [channelInfoData, setChannelInfoData] = useState<IChannelInfoCard>(emptyData);
+    const params = useParams();
+    useEffect(() : void => {
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.get('/api/channel/' + params.channel, config)
+            .then((response) : void  => {
+                const payload : IChannelInfoCard = {
+                    name: response.data.name,
+                    description: response.data.description,
+                    members: response.data.members,
+                    online: response.data.membersOnline,
+                    rules: response.data.rules,
+                }
+                setChannelInfoData(payload);
+            })
+            .catch( error => {
+                setChannelInfoData(rawDataChannelInfoCard);
+            });
+    }, []);
     return (
         <StyledDiv1>
           <div style={{ fontSize: "25px", marginBottom: "10px" }}>
-            { selectChannelInfoData.name }
+            { channelInfoData.name }
           </div>
           <div style={{ color: "#777777", marginBottom: "15px" }}>
-            { selectChannelInfoData.description }
+            { channelInfoData.description }
           </div>
             <div style={{ display: "flex", gap: "20px" }}>
               <div>
                 <div>
-                  { selectChannelInfoData.members }
+                  { channelInfoData.members }
                 </div>
                 <div style={{ color: "#777777" }}>
                   Members
@@ -23,7 +50,7 @@ function ChannelInfoCard() {
               </div>
               <div>
                 <div>
-                  { selectChannelInfoData.online }
+                  { channelInfoData.online }
                 </div>
                 <div style={{ color: "#777777" }}>
                   <StyledGreenCircle />

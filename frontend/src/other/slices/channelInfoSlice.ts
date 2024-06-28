@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {IChannelInfoCard, IChannelInfoWallpaper} from "../widelyUsedTypes";
 
 const initialState : {wallpaperInfo: IChannelInfoWallpaper, cardInfo : IChannelInfoCard} = {
-    wallpaperInfo: {name: ""},
+    wallpaperInfo: {name: "", subscribeLevel: 1},
     cardInfo: {name : "", description : "", members: 0, online: 0, rules: []},
 }
 export const channelInfoSlice = createSlice({

@@ -1,7 +1,9 @@
+import {ReactNode} from "react";
+
 export interface IAdvertisementPublic {
     name: string,
-    picture: string,
-    link: string
+    refLink: string,
+    pictureLink: string,
 }
 export interface IAdvertisementPrivate {
     id: number,
@@ -15,11 +17,14 @@ export interface IReportData {
     description: string
 }
 export interface IPopularChannel {
+    id: number,
     name: string,
     members: number,
-    link: string
 }
-export interface IChannelInfoWallpaper {name : string}
+export interface IChannelInfoWallpaper {
+    name : string,
+    subscribeLevel: number // 1 for unsub 2 for sub
+}
 export interface IChannelInfoCard {
     name: string,
     description: string,
@@ -51,10 +56,14 @@ export interface IUserInfoCardNew {
     joinDate: string
 }
 export interface IPostMini {
+    id: number,
     name: string,
     rating: number,
     comments: number,
     body: string,
+    channelId: number,
+    channelName: string,
+    preVote: number,
 }
 export interface IListedComment {
     id: number,
@@ -62,7 +71,17 @@ export interface IListedComment {
     name: string,
     comment: string,
     rating: number,
-    age: number,
+    age: string,
+    isDeleted: boolean,
+    preVote: number,
+}
+export interface ICommentCard {
+    name:string,
+    comment:string,
+    rating: number,
+    age:number,
+    id:number,
+    children: ReactNode
 }
 export type pageType = "default" | "admin" | "usersettings" | "channel" | "read_post" |
-                       "new_post" | "userprofile" | "moderator" ;
+                       "new_post" | "userprofile" | "moderator" | "many_channels" | "create_channel";

@@ -1,14 +1,38 @@
 import React, {useState} from 'react';
 import styled, { css } from 'styled-components';
+import axios from "axios";
+import {useParams} from "react-router-dom";
+import {getCookie} from "../other/widelyUsedFunctions";
 
 function AddEditPostPage() {
+    const params = useParams();
     const [title, setTitle ] = useState<string>("");
     const [body, setBody ] = useState<string>("");
-    function submit() {
-        alert("The post is submitted");
-        window.location.href = "../";
+    function submit() : void {
+        const payload : {postTitle: string, postBody: string, channelId: any} = {
+            postTitle: title,
+            postBody: body,
+            channelId: params.channel,
+        };
+        const config : {headers: {"Content-Type": string, "Authorization" : string}} = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.post("/api/post", payload, config)
+            .then(
+                response => {
+                    window.location.href = "../";
+                }
+            )
+            .catch(
+                error => {
+                    alert('During creating post an error has occured');
+                }
+        );
     }
-    function cancel() {
+    function cancel() : void {
         alert("You canceled post submission");
         window.location.href = "../";
     }

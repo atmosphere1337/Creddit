@@ -24,6 +24,8 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 1488
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data
     networks:
       - internal
   adminer:

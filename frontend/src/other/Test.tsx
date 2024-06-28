@@ -39,6 +39,19 @@ function Test() {
             .find((row) => row.startsWith(cookieName))
             ?.split("=")[1];
         console.log(cookie);
+        fetch("/api/login_check", 
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json",
+                    "Accept": "application/json",
+                },
+                body: JSON.stringify({"email":"root", "password":"1337"})
+            }
+        )
+        .then(data => data.json())
+        .then(data => {console.log("login_check", data)});
+
     });
     return (
         <>

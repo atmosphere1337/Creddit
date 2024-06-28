@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
 import {IListedComment} from "other/widelyUsedTypes";
 
-let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: 0, children: []}, ];
+let rawTree : ITreeComment[] = [ {id: 0, parent: -1, name:"", comment:"", rating: 0, age: "0", children: [], isDeleted: false, preVote: 0}];
 
 interface ICommentState {
     list: IListedComment[],
@@ -49,7 +49,7 @@ export const commentSlice = createSlice({
         treeFirstLoad : (state : ICommentState) => {
             let currentNode : ITreeComment;
             let filtered : ITreeComment[];
-            let fatherNode : ITreeComment = {id: 0, parent: -1, name:"FatherNode", comment:"", rating: 0, age: 0, children: []};
+            let fatherNode : ITreeComment = {id: 0, parent: -1, name:"FatherNode", comment:"", rating: 0, age: "0", children: [], isDeleted: false, preVote: 0};
             state.tree = [ fatherNode ];
             let queue : ITreeComment [] = [ fatherNode ];
             while (queue.length != 0) {
@@ -64,10 +64,10 @@ export const commentSlice = createSlice({
                 state.list = state.list.filter( (x: IListedComment) => x.parent != currentNode.id);
             }
         },
-        addComment : (state: ICommentState, action : PayloadAction<INewComment>) => {
+        addComment : (state: ICommentState, action : PayloadAction<INewComment>) :void => {
             console.log("addComment in slice", action.payload);
             let currentNode;
-            let queue = [ state.tree[0] ];
+            let queue : ITreeComment[] = [ state.tree[0] ];
             while (queue.length != 0) {
                 currentNode = <ITreeComment>queue.shift();
                 if (currentNode.id == action.payload.parent) {
@@ -77,12 +77,32 @@ export const commentSlice = createSlice({
                         name: action.payload.name,
                         comment: action.payload.comment,
                         rating: 0,
-                        age: 0,
-                        children: [], };  
+                        age: "0 seconds ago",
+                        children: [],
+                        isDeleted: false,
+                        preVote: 0,
+                    };
                     currentNode.children.unshift(newComment);
                     break;
                 } else 
                     currentNode.children.forEach(x => queue.push(x));
+            }
+        },
+        deleteComment : (state: ICommentState, action : {payload: {id : number, markOrErase: 1 | 2}}) : void => {
+            let currentNode;
+            let queue : ITreeComment[] = [ state.tree[0] ];
+            while (queue.length != 0) {
+                currentNode = <ITreeComment>queue.shift();
+                for (let i: number = 0; i < currentNode.children.length; i++) {
+                    if (currentNode.children[i].id == action.payload.id) { /* action.payload keep that in mind */
+                        if (action.payload.markOrErase == 2)
+                            currentNode.children.splice(i, 1);
+                        else
+                            currentNode.children[i].isDeleted = true;
+                        return;
+                    }
+                    queue.push(currentNode.children[i]);
+                }
             }
         }
     }
@@ -92,6 +112,7 @@ export const {
     treeFirstLoad,
     addComment ,
     setListFirstLoad,
+    deleteComment,
 
 } = commentSlice.actions;
 
