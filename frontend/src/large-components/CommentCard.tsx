@@ -87,7 +87,7 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                                     {age}
                                 </div>
                             </div>
-                            <div>
+                            <div style={{whiteSpace: "pre-wrap"}}>
                                 {comment}
                             </div>
                             <StyledButtonPadDiv>

@@ -63,7 +63,9 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
                     <DeleteIcon fontSize="small"/>
                 </IconButton>
             </div>
-            { parseBody() }
+            <div style={{whiteSpace: "pre-wrap"}}>
+                { parseBody() }
+            </div>
             <StyledOptions>
                 <RatingButton value={props.rating} type={1} targetId={props.id} preVote={props.preVote}/>
                 <StyledA href={`/c/${props.channelId}/posts/${props.id}#comments`}>
