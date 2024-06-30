@@ -49,7 +49,7 @@ function CommentSection() {
                         rating: comment.rating,
                         age: age,
                         isDeleted: comment.isDeleted,
-                        preVote: comment.preVote,
+                        preVote: comment.hasUserEverVoted,
                     }
                 }
             );
