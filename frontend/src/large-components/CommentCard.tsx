@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import {useAppDispatch} from "other/hooks";
 import {deleteComment} from "../other/slices/commentSlice";
+import { getCookie } from "other/widelyUsedFunctions";
 
 type TypeProps =  {
     name:string,
@@ -33,7 +34,12 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
     const showComment = () :void => {setShowCommentSwitch(true)};
     const hideComment = () :void => {setShowCommentSwitch(false)};
     function deleteCommentHandler() : void {
-        axios.delete(`/api/comment/${id}`)
+        const config : {headers: {"Authorization" : string}} = {
+            headers: {
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        axios.delete(`/api/comment/${id}`, config)
             .then(
                 (response) : void => {
                     if (response.data.EraseOrMark == 1) {
