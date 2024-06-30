@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components"
 import { useAppSelector, useAppDispatch } from 'other/hooks'
-import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from 'other/slices/userSlice';
+import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut, setUsername, setProfilepicture } from 'other/slices/userSlice';
 import ModalLogin from 'large-components/modal-windows/ModalLogin';
 import ModalRegister from 'large-components/modal-windows/ModalRegister';
 import CredditLogo from "small-components/CredditLogo/CredditLogo";
@@ -44,6 +44,8 @@ function Header() {
                         profilePictureUrl: response.data.profilePictureUrl,
                         notCheckedNotificationAmount: response.data.notCheckedNotificationAmount,
                     };
+                    dispatch(setUsername(response.data.username));
+                    dispatch(setProfilepicture(response.data.profilePictureUrl));
                     setUserHeaderSmallInfoState(payload);
                     setHeaderAuth(true);
                 }

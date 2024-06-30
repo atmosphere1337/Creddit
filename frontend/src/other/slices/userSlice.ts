@@ -3,6 +3,8 @@ import {getCookie, setCookie} from "../widelyUsedFunctions";
 
 interface IUserState  {
     colorMode: "dark" | "light",
+    username: string,
+    profilePicture: string, 
     isLoggedIn: boolean,
     isModerator: boolean,
     isAdmin: boolean,
@@ -34,6 +36,8 @@ function doWeRenderLightOrDarkMode() : "light" | "dark" {
 const initialState : IUserState = {
     colorMode: doWeRenderLightOrDarkMode(),
     isLoggedIn: doWeRenderGuestOrUserLayout(),
+    username: "defaultName",
+    profilePicture: "default", 
     isModerator: true,
     isAdmin: true,
 }
@@ -58,6 +62,12 @@ export const userSlice = createSlice({
             setCookie(LOGGEDIN_COOKIE_NAME, "false");
             state.isLoggedIn = false
         },
+        setUsername: (state : IUserState, action: {payload : "string"}) => {
+            state.username = action.payload;
+        },
+        setProfilepicture: (state : IUserState, action: {payload: "string"}) => {
+            state.profilePicture = action.payload;
+        },
     }
 })
 
@@ -65,6 +75,8 @@ export const { setColorModeDark,
                setColorModeLight,
                setLoggedIn,
                setLoggedOut,
+               setUsername,
+               setProfilepicture,
              } = userSlice.actions;
 
 export default userSlice.reducer;

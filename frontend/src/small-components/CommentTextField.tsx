@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import { addComment, INewComment } from "other/slices/commentSlice";
-import { useAppDispatch } from "other/hooks";
+import { useAppDispatch, useAppSelector } from "other/hooks";
 import axios from "axios";
 import {IPopularChannel} from "../other/widelyUsedTypes";
 import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
@@ -10,16 +10,15 @@ import {getCookie} from "../other/widelyUsedFunctions";
 function CommentTextField({hide, parentCommentId, postId}:{hide: () => void, parentCommentId: number, postId: string}) {
     const [text, setText] = useState("");
     const dispatch = useAppDispatch();
+    let getName : string = useAppSelector((state) => state.user.username);
+    let getId : number = -1 * Math.floor(Math.random() * 1000) -3; // get from api?
     function refreshField(element : any) {
         element.target.style.height = "0px";
         element.target.style.height = (17 + element.target.scrollHeight) + "px";
         setText( element.target.value );
     }
     async function sendCommentToRedux() {
-        let getId : number = -1 * Math.floor(Math.random() * 1000) -3; // get from api?
-        let getName : string = "Creddible1337"; // get from what?
         let payload : INewComment = {id: getId, comment: text, name: getName, parent: parentCommentId};
-
         const config = {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
