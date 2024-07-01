@@ -31,6 +31,7 @@ class Comment
     private ?int $amountOfChildComments = 0;
     private ?string $username = null;
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
+    private ?bool $isOwnedByTheUser = false;
 
     public function getId(): ?int
     {
@@ -91,6 +92,10 @@ class Comment
     {
         return $this->hasUserEverVoted;
     }
+    public function getIsOwnedByTheUser(): ?bool
+    {
+        return $this->isOwnedByTheUser;
+    }
 //------------------------------------------------------------------------------------------------
     public function setRating(int $newRating): void
     {
@@ -141,5 +146,8 @@ class Comment
     {
         $this->hasUserEverVoted = $newHasUserEverVoted;
     }
-
+    public function setIsOwnedByTheUser(bool $newIsOwnedByTheUser): void
+    {
+        $this->isOwnedByTheUser = $newIsOwnedByTheUser;
+    }
 }

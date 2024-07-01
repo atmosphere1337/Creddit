@@ -37,6 +37,8 @@ class CommentController extends AbstractController
                 $comment->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
             else
                 $comment->setHasUserEverVoted(0);
+            if ($user && $comment->getUserId() == $user->getId())
+                $comment->setIsOwnedByTheUser(true);
             $comment->setRating(count($upVotes) - count($downVotes));
             $comment->setAmountOfChildComments(count($childrenCommentsFound));
             $authorOfComment = $entityManager->getRepository(User::class)->find($comment->getUserId());
