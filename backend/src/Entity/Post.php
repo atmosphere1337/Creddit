@@ -30,6 +30,7 @@ class Post
     private ?int $rating = 0;
     private ?int $amountOfComments = 0;
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
+    private ?bool $isOwnedByTheUser = false;
     public function getId(): ?int
     {
         return $this->id;
@@ -73,12 +74,11 @@ class Post
     {
         return $this->hasUserEverVoted;
     }
-
-
-
-
-
-
+    public function getIsOwnedByTheUser(): ?bool
+    {
+        return $this->isOwnedByTheUser;
+    }
+//--------------------------------------------------------------------------------------------------------
     public function setRating(int $newRating) : void
     {
         $this->rating = $newRating;
@@ -118,6 +118,10 @@ class Post
     public function setHasUserEverVoted(int $newHasUserEverVoted) : void
     {
         $this->hasUserEverVoted = $newHasUserEverVoted;
+    }
+    public function setIsOwnedByTheUser(bool $newIsOwnedByTheUser) : void
+    {
+        $this->isOwnedByTheUser = $newIsOwnedByTheUser;
     }
 
 }

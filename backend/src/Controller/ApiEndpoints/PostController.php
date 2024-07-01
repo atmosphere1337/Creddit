@@ -109,6 +109,8 @@ class PostController extends AbstractController
                 $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
             else
                 $post->setHasUserEverVoted(0);
+            if ($post->getUserId() == $user->getId())
+                $post->setIsOwnedByTheUser(true);
         }
         $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
