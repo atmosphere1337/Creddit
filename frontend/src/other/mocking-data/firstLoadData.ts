@@ -13,7 +13,7 @@ import {
 } from "../widelyUsedTypes";
 
 export const rawDataPostMany : IPostMini[] = [
-    {id: 1, name: "Article 1", rating: 666, comments: 42, channelId: 1, channelName: "React", preVote: 0, body: `
+    {id: 1, name: "Article 1", rating: 666, comments: 42, channelId: 1, channelName: "React", preVote: 0, isOwnedByUser: false, body: `
         <color orange>***
         xxxSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
         totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
@@ -25,7 +25,7 @@ export const rawDataPostMany : IPostMini[] = [
         Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
         vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
     `},
-    {id: 2, name: "Article 2", rating: 1337, comments: 13, channelId: 2, channelName: "symfony", preVote: 0, body: `
+    {id: 2, name: "Article 2", rating: 1337, comments: 13, channelId: 2, channelName: "symfony", preVote: 0, isOwnedByUser: false, body: `
         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
         deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
         similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et
@@ -36,7 +36,7 @@ export const rawDataPostMany : IPostMini[] = [
         tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis
         doloribus asperiores repellat.
     `},
-    {id: 3, name: "Article 3", rating: 322, comments: 137, channelId: 1, channelName: "React", preVote: 0, body: `
+    {id: 3, name: "Article 3", rating: 322, comments: 137, channelId: 1, channelName: "React", preVote: 0, isOwnedByUser: false, body: `
         <color blue>***
         Ut vehicula justo sit amet elementum tincidunt. Suspendisse eu mauris tempor, semper quam in,
         scelerisque libero. Aliquam accumsan arcu sit amet lorem consequat, a facilisis nisl molestie.
@@ -44,7 +44,7 @@ export const rawDataPostMany : IPostMini[] = [
         platea dictumst. Aenean et mauris ut purus congue sodales vel quis ipsum. In efficitur sodales enim,
         eget tristique libero scelerisque vitae.
     `},
-    {id: 4, name: "Article 4", rating: 24, comments: 148, channelId: 2, channelName: "Symfony", preVote: 0, body: `
+    {id: 4, name: "Article 4", rating: 24, comments: 148, channelId: 2, channelName: "Symfony", preVote: 0, isOwnedByUser: false, body: `
         Ut ante elit, posuere eu arcu ac, egestas elementum mauris. Quisque posuere blandit diam sit amet
         aliquam. Quisque vestibulum id ligula sit amet tincidunt. Vestibulum at elit maximus, volutpat orci
         vel, blandit magna. Nam vel libero accumsan, eleifend nibh ornare, eleifend velit. Vivamus ex purus,
@@ -53,12 +53,12 @@ export const rawDataPostMany : IPostMini[] = [
         sit amet egestas neque commodo at. Maecenas nec turpis id ante fringilla tristique. Nullam leo felis,
         volutpat ut erat et, elementum sollicitudin velit. Sed congue libero lobortis maximus suscipit.    
     `},
-    {id: 5, name: "Article 5", rating: 999, comments: 111, channelId: 1, channelName: "React", preVote: 0, body: `
+    {id: 5, name: "Article 5", rating: 999, comments: 111, channelId: 1, channelName: "React", preVote: 0, isOwnedByUser: false, body: `
         Mauris mollis enim enim, id laoreet enim ullamcorper porta. Lorem ipsum dolor sit amet,
         consectetur adipiscing elit. Donec in enim sit amet turpis congue faucibus id mollis arcu.
         Orci varius natoque penatibus et magnis dis parturient montes 
     `},
-    {id: 6, name: "Article 6", rating: 321, comments: 456, channelId: 2, channelName: "Symfony", preVote: 0, body: `
+    {id: 6, name: "Article 6", rating: 321, comments: 456, channelId: 2, channelName: "Symfony", preVote: 0, isOwnedByUser: false, body: `
        <color green>***
        Quisque venenatis hendrerit purus eget sagittis. Fusce dui neque, congue sit amet aliquet placerat,
        eleifend eget sapien. Sed placerat viverra massa, et hendrerit magna pulvinar non.
@@ -73,6 +73,7 @@ export const rawDataPostOne : IPostMini = {
     rating: 228,
     channelId: 1,
     channelName: "react",
+    isOwnedByUser: false,
     body: `
         <color green>***
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -94,6 +95,7 @@ export const rawListComments : IListedComment[] = [
         age: "1111",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: false,
     },
     {
         id: 2,
@@ -104,6 +106,7 @@ export const rawListComments : IListedComment[] = [
         age: "2222",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: true,
     },
     {
         id: 3,
@@ -114,6 +117,7 @@ export const rawListComments : IListedComment[] = [
         age: "7777",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: false,
     },
     {
         id: 4,
@@ -124,6 +128,7 @@ export const rawListComments : IListedComment[] = [
         age: "9999",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: true,
     },
     {
         id: 5,
@@ -134,6 +139,7 @@ export const rawListComments : IListedComment[] = [
         age: "666",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: false,
     },
     {
         id: 6,
@@ -144,6 +150,7 @@ export const rawListComments : IListedComment[] = [
         age: "111",
         isDeleted: false,
         preVote: 0,
+        isOwnedByUser: true,
     }
 ];
 
