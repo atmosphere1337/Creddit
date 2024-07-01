@@ -47,11 +47,14 @@ class PostController extends AbstractController
     #[Route('api/post', methods: ['POST'])]
     public function addOne(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $newPost = new Post();
         $newPost->setTitle($request->get('postTitle'));
         $newPost->setBody($request->get('postBody'));
         $newPost->setChannelId($request->get('channelId'));
-        $newPost->setUserId(1); /* update it with authenticated user id value */
+        $newPost->setUserId($userId);
         $newPost->setCreatedAt(new \DateTime('now'));
 
         $entityManager->persist($newPost);

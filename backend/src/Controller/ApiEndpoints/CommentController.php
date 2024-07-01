@@ -48,12 +48,15 @@ class CommentController extends AbstractController
     #[Route('api/comment', methods: ['POST'])]
     public function addOne(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $newComment = new Comment();
         $newComment->setBody($request->request->get('commentBody'));
         $newComment->setPostId($request->request->get('postId'));
         $newComment->setParentCommentId($request->request->get('setParentCommentId'));
         $newComment->setCreatedAt(new DateTime());
-        $newComment->setUserId(1); // change on $user->getId()
+        $newComment->setUserId($userId);
         $entityManager->persist($newComment);
         $entityManager->flush();
         return $this->json(["idOfCreatedComment" => $newComment->getId()]);
