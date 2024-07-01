@@ -65,7 +65,12 @@ class PostController extends AbstractController
     #[Route('api/post/{id}', methods: ['DELETE'])]
     public function deleteOne(int $id, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $postToDelete = $entityManager->getRepository(Post::class)->find($id);
+        if ($postToDelete->getUserId() !== $user->getId())
+            return $this->json([], Response::HTTP_FORBIDDEN);
         $manyCommentsToDelete = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postToDelete->getId()]);
         foreach ($manyCommentsToDelete as $oneCommentToDelete) {
             $entityManager->getRepository(Vote::class)->deleteAllVotesUnderComment($oneCommentToDelete->getId());

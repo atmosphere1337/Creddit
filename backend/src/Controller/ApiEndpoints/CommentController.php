@@ -65,10 +65,15 @@ class CommentController extends AbstractController
     #[Route('api/comment/{id}', methods: ['DELETE'])]
     public function deleteOne(int $id, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $result = ["deletedCommentId" => $id,];
         $deletingComment = $entityManager
             ->getRepository(Comment::class)
             ->find($id);
+        if ($deletingComment->getUserId() != $userId)
+            return $this->json([], Response::HTTP_FORBIDDEN);
         $deletingComment->setIsDeleted(true);
         $entityManager
             ->getRepository(Vote::class)
