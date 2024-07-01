@@ -21,6 +21,8 @@ function RecursiveComment( { node } : {node: ITreeComment}) {
             age={node.age}
             isDeleted={node.isDeleted}
             preVote={node.preVote}
+            isOwnedByUser={node.isOwnedByUser}
+
         >
             {
                 node.children.map(
@@ -50,6 +52,7 @@ function CommentSection() {
                         age: age,
                         isDeleted: comment.isDeleted,
                         preVote: comment.hasUserEverVoted,
+                        isOwnedByUser: comment.isOwnedByTheUser,
                     }
                 }
             );

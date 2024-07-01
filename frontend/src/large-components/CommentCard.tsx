@@ -8,6 +8,7 @@ import { StyledA } from "other/styles/CommonStyles";
 import {useParams} from "react-router-dom";
 import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from "axios";
 import {useAppDispatch} from "other/hooks";
 import {deleteComment} from "../other/slices/commentSlice";
@@ -22,10 +23,23 @@ type TypeProps =  {
     children: ReactNode,
     isDeleted: boolean,
     preVote: number,
+    isOwnedByUser: boolean,
 };
 
 
-function CommentCard({ name = "default", comment = "default", rating = 0, age = "0", id = 0, children = <></>, isDeleted = false, preVote } : TypeProps) {
+function CommentCard(
+    {
+        name = "default",
+        comment = "default",
+        rating = 0,
+        age = "0",
+        id = 0,
+        children = <></>,
+        isDeleted = false,
+        preVote,
+        isOwnedByUser = false,
+    } : TypeProps
+) {
     const dispatch = useAppDispatch();
     const params = useParams();
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
@@ -99,9 +113,16 @@ function CommentCard({ name = "default", comment = "default", rating = 0, age = 
                             </StyledButtonPadDiv>
                         </div>
                         <div style={{marginLeft: "auto"}}>
-                            <IconButton aria-label="delete" size="small" onClick={deleteCommentHandler}>
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            {isOwnedByUser &&
+                                <>
+                                    <IconButton aria-label="edit" size="small" onClick={(): void => {}}>
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                    <IconButton aria-label="delete" size="small" onClick={deleteCommentHandler}>
+                                        <DeleteIcon fontSize="small" />
+                                    </IconButton>
+                                </>
+                            }
                         </div>
                     </div>
                 </StyledDiv>
