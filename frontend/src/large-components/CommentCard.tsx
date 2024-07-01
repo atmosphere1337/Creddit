@@ -44,6 +44,7 @@ function CommentCard(
     const params = useParams();
     const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
     const [randomColor, setRandomColor] = useState<number>(Math.floor(100 * Math.random()) % colors.length);
+    const [showOrEdit, setShowOrEdit] = useState<boolean>(true); // true = show, false = edit
     const [showCommentSwitch, setShowCommentSwitch] = useState<boolean>(false);
     const showComment = () :void => {setShowCommentSwitch(true)};
     const hideComment = () :void => {setShowCommentSwitch(false)};
@@ -101,8 +102,21 @@ function CommentCard(
                                     {age}
                                 </div>
                             </div>
-                            <div style={{whiteSpace: "pre-wrap"}}>
-                                {comment}
+                            <div style={{maxWidth: "580px"}}>
+                                { showOrEdit &&
+                                    <div style={{whiteSpace: "pre-wrap", wordWrap: "break-word"}}>
+                                        {comment}
+                                    </div>
+                                }
+                                { !showOrEdit &&
+                                    <div style={{width: "parent"}}>
+                                        <CommentTextField
+                                            hide={ (): void => setShowOrEdit(true) }
+                                            parentCommentId={ id }
+                                            postId={params.post ? params.post : ""}
+                                        />
+                                    </div>
+                                }
                             </div>
                             <StyledButtonPadDiv>
                                 <RatingButton value={rating} type={2} targetId={id} preVote={preVote}/>
@@ -115,7 +129,7 @@ function CommentCard(
                         <div style={{marginLeft: "auto"}}>
                             {isOwnedByUser &&
                                 <>
-                                    <IconButton aria-label="edit" size="small" onClick={(): void => {}}>
+                                    <IconButton aria-label="edit" size="small" onClick={(): void => setShowOrEdit(false)}>
                                         <EditIcon fontSize="small" />
                                     </IconButton>
                                     <IconButton aria-label="delete" size="small" onClick={deleteCommentHandler}>

@@ -60,7 +60,7 @@ function PostPage() {
 }
 
 const StyledDiv = styled.div`
-    min-width: 765px;
+    width: 765px;
     padding: 30px;
 `;
 
