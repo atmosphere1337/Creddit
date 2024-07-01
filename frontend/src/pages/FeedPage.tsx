@@ -23,6 +23,7 @@ function FeedPage({type = "default"} : | { type: pageType}) {
                         channelName: post.channelName, /* go to controller */
                         body: post.body,
                         preVote: post.hasUserEverVoted,
+                        isOwnedByUser: post.isOwnedByTheUser,
                     }
                 }
             );

@@ -10,6 +10,7 @@ import {IPostMini} from "other/widelyUsedTypes";
 import {IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getCookie} from "../other/widelyUsedFunctions";
+import EditIcon from "@mui/icons-material/Edit";
 
 function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const [isHidden, setIsHidden] = useState<boolean>(false);
@@ -59,9 +60,19 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
                 <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
                     {props.name}
                 </StyledA>
-                <IconButton sx={{marginLeft: "auto"}} onClick={deletePostHandler}>
-                    <DeleteIcon fontSize="small"/>
-                </IconButton>
+                <div style={{marginLeft: "auto"}}>
+                    {
+                        props.isOwnedByUser &&
+                        <>
+                            <IconButton onClick={(): void => {}}>
+                                <EditIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton onClick={deletePostHandler}>
+                                <DeleteIcon fontSize="small"/>
+                            </IconButton>
+                        </>
+                    }
+                </div>
             </div>
             <div style={{whiteSpace: "pre-wrap"}}>
                 { parseBody() }

@@ -10,7 +10,17 @@ import {getCookie} from "../other/widelyUsedFunctions";
 
 function PostPage() {
     const params = useParams();
-    const initialPostState : IPostMini = {id: 0, name: "", body: "", comments: 0, rating: 0, channelName: "", channelId: 0, preVote: 0};
+    const initialPostState : IPostMini = {
+        id: 0,
+        name: "",
+        body: "",
+        comments: 0,
+        rating: 0,
+        channelName: "",
+        channelId: 0,
+        preVote: 0,
+        isOwnedByUser: false,
+    };
     const [post, setPost] = useState<IPostMini>(initialPostState);
     useEffect(() : void => {
         const successResponseCallback = (response: any) : void  => {
@@ -23,6 +33,7 @@ function PostPage() {
                 channelId: response.data.channelId, /* go to controller */
                 channelName: response.data.channelName, /* go to controller */
                 preVote: response.data.hasUserEverVoted,
+                isOwnedByUser: response.data.isOwnedByTheUser,
             };
             setPost(payload);
         };
