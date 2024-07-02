@@ -32,7 +32,7 @@ class Comment
     private ?string $username = null;
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
     private ?bool $isOwnedByTheUser = false;
-
+    private ?string $profilePicture = "default";
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +96,10 @@ class Comment
     {
         return $this->isOwnedByTheUser;
     }
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
 //------------------------------------------------------------------------------------------------
     public function setRating(int $newRating): void
     {
@@ -152,5 +156,9 @@ class Comment
     public function setIsOwnedByTheUser(bool $newIsOwnedByTheUser): void
     {
         $this->isOwnedByTheUser = $newIsOwnedByTheUser;
+    }
+    public function setProfilePicture(string $newProfilePicture): void
+    {
+        $this->profilePicture = $newProfilePicture;
     }
 }

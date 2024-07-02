@@ -43,6 +43,7 @@ class CommentController extends AbstractController
             $comment->setAmountOfChildComments(count($childrenCommentsFound));
             $authorOfComment = $entityManager->getRepository(User::class)->find($comment->getUserId());
             $comment->setUsername($authorOfComment->getUsername());
+            $comment->setProfilePicture($authorOfComment->getProfilePictureUrl());
         }
         return $this->json($comments);
     }
