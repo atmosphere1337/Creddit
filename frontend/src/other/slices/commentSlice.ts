@@ -13,6 +13,7 @@ let rawTree : ITreeComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: false,
+        isEdited: false,
     }
 ];
 
@@ -73,6 +74,7 @@ export const commentSlice = createSlice({
                 isDeleted: false,
                 preVote: 0,
                 isOwnedByUser: false,
+                isEdited: false,
             };
             state.tree = [ fatherNode ];
             let queue : ITreeComment [] = [ fatherNode ];
@@ -106,6 +108,7 @@ export const commentSlice = createSlice({
                         isDeleted: false,
                         preVote: 0,
                         isOwnedByUser: false,
+                        isEdited: false,
                     };
                     currentNode.children.unshift(newComment);
                     break;
@@ -138,6 +141,7 @@ export const commentSlice = createSlice({
                 for (let i: number = 0; i < currentNode.children.length; i++) {
                     if (currentNode.children[i].id == action.payload.id) { /* action.payload keep that in mind */
                         currentNode.children[i].comment = action.payload.body;
+                        currentNode.children[i].isEdited = true;
                         return;
                     }
                     queue.push(currentNode.children[i]);

@@ -24,6 +24,7 @@ type TypeProps =  {
     isDeleted: boolean,
     preVote: number,
     isOwnedByUser: boolean,
+    isEdited: boolean,
 };
 
 
@@ -38,6 +39,7 @@ function CommentCard(
         isDeleted = false,
         preVote,
         isOwnedByUser = false,
+        isEdited = false,
     } : TypeProps
 ) {
     const dispatch = useAppDispatch();
@@ -98,9 +100,14 @@ function CommentCard(
                                         {name}
                                     </StyledA>
                                 </div>
-                                <div style={{ color: "#9f9e9e" }}>
+                                <div style={{ color: "#9f9e9e", marginRight: "15px" }}>
                                     {age}
                                 </div>
+                                { isEdited &&
+                                    <div style={{color: "#9f9e9e"}}>
+                                        edited
+                                    </div>
+                                }
                             </div>
                             <div style={{}}>
                                 { showOrEdit &&
