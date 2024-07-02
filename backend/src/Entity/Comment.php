@@ -141,7 +141,10 @@ class Comment
     {
         $this->isDeleted = $newIsDeleted;
     }
-
+    public function setIsEdited(bool $newIsEdited): void
+    {
+        $this->isEdited = $newIsEdited;
+    }
     public function setHasUserEverVoted(int $newHasUserEverVoted) : void
     {
         $this->hasUserEverVoted = $newHasUserEverVoted;

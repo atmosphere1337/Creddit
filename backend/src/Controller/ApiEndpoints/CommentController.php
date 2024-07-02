@@ -58,6 +58,8 @@ class CommentController extends AbstractController
         $newComment->setPostId($request->request->get('postId'));
         $newComment->setParentCommentId($request->request->get('setParentCommentId'));
         $newComment->setCreatedAt(new DateTime());
+        $newComment->setIsDeleted(false);
+        $newComment->setIsEdited(false);
         $newComment->setUserId($userId);
         $entityManager->persist($newComment);
         $entityManager->flush();
@@ -75,7 +77,7 @@ class CommentController extends AbstractController
             ->getRepository(Comment::class)
             ->find($id);
         if ($deletingComment->getUserId() != $userId)
-            return $this->json([], Response::HTTP_FORBIDDEN);
+            return $this->json(["You are not owner of that comment to delete it"], Response::HTTP_FORBIDDEN);
         $deletingComment->setIsDeleted(true);
         $entityManager
             ->getRepository(Vote::class)
@@ -93,5 +95,24 @@ class CommentController extends AbstractController
         }
         $entityManager->flush();
         return $this->json($result);
+    }
+
+    #[Route('api/comment/{id}', methods: ['PUT'])]
+    public function updateOne(Request $request, int $id, EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $commentToUpdate = $entityManager
+            ->getRepository(Comment::class)
+            ->find($id);
+        if ($commentToUpdate->getUserId() != $userId)
+            return $this->json(["You are not owner of that comment to update it"], Response::HTTP_FORBIDDEN);
+        $newCommentBody = $request->request->get('commentBody');
+        $commentToUpdate->setBody($newCommentBody);
+        $commentToUpdate->setIsEdited(true);
+        $entityManager->persist($commentToUpdate);
+        $entityManager->flush();
+        return $this->json(["id" => $id], Response::HTTP_OK);
     }
 }
