@@ -97,6 +97,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: false,
         isEdited: false,
+        profilePicture: "default",
     },
     {
         id: 2,
@@ -109,6 +110,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: true,
         isEdited: false,
+        profilePicture: "default",
     },
     {
         id: 3,
@@ -121,6 +123,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: false,
         isEdited: false,
+        profilePicture: "default",
     },
     {
         id: 4,
@@ -133,6 +136,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: true,
         isEdited: false,
+        profilePicture: "default",
     },
     {
         id: 5,
@@ -145,6 +149,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: false,
         isEdited: false,
+        profilePicture: "default",
     },
     {
         id: 6,
@@ -157,6 +162,7 @@ export const rawListComments : IListedComment[] = [
         preVote: 0,
         isOwnedByUser: true,
         isEdited: false,
+        profilePicture: "default",
     }
 ];
 

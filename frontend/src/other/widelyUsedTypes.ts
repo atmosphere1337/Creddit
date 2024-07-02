@@ -77,6 +77,7 @@ export interface IListedComment {
     preVote: number,
     isOwnedByUser: boolean,
     isEdited: boolean,
+    profilePicture: string,
 }
 export interface ICommentCard {
     name:string,
