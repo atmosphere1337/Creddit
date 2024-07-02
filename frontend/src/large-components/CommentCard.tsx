@@ -25,6 +25,7 @@ type TypeProps =  {
     preVote: number,
     isOwnedByUser: boolean,
     isEdited: boolean,
+    profilePicture: string,
 };
 
 
@@ -40,6 +41,7 @@ function CommentCard(
         preVote,
         isOwnedByUser = false,
         isEdited = false,
+        profilePicture = "default",
     } : TypeProps
 ) {
     const dispatch = useAppDispatch();
@@ -91,7 +93,21 @@ function CommentCard(
                 <StyledDiv>
                     <div style={{display: "flex"}}>
                         <div style={{marginRight: "20px", width: "40px"}}>
-                            <StyledAvatarDiv dynamicColor={colors[randomColor]}/>
+                            {
+                                profilePicture != "default" &&
+                                <StyledAvatarDiv
+                                    style={{backgroundImage: `url(${profilePicture})`, backgroundSize: "100% 100%"}}
+                                />
+                            }
+                            {
+                                profilePicture == "default" &&
+                                <StyledAvatarDiv
+                                    style={{
+                                        backgroundImage: `url(https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg)`,
+                                        backgroundSize: "100% 100%",
+                                    }}
+                                />
+                            }
                         </div>
                         <div style={{flexGrow: "1"}}>
                             <div style={{display: "flex", marginBottom: "10px"}}>
@@ -180,8 +196,7 @@ const StyledDiv = styled.div`
     background-color: #403f3f;
 `;
 
-const StyledAvatarDiv = styled.div<{ dynamicColor?: string }>`
-    background-color: ${ props => props.dynamicColor };
+const StyledAvatarDiv = styled.div`
     height: 30px;
     width: 30px;
     border-radius: 666px;

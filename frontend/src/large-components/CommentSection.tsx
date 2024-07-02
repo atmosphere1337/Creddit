@@ -23,6 +23,7 @@ function RecursiveComment( { node } : {node: ITreeComment}) {
             preVote={node.preVote}
             isOwnedByUser={node.isOwnedByUser}
             isEdited={node.isEdited}
+            profilePicture={node.profilePicture}
         >
             {
                 node.children.map(
@@ -54,6 +55,7 @@ function CommentSection() {
                         isEdited: comment.isEdited,
                         preVote: comment.hasUserEverVoted,
                         isOwnedByUser: comment.isOwnedByTheUser,
+                        profilePicture: comment.profilePicture,
                     }
                 }
             );
