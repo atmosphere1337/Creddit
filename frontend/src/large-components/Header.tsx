@@ -114,7 +114,14 @@ function Header() {
                       </Badge>
                   </IconButton>
                   <IconButton onClick={ handleClick }>
-                    <Avatar sx={{width: 32, height: 32}} />
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl == "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} />
+                      }
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl != "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} src={userHeaderSmallInfoState.profilePictureUrl}/>
+                      }
                   </IconButton>
                   <Menu
                     anchorEl={anchorEl}
