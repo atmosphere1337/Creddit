@@ -46,5 +46,20 @@ class UserController extends AbstractController
         ];
         return $this->json($response, Response::HTTP_OK);
     }
+    #[Route('/api/user', methods: ['GET'])]
+    public function getUserEndpoint(EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $thisUser = $entityManager->getRepository(User::class)->find($userId);
+        $response = [
+            'email' => $thisUser->getEmail(),
+            'username' => $thisUser->getUsername(),
+            'profilePictureUrl' => $thisUser->getProfilePictureUrl(),
+
+        ];
+        return $this->json($response, Response::HTTP_OK);
+    }
 
 }
