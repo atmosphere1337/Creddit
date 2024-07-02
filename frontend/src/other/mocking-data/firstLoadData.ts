@@ -96,6 +96,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: false,
+        isEdited: false,
     },
     {
         id: 2,
@@ -107,6 +108,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: true,
+        isEdited: false,
     },
     {
         id: 3,
@@ -118,6 +120,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: false,
+        isEdited: false,
     },
     {
         id: 4,
@@ -129,6 +132,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: true,
+        isEdited: false,
     },
     {
         id: 5,
@@ -140,6 +144,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: false,
+        isEdited: false,
     },
     {
         id: 6,
@@ -151,6 +156,7 @@ export const rawListComments : IListedComment[] = [
         isDeleted: false,
         preVote: 0,
         isOwnedByUser: true,
+        isEdited: false,
     }
 ];
 

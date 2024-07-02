@@ -76,6 +76,7 @@ export interface IListedComment {
     isDeleted: boolean,
     preVote: number,
     isOwnedByUser: boolean,
+    isEdited: boolean,
 }
 export interface ICommentCard {
     name:string,
