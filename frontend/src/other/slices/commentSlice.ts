@@ -129,6 +129,20 @@ export const commentSlice = createSlice({
                     queue.push(currentNode.children[i]);
                 }
             }
+        },
+        updateComment: (state: ICommentState, action: {payload: {id: number, body: string}}): void => {
+            let currentNode;
+            let queue : ITreeComment[] = [ state.tree[0] ];
+            while (queue.length != 0) {
+                currentNode = <ITreeComment>queue.shift();
+                for (let i: number = 0; i < currentNode.children.length; i++) {
+                    if (currentNode.children[i].id == action.payload.id) { /* action.payload keep that in mind */
+                        currentNode.children[i].comment = action.payload.body;
+                        return;
+                    }
+                    queue.push(currentNode.children[i]);
+                }
+            }
         }
     }
 });
@@ -138,6 +152,7 @@ export const {
     addComment ,
     setListFirstLoad,
     deleteComment,
+    updateComment,
 
 } = commentSlice.actions;
 

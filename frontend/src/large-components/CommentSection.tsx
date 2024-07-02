@@ -90,6 +90,7 @@ function CommentSection() {
                         hide={ switchDefaultComment }
                         parentCommentId={ 0 }
                         postId={params.post ? params.post : ""}
+                        mode={"create"}
                     />
                 </div>
             }

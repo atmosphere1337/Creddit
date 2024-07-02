@@ -88,10 +88,10 @@ function CommentCard(
             <>
                 <StyledDiv>
                     <div style={{display: "flex"}}>
-                        <div style={{marginRight: "20px"}}>
+                        <div style={{marginRight: "20px", width: "40px"}}>
                             <StyledAvatarDiv dynamicColor={colors[randomColor]}/>
                         </div>
-                        <div>
+                        <div style={{flexGrow: "1"}}>
                             <div style={{display: "flex", marginBottom: "10px"}}>
                                 <div style={{marginRight: "20px", fontWeight: "bold"}}>
                                     <StyledA href={"/user/" + name}>
@@ -102,18 +102,21 @@ function CommentCard(
                                     {age}
                                 </div>
                             </div>
-                            <div style={{maxWidth: "580px"}}>
+                            <div style={{}}>
                                 { showOrEdit &&
-                                    <div style={{whiteSpace: "pre-wrap", wordWrap: "break-word"}}>
+                                    <div style={{whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "break-all"}}>
                                         {comment}
                                     </div>
                                 }
                                 { !showOrEdit &&
-                                    <div style={{width: "parent"}}>
+                                    <div>
                                         <CommentTextField
                                             hide={ (): void => setShowOrEdit(true) }
                                             parentCommentId={ id }
                                             postId={params.post ? params.post : ""}
+                                            mode={"edit"}
+                                            editedBodyInitialState={comment}
+                                            commentId={id}
                                         />
                                     </div>
                                 }
@@ -126,7 +129,7 @@ function CommentCard(
                                 <ModalReport />
                             </StyledButtonPadDiv>
                         </div>
-                        <div style={{marginLeft: "auto"}}>
+                        <div style={{display: "flex", alignItems: "flex-start"}}>
                             {isOwnedByUser &&
                                 <>
                                     <IconButton aria-label="edit" size="small" onClick={(): void => setShowOrEdit(false)}>
@@ -147,6 +150,7 @@ function CommentCard(
                             hide={ hideComment }
                             parentCommentId={ id }
                             postId={params.post ? params.post : ""}
+                            mode={"edit"}
                         />
                     }
                     {children}
