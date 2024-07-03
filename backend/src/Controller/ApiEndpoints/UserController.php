@@ -74,5 +74,20 @@ class UserController extends AbstractController
         $entityManager->flush();
         return $this->json(['id' => $user->getId()], Response::HTTP_OK);
     }
+//    #[Route('/api/userbig', methods: ['GET'])]
+//    public function getUserBig(EntityManagerInterface $entityManager): Response
+//    {
+//        /** @var User $user */
+//        $user = $this->getUser();
+//
+//        $responseBody = [
+//            'userName' => $user->getUsername(),
+//            'profilePictureUrl' => $user->getProfilePictureUrl(),
+//            'joinDate' => ,
+//            'commentRating' => ,
+//            'postRating' => ,
+//        ];
+//        return $this->json($responseBody);
+//    }
 
 }

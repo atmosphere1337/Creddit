@@ -11,6 +11,7 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import FlagIcon from '@mui/icons-material/Flag';
 
 import {IPostMiniCardNew, ICommentMiniCardNew, IUserInfoCardNew} from "../other/widelyUsedTypes";
+import axios from "axios";
 
 function CommentMiniCard({rating, content, avatarColor, channelName, postName, authorName} : ICommentMiniCardNew) {
     return (
@@ -103,6 +104,13 @@ function PostMiniCardNew({channelName, age, title, postColor, avatarColor, ratin
         </Card>
     );
 }
+interface IUserInfoProfile {
+    userName: string,
+    profilePictureUrl: string,
+    commentRating: number,
+    postRating: number,
+    joinDate: string,
+}
 
 export function UserProfileFeed() {
     const selectUserMainInfo: IUserInfoCardNew = useAppSelector(state => state.userData.userMainInfo);
@@ -110,6 +118,26 @@ export function UserProfileFeed() {
     const selectUserComments: ICommentMiniCardNew[] = useAppSelector(state => state.userData.userComments);
     const [showComments, setShowComments] = useState<boolean>(true);
     const [showPosts, setShowPosts] = useState<boolean>(true);
+    const [userInfoProfileData, setUserInfoProfileData] = useState<IUserInfoProfile | undefined>();
+    useState((): void => {
+        const url: string = "/api/user";
+        axios.get(url)
+            .then(
+                (response): void => {
+                    const obtainedUserInfoProfileData: IUserInfoProfile = {
+                        userName : response.data.userName,
+                        profilePictureUrl : response.data.profilePictureUrl,
+                        commentRating : response.data.commentRating,
+                        postRating: response.data.postRating,
+                        joinDate: response.data.joinDate,
+                    }
+                    setUserInfoProfileData(obtainedUserInfoProfileData);
+                }
+            )
+            .catch(
+                error => alert(error)
+            );
+    });
     return (
         <Box sx={{minWidth: "765px", p: "30px"}}>
             <Stack direction={"row"} alignItems={"center"} gap={3} sx={{mb: 2}}>
