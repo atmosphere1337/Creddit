@@ -117,4 +117,10 @@ class PostController extends AbstractController
         $post->setChannelName($channelName);
     }
 
+    #[Route('/api/user/{userId}/posts')]
+    public function getUserPosts(int $userId, EntityManagerInterface $entityManager): Response
+    {
+        $userSpecificPosts = $entityManager->getRepository(Post::class)->findBy(['userId' => $userId]);
+        return $this->json($userSpecificPosts);
+    }
 }

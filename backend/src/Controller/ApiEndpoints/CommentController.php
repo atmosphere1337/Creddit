@@ -116,4 +116,10 @@ class CommentController extends AbstractController
         $entityManager->flush();
         return $this->json(["id" => $id], Response::HTTP_OK);
     }
+    #[Route('/api/user/{userId}/comments')]
+    public function getUserComments(int $userId, EntityManagerInterface $entityManager): Response
+    {
+        $userSpecificComments = $entityManager->getRepository(Comment::class)->findBy(['userId' => $userId]);
+        return $this->json($userSpecificComments);
+    }
 }
