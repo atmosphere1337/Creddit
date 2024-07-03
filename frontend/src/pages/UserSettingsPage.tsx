@@ -8,21 +8,34 @@ interface IUserSettingsData {
     email : string,
     username: string,
     profilePictureUrl: string,
+    oldPassword: string,
+    newPassword: string,
 }
 const userSettingsInitData : IUserSettingsData = {
     email: "",
     username: "",
     profilePictureUrl: "default",
+    oldPassword: "",
+    newPassword: "",
 }
 
 function UserSettingsPage() {
-    const [oldPassword, setOldPassword] = useState<string>("");
-    const [newPassword, setNewPassword] = useState<string>("");
     const [openCollapseAlert,setOpenCollapseAlert] = useState<boolean>(false);
     const [userSettingsData, setUserSettingsData] = useState<IUserSettingsData>(userSettingsInitData);
-    function handlePasswordChange(){
-        setOpenCollapseAlert(true);
-
+    const [profilePictureUrlToRender, setProfilePictureUrlToRender] = useState<string>("");
+    function handlePasswordChange(): void{
+        const config : {headers: {"Authorization" : string, "Content-Type" : string}} = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization" : `Bearer ${getCookie("token")}`,
+            }
+        }
+        const url: string = "/api/user";
+        axios.put(url, userSettingsData, config)
+            .then((): void => {
+                setOpenCollapseAlert(true);
+            })
+            .catch( error => alert(error) );
     }
     useEffect((): void => {
         const config : {headers: {"Authorization" : string}} = {
@@ -36,7 +49,10 @@ function UserSettingsPage() {
                     email : response.data.email,
                     username: response.data.username,
                     profilePictureUrl: response.data.profilePictureUrl,
+                    oldPassword: "",
+                    newPassword: "",
                 };
+                setProfilePictureUrlToRender(response.data.profilePictureUrl);
                 setUserSettingsData(fetchedSettingsData);
             })
             .catch((): void => {
@@ -55,8 +71,18 @@ function UserSettingsPage() {
                         Avatar
                     </Grid> 
                     <Grid item xs={8}>
+                        <Box
+                            sx={{
+                                width: "100px",
+                                height: "100px",
+                                backgroundImage: `url(${profilePictureUrlToRender})`,
+                                backgroundSize: "100% 100%",
+                                borderRadius: "666px",
+                                mb: 2,
+                            }}
+                        />
                         <Box>
-                            <Button variant="contained" component="label">
+                            <Button variant="contained" component="label" disabled={true}>
                                 <input type="file" hidden></input>
                                 Upload image
                             </Button>
@@ -83,6 +109,16 @@ function UserSettingsPage() {
                     </Grid>
                     <Grid item xs={12}><Divider /></Grid>
                     <Grid item xs={4}>
+                        Email
+                    </Grid>
+                    <Grid item xs={8}>
+                        <TextField
+                            value={userSettingsData.email}
+                            onChange={e =>{setUserSettingsData({...userSettingsData, email: e.target.value})}}
+                        />
+                    </Grid>
+                    <Grid item xs={12}><Divider /></Grid>
+                    <Grid item xs={4}>
                         Change password
                     </Grid> 
                     <Grid item xs={8}>
@@ -91,16 +127,17 @@ function UserSettingsPage() {
                                 type="password"
                                 label="Enter current password"
                                 sx={{mr: 1}}
-                                value={oldPassword}
-                                onChange={(event) => setOldPassword(event.target.value)}
+                                value={userSettingsData.oldPassword}
+                                onChange={(e) => setUserSettingsData({...userSettingsData, oldPassword: e.target.value})}
+
                             />
                         </Box>
                         <Box sx={{mb: 2}}>
                             <TextField 
                                 type="password"
                                 label="Enter new password"
-                                value={newPassword}
-                                onChange={(event) => setNewPassword(event.target.value)}
+                                value={userSettingsData.newPassword}
+                                onChange={(e) => setUserSettingsData({...userSettingsData, newPassword: e.target.value})}
                             />
                         </Box>
                         <Box>
@@ -120,7 +157,7 @@ function UserSettingsPage() {
                                     </IconButton>
                                 }
                             >
-                                You changed old password {oldPassword} to {newPassword}
+                                You have changed old password {userSettingsData.oldPassword} to {userSettingsData.newPassword}
                             </Alert>
                         </Collapse>
                     </Grid>
