@@ -11,24 +11,32 @@ function ChannelInfoCard() {
     const [channelInfoData, setChannelInfoData] = useState<IChannelInfoCard>(emptyData);
     const params = useParams();
     useEffect(() : void => {
+        const channelInfoSuccessHandlerCallback = (response: any) : void  => {
+            const payload : IChannelInfoCard = {
+                name: response.data.name,
+                description: response.data.description,
+                members: response.data.members,
+                online: response.data.membersOnline,
+                rules: response.data.rules,
+            }
+            setChannelInfoData(payload);
+        };
         const config : {headers: {"Authorization" : string}} = {
             headers: {
                 "Authorization" : `Bearer ${getCookie("token")}`,
             }
         }
-        axios.get('/api/channel/' + params.channel, config)
-            .then((response) : void  => {
-                const payload : IChannelInfoCard = {
-                    name: response.data.name,
-                    description: response.data.description,
-                    members: response.data.members,
-                    online: response.data.membersOnline,
-                    rules: response.data.rules,
-                }
-                setChannelInfoData(payload);
-            })
-            .catch( error => {
-                setChannelInfoData(rawDataChannelInfoCard);
+        const url: string = `/api/channel/${params.channel}`;
+        axios.get(url, config)
+            .then(channelInfoSuccessHandlerCallback)
+            .catch( (): void => {
+                axios.get(url)
+                    .then(channelInfoSuccessHandlerCallback)
+                    .catch(
+                        (): void => {
+                            setChannelInfoData(rawDataChannelInfoCard);
+                        }
+                    );
             });
     }, []);
     return (
