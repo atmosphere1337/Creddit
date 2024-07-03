@@ -22,6 +22,7 @@ class UserController extends AbstractController
         $newUser = new User();
         $newUser->setEmail($request->request->get('email'));
         $newUser->setUsername($request->request->get('username'));
+        $newUser->setProfilePictureUrl("default");
         $newPassword = $passwordHasher->hashPassword($newUser, $request->request->get('password'));
         $newUser->setPassword($newPassword);
         $newUser->setRoles(['ROLE_USER']);
@@ -74,20 +75,19 @@ class UserController extends AbstractController
         $entityManager->flush();
         return $this->json(['id' => $user->getId()], Response::HTTP_OK);
     }
-//    #[Route('/api/userbig', methods: ['GET'])]
-//    public function getUserBig(EntityManagerInterface $entityManager): Response
-//    {
-//        /** @var User $user */
-//        $user = $this->getUser();
-//
-//        $responseBody = [
-//            'userName' => $user->getUsername(),
-//            'profilePictureUrl' => $user->getProfilePictureUrl(),
-//            'joinDate' => ,
-//            'commentRating' => ,
-//            'postRating' => ,
-//        ];
-//        return $this->json($responseBody);
-//    }
-
+    #[Route('/api/user/{id}', methods: ['GET'])]
+    public function getUserBig(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user)
+            return $this->json([], 404);
+        $responseBody = [
+            'userName' => $user->getUsername(),
+            'profilePictureUrl' => $user->getProfilePictureUrl(),
+            'joinDate' => "sosi",
+            'commentRating' => 13,
+            'postRating' => 26,
+        ];
+        return $this->json($responseBody);
+    }
 }
