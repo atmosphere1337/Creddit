@@ -119,7 +119,19 @@ class CommentController extends AbstractController
     #[Route('/api/user/{userId}/comments')]
     public function getUserComments(int $userId, EntityManagerInterface $entityManager): Response
     {
-        $userSpecificComments = $entityManager->getRepository(Comment::class)->findBy(['userId' => $userId]);
+        $user = $entityManager->getRepository(User::class)->find($userId);
+        $userSpecificComments = $entityManager->getRepository(Comment::class)->findBy(['userId' => $user->getId()]);
+        foreach ($userSpecificComments as $comment) {
+            $comment->setUsername($user->getUsername());
+            $comment->setRating(55);
+            $votes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['type' => 2, 'targetId' => $comment->getId()]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $comment->setRating(count($upVotes) - count($downVotes));
+            $comment->setProfilePicture($user->getProfilePictureUrl());
+        }
         return $this->json($userSpecificComments);
     }
 }
