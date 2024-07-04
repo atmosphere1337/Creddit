@@ -15,6 +15,7 @@ let rawTree : ITreeComment[] = [
         isOwnedByUser: false,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     }
 ];
 
@@ -77,6 +78,7 @@ export const commentSlice = createSlice({
                 isOwnedByUser: false,
                 isEdited: false,
                 profilePicture: "default",
+                ownerId: 0,
             };
             state.tree = [ fatherNode ];
             let queue : ITreeComment [] = [ fatherNode ];
@@ -112,6 +114,7 @@ export const commentSlice = createSlice({
                         isOwnedByUser: false,
                         isEdited: false,
                         profilePicture: "default",
+                        ownerId: 0,
                     };
                     currentNode.children.unshift(newComment);
                     break;

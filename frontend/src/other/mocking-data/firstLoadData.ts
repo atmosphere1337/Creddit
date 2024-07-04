@@ -98,6 +98,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: false,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     },
     {
         id: 2,
@@ -111,6 +112,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: true,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     },
     {
         id: 3,
@@ -124,6 +126,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: false,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     },
     {
         id: 4,
@@ -137,6 +140,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: true,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     },
     {
         id: 5,
@@ -150,6 +154,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: false,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     },
     {
         id: 6,
@@ -163,6 +168,7 @@ export const rawListComments : IListedComment[] = [
         isOwnedByUser: true,
         isEdited: false,
         profilePicture: "default",
+        ownerId: 0,
     }
 ];
 

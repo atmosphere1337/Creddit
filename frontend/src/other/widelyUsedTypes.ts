@@ -79,6 +79,7 @@ export interface IListedComment {
     isOwnedByUser: boolean,
     isEdited: boolean,
     profilePicture: string,
+    ownerId: number,
 }
 export interface ICommentCard {
     name:string,
