@@ -26,6 +26,7 @@ type TypeProps =  {
     isOwnedByUser: boolean,
     isEdited: boolean,
     profilePicture: string,
+    ownerId: number,
 };
 
 
@@ -42,6 +43,7 @@ function CommentCard(
         isOwnedByUser = false,
         isEdited = false,
         profilePicture = "default",
+        ownerId = 0,
     } : TypeProps
 ) {
     const dispatch = useAppDispatch();
@@ -93,26 +95,28 @@ function CommentCard(
                 <StyledDiv>
                     <div style={{display: "flex"}}>
                         <div style={{marginRight: "20px", width: "40px"}}>
-                            {
-                                profilePicture != "default" &&
-                                <StyledAvatarDiv
-                                    style={{backgroundImage: `url(${profilePicture})`, backgroundSize: "100% 100%"}}
-                                />
-                            }
-                            {
-                                profilePicture == "default" &&
-                                <StyledAvatarDiv
-                                    style={{
-                                        backgroundImage: `url(https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg)`,
-                                        backgroundSize: "100% 100%",
-                                    }}
-                                />
-                            }
+                            <StyledA href={"/user/" + ownerId}>
+                                {
+                                    profilePicture != "default" &&
+                                    <StyledAvatarDiv
+                                        style={{backgroundImage: `url(${profilePicture})`, backgroundSize: "100% 100%"}}
+                                    />
+                                }
+                                {
+                                    profilePicture == "default" &&
+                                    <StyledAvatarDiv
+                                        style={{
+                                            backgroundImage: `url(https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg)`,
+                                            backgroundSize: "100% 100%",
+                                        }}
+                                    />
+                                }
+                            </StyledA>
                         </div>
                         <div style={{flexGrow: "1"}}>
                             <div style={{display: "flex", marginBottom: "10px"}}>
                                 <div style={{marginRight: "20px", fontWeight: "bold"}}>
-                                    <StyledA href={"/user/" + name}>
+                                    <StyledA href={"/user/" + ownerId}>
                                         {name}
                                     </StyledA>
                                 </div>
