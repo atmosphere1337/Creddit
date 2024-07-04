@@ -38,7 +38,7 @@ export interface ICommentMiniCardNew {
     channelName: string,
     postName: string,
     authorName: string,
-    avatarColor: string,
+    profilePicture: string,
 }
 export interface IPostMiniCardNew {
     channelName: string,
@@ -48,6 +48,7 @@ export interface IPostMiniCardNew {
     rating: number,
     comments: number,
     avatarColor: string,
+    content: string,
 }
 export interface IUserInfoCardNew {
     name: string,

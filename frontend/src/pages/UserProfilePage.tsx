@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {JSX, useState} from 'react';
 import {useAppSelector} from "other/hooks";
 import { Typography, Divider, Box, Button, Grid, Stack, Paper, Chip, IconButton} from '@mui/material';
 import {Card, CardActions, CardContent} from '@mui/material';
@@ -14,13 +14,21 @@ import {IPostMiniCardNew, ICommentMiniCardNew, IUserInfoCardNew} from "../other/
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
-function CommentMiniCard({rating, content, avatarColor, channelName, postName, authorName} : ICommentMiniCardNew) {
+function CommentMiniCard({rating, content, profilePicture, channelName, postName, authorName} : ICommentMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
                 <Box sx={{color: "gray", mb: 1}}> 
                     <Stack direction="row" alignItems="center" gap={1}>
-                        <Box sx={{width: "30px", height: "30px", backgroundColor: avatarColor, borderRadius: "666px"}} />
+                        <Box
+                            sx={{
+                                width: "30px",
+                                height: "30px",
+                                backgroundImage: `url(${profilePicture})`,
+                                backgroundSize: "100% 100%",
+                                borderRadius: "666px",
+                            }}
+                        />
                         <Typography>
                             c/{channelName}
                         </Typography>
@@ -33,7 +41,7 @@ function CommentMiniCard({rating, content, avatarColor, channelName, postName, a
                         {authorName}
                     </Typography>
                 </Box>
-                <Typography component="p">
+                <Typography component="p" sx={{whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "break-all"}}>
                     {content}
                 </Typography>
             </CardContent>
@@ -62,7 +70,8 @@ function CommentMiniCard({rating, content, avatarColor, channelName, postName, a
     );
 }
 
-function PostMiniCardNew({channelName, age, title, postColor, avatarColor, rating, comments}: IPostMiniCardNew) {
+
+function PostMiniCardNew({channelName, age, title, content, avatarColor, rating, comments}: IPostMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
@@ -79,7 +88,10 @@ function PostMiniCardNew({channelName, age, title, postColor, avatarColor, ratin
                 <Typography sx={{fontWeight: "bold"}}>
                     {title}
                 </Typography>
-                <Paper sx={{backgroundColor: postColor, height: "500px", borderRadius: "15px"}} />
+                <Paper sx={{backgroundColor: "blue", height: "500px", borderRadius: "15px"}} />
+                <Typography>
+                    {content}
+                </Typography>
             </CardContent>
             <CardActions>
                 <Button>
@@ -143,7 +155,7 @@ export function UserProfileFeed() {
             .then(
                 (response): void => {
                     const recievedUserPostsData: IPostMiniCardNew[] = response.data.map(
-                        (element: IPostMiniCardNew): IPostMiniCardNew => {
+                        (element: any): IPostMiniCardNew => {
                             return {
                                 channelName: element.channelName,
                                 age: element.age,
@@ -152,6 +164,7 @@ export function UserProfileFeed() {
                                 rating: element.rating,
                                 comments: element.comments,
                                 avatarColor: element.avatarColor,
+                                content: element.body,
                             } 
                         }
                     );
@@ -164,21 +177,25 @@ export function UserProfileFeed() {
             .then(
                 (response): void => {
                     const recievedUserCommentsData: ICommentMiniCardNew[] = response.data.map(
-                        (element: ICommentMiniCardNew): ICommentMiniCardNew => {
+                        (element: any): ICommentMiniCardNew => {
                             return {
                                 rating: element.rating,
-                                content: element.content,
+                                content: element.body,
                                 channelName: element.channelName,
                                 postName: element.postName,
-                                authorName: element.authorName,
-                                avatarColor: element.avatarColor,
+                                authorName: element.username,
+                                profilePicture: element.profilePicture,
                             }; 
                         }
                     );
                     setUserCommentsData(recievedUserCommentsData);
                 }
             )
-            .catch();
+            .catch(
+                (error): void => {
+                    alert(error);
+                }
+            );
     });
     return (
         <Box sx={{minWidth: "765px", p: "30px"}}>
@@ -210,20 +227,20 @@ export function UserProfileFeed() {
             <Stack gap={2}>
                 {
                     showComments &&
-                    userCommentsData?.map((element : ICommentMiniCardNew) =>
+                    userCommentsData?.map((element: ICommentMiniCardNew) : JSX.Element =>
                         <CommentMiniCard
                             rating = {element.rating}
                             content = {element.content}
                             channelName = {element.channelName}
                             postName = {element.postName}
                             authorName = {element.authorName}
-                            avatarColor = {element.avatarColor}
+                            profilePicture = {element.profilePicture}
                          />
                     )
                 }
                 {
                     showPosts &&
-                    userPostsData?.map((element : IPostMiniCardNew) =>
+                    userPostsData?.map((element : IPostMiniCardNew): JSX.Element =>
                         <PostMiniCardNew 
                             channelName = {element.channelName}
                             age = {element.age }
@@ -232,6 +249,7 @@ export function UserProfileFeed() {
                             comments = { element.comments }
                             avatarColor = { element.avatarColor }
                             postColor = { element.postColor }
+                            content= {element.content}
                         />
                     )
                 }

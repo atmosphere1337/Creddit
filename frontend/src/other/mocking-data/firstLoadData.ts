@@ -185,7 +185,7 @@ export const rawDataProfileComments : ICommentMiniCardNew[] = [
         channelName: "darksouls",
         postName: "Excepteur sint",
         authorName: "increddible1337",
-        avatarColor: "green",
+        profilePicture: "default",
     },
     {
         rating: 20,
@@ -193,7 +193,7 @@ export const rawDataProfileComments : ICommentMiniCardNew[] = [
         channelName: "eldenring",
         postName: "de Finibus Bonorum et Malorum",
         authorName: "increddible1337",
-        avatarColor: "green",
+        profilePicture: "default",
     },
 ];
 
@@ -206,6 +206,7 @@ export const rawDataProfilePosts : IPostMiniCardNew[]= [
         comments: 228,
         avatarColor: "green",
         postColor: "yellow",
+        content: "",
     },
     {
         channelName: "eldenring",
@@ -215,6 +216,7 @@ export const rawDataProfilePosts : IPostMiniCardNew[]= [
         comments: 666,
         avatarColor: "red",
         postColor: "blue",
+        content: "",
     },
     {
         channelName: "counterstrike2",
@@ -224,6 +226,7 @@ export const rawDataProfilePosts : IPostMiniCardNew[]= [
         comments: 222,
         avatarColor: "violet",
         postColor: "aqua",
+        content: "",
     },
 ]
 
