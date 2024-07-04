@@ -120,7 +120,19 @@ class PostController extends AbstractController
     #[Route('/api/user/{userId}/posts')]
     public function getUserPosts(int $userId, EntityManagerInterface $entityManager): Response
     {
-        $userSpecificPosts = $entityManager->getRepository(Post::class)->findBy(['userId' => $userId]);
+        $user = $entityManager->getRepository(User::class)->find($userId);
+        $userSpecificPosts = $entityManager->getRepository(Post::class)->findBy(['userId' => $user->getId()]);
+        foreach ($userSpecificPosts as $post) {
+            $post->setUsername($user->getUsername());
+            $channelName = $entityManager->getRepository(Channel::class)->find($post->getChannelId())->getName();
+            $post->setChannelName($channelName);
+            $votes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['targetId' => $post->getId(), 'type' => 1]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $post->setRating(count($upVotes) - count($downVotes));
+        }
         return $this->json($userSpecificPosts);
     }
 }
