@@ -309,7 +309,7 @@ export function UserProfileInfoCard() {
                             {userInfoProfileData?.postRating}
                         </Grid>
                         <Grid item xs={4}>
-                            {userInfoProfileData?.joinDate}
+                            {userInfoProfileData?.joinDate.substr(0,10)}
                         </Grid>
                         <Grid item xs={4} sx={{fontSize: "12px", color: "gray"}}>
                             Comment rating
