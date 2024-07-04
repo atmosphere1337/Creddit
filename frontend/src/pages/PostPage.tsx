@@ -5,23 +5,11 @@ import { useParams } from 'react-router';
 import PostSmall from "large-components/PostSmall";
 import CommentSection from "large-components/CommentSection";
 import {IPostMini} from "other/widelyUsedTypes";
-import {rawDataPostOne} from "other/mocking-data/firstLoadData";
 import {getCookie} from "../other/widelyUsedFunctions";
 
 function PostPage() {
     const params = useParams();
-    const initialPostState : IPostMini = {
-        id: 0,
-        name: "",
-        body: "",
-        comments: 0,
-        rating: 0,
-        channelName: "",
-        channelId: 0,
-        preVote: 0,
-        isOwnedByUser: false,
-    };
-    const [post, setPost] = useState<IPostMini>(initialPostState);
+    const [post, setPost] = useState<IPostMini | undefined>();
     useEffect(() : void => {
         const successResponseCallback = (response: any) : void  => {
             const payload : IPostMini = {
@@ -48,12 +36,12 @@ function PostPage() {
             .catch( (): void => {
                 axios.get(url)
                     .then(successResponseCallback)
-                    .catch( (): void => setPost(rawDataPostOne) );
+                    .catch( (error): void => console.log(error) );
             });
     }, []);
     return (
       <StyledDiv>
-        <PostSmall props={post} />
+          { post && <PostSmall props={post} /> }
         <CommentSection />
       </StyledDiv>
     );

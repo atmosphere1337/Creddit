@@ -6,7 +6,6 @@ import {ITreeComment, setListFirstLoad, treeFirstLoad} from 'other/slices/commen
 import { useAppSelector, useAppDispatch } from 'other/hooks'
 import axios from "axios";
 import {ICommentCard, IListedComment, IPostMini} from "../other/widelyUsedTypes";
-import {rawDataPostMany, rawListComments} from "../other/mocking-data/firstLoadData";
 import {useParams} from "react-router";
 import {getCookie, getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFunctions";
 
@@ -75,9 +74,8 @@ function CommentSection() {
             .catch( (): void => {
                 axios.get(url)
                     .then(successResponseCallback)
-                    .catch((): void => {
-                        dispatch(setListFirstLoad(rawListComments));
-                        dispatch(treeFirstLoad());
+                    .catch((error): void => {
+                        console.log(error);
                     });
             });
     }, []);

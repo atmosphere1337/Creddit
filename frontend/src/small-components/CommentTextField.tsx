@@ -3,8 +3,6 @@ import styled from "styled-components";
 import {addComment, INewComment, updateComment} from "other/slices/commentSlice";
 import {useAppDispatch, useAppSelector} from "other/hooks";
 import axios from "axios";
-import {IPopularChannel} from "../other/widelyUsedTypes";
-import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
 import {getCookie} from "../other/widelyUsedFunctions";
 
 interface ICommentTextFieldProps {

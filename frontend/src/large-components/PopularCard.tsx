@@ -1,12 +1,9 @@
 import React, {useEffect} from 'react';
 import styled from "styled-components";
 import { useState } from "react";
-import {useAppSelector} from "other/hooks";
 import { StyledA } from "other/styles/CommonStyles";
 import {IPopularChannel} from "other/widelyUsedTypes";
 import axios from "axios";
-import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
-import popularCard from "./PopularCard";
 import Box from "@mui/material/Box";
 
 function PopularChannel({name, members, id}: IPopularChannel) {
@@ -34,8 +31,7 @@ function PopularChannel({name, members, id}: IPopularChannel) {
 }
 
 function PopularCard() {
-    //const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
-    const [fewPopularChannels, setFewPopularChannels] = useState<IPopularChannel[]>([]);
+    const [fewPopularChannels, setFewPopularChannels] = useState<IPopularChannel[] | undefined>();
     useEffect(() : void => {
         axios.get('/api/popularchannels')
             .then((response) : void  => {
@@ -50,9 +46,7 @@ function PopularCard() {
                 );
                 setFewPopularChannels(payload);
             })
-            .catch( error => {
-                setFewPopularChannels(rawDataPopularChannels);
-            });
+            .catch( error => { console.log(error) });
     }, []);
     return (
         <StyledDiv>
@@ -60,7 +54,7 @@ function PopularCard() {
                 Popular Channels
             </div>
             <div>
-                { fewPopularChannels.map((element : IPopularChannel) =>
+                { fewPopularChannels?.map((element : IPopularChannel) =>
                                                                             <PopularChannel
                                                                                 name = { element.name }
                                                                                 members = { element.members }
