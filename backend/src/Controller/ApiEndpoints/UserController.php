@@ -2,7 +2,10 @@
 
 namespace App\Controller\ApiEndpoints;
 
+use App\Entity\Comment;
+use App\Entity\Post;
 use App\Entity\User;
+use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,12 +84,28 @@ class UserController extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($id);
         if (!$user)
             return $this->json([], 404);
+        $commentRating = 0;
+        $comments = $entityManager->getRepository(Comment::class)->findBy(['userId' => $user->getId()]);
+        foreach ($comments as $comment) {
+            $votes = $entityManager->getRepository(Vote::class)->findBy(['type' => 2, 'targetId' => $comment->getId()]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $commentRating += count($upVotes) - count($downVotes);
+        }
+        $postRating = 0;
+        $posts = $entityManager->getRepository(Post::class)->findBy(['userId' => $user->getId()]);
+        foreach ($posts as $post) {
+            $votes = $entityManager->getRepository(Vote::class)->findBy(['type' => 1, 'targetId' => $post->getId()]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $postRating += count($upVotes) - count($downVotes);
+        }
         $responseBody = [
             'userName' => $user->getUsername(),
             'profilePictureUrl' => $user->getProfilePictureUrl(),
             'joinDate' => "sosi",
-            'commentRating' => 13,
-            'postRating' => 26,
+            'commentRating' => $commentRating,
+            'postRating' => $postRating,
         ];
         return $this->json($responseBody);
     }
