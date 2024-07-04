@@ -39,6 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 700, nullable: true)]
 
     private ?string $profilePictureUrl = null;
+    #[ORM\Column(type:'datetime', nullable: true)]
+    private ?DateTime $registerDate = null;
 
     private ?int $notCheckedNotificationAmount = 0;
 
@@ -139,5 +141,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNotCheckedNotificationAmount(int $newNotCheckedNotificationAmount): void
     {
         $this->notCheckedNotificationAmount = $newNotCheckedNotificationAmount;
+    }
+    public function getRegisterDate(): ?DateTime
+    {
+        return $this->registerDate;
+    }
+    public function setRegisterDate(DateTime $newRegisterDate): void
+    {
+        $this->registerDate = $newRegisterDate;
     }
 }

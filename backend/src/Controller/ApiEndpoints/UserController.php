@@ -30,6 +30,7 @@ class UserController extends AbstractController
         $newUser->setPassword($newPassword);
         $newUser->setRoles(['ROLE_USER']);
         $newUser->setLastVisit(new \DateTime('now'));
+        $newUser->setRegisterDate(new \DateTime('now'));
         $entityManager->persist($newUser);
         $entityManager->flush();
         return $this->json(['id' => $newUser->getId()], Response::HTTP_CREATED);
@@ -106,6 +107,7 @@ class UserController extends AbstractController
             'joinDate' => "sosi",
             'commentRating' => $commentRating,
             'postRating' => $postRating,
+            'joinDate' => $user->getRegisterDate(),
         ];
         return $this->json($responseBody);
     }
