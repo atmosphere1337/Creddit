@@ -96,11 +96,7 @@ class PostController extends AbstractController
         $amountOfCommentsFound = $entityManager
             ->getRepository(Comment::class)
             ->getAmountOfCommentsOfPost($post->getId());
-        $channelName = $entityManager
-            ->getRepository(Channel::class)
-            ->findOneBy(['id' => $post
-                ->getChannelId()])
-            ->getName();
+        $domainChannel = $entityManager->getRepository(Channel::class)->findOneBy(['id' => $post->getChannelId()]);
         if ($user) {
             $userSpecificVotes = $entityManager
                 ->getRepository(Vote::class)
@@ -114,7 +110,11 @@ class PostController extends AbstractController
         }
         $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
-        $post->setChannelName($channelName);
+        $post->setChannelName($domainChannel->getName());
+        $post->setChannelProfilePictureUrl($domainChannel->getChannelProfilePictureUrl());
+        $ownerUser = $entityManager->getRepository(User::class)->find($post->getUserId());
+        $post->setUsername($ownerUser->getUsername());    
+        $post->setUserProflePictureUrl($ownerUser->getProfilePictureUrl());
     }
 
     #[Route('/api/user/{userId}/posts')]

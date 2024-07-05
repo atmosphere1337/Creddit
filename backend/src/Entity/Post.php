@@ -32,6 +32,8 @@ class Post
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
     private ?bool $isOwnedByTheUser = false;
     private ?string $username = null;
+    private ?string $userProflePictureUrl = null;
+    private ?string $channelProfilePictureUrl = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -83,6 +85,14 @@ class Post
     {
         return $this->username;
     }
+    public function getUserProflePictureUrl(): ?string
+    {
+        return $this->userProflePictureUrl;
+    }
+    public function getChannelProfilePictureUrl(): ?string
+    {
+        return $this->channelProfilePictureUrl;
+    }
 //--------------------------------------------------------------------------------------------------------
     public function setRating(int $newRating) : void
     {
@@ -131,5 +141,13 @@ class Post
     public function setUsername(string $newUsername) : void
     {
         $this->username = $newUsername;
+    }
+    public function setUserProflePictureUrl(string $newUserProflePictureUrl) : void
+    {
+        $this->userProflePictureUrl = $newUserProflePictureUrl;
+    }
+    public function setChannelProfilePictureUrl(string $newChannelProfilePictureUrl) : void
+    {
+        $this->channelProfilePictureUrl = $newChannelProfilePictureUrl;
     }
 }
