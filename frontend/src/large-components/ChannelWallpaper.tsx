@@ -14,22 +14,26 @@ function ChannelWallpaper() {
     const params = useParams();
 
     useEffect(() : void => {
+        function successfulResponseHandler(response: any): void {
+            const payload : IChannelInfoWallpaper = {
+                name: response.data.name,
+                subscribeLevel: response.data.subscriptionLevel,
+            }
+            setWallpaperData(payload);
+            setJoinButtonRender(true);
+        }
         const config : {headers: {"Authorization" : string}} = {
             headers: {
                 "Authorization" : `Bearer ${getCookie("token")}`,
             }
         }
-        axios.get('/api/channel/' + params.channel, config)
-            .then((response) : void  => {
-                const payload : IChannelInfoWallpaper = {
-                    name: response.data.name,
-                    subscribeLevel: response.data.subscriptionLevel,
-                }
-                setWallpaperData(payload);
-                setJoinButtonRender(true);
-            })
-            .catch( error => {
-                console.log(error);
+        const url: string = `/api/channel/${params.channel}`;
+        axios.get(url, config)
+            .then(successfulResponseHandler)
+            .catch( (): void => {
+                axios.get(url)
+                    .then(successfulResponseHandler)
+                    .catch( (error): void => console.log(error) );
             });
     }, []);
     return (
