@@ -25,6 +25,8 @@ export interface IPopularChannel {
 export interface IChannelInfoWallpaper {
     name : string,
     subscribeLevel: number // 1 for unsub 2 for sub
+    channelProfilePictureUrl: string,
+    channelWallpaperPictureUrl: string,
 }
 export interface IChannelInfoCard {
     name: string,

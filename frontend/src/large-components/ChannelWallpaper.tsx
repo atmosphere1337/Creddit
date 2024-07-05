@@ -18,7 +18,13 @@ function ChannelWallpaper() {
             const payload : IChannelInfoWallpaper = {
                 name: response.data.name,
                 subscribeLevel: response.data.subscriptionLevel,
+                channelProfilePictureUrl: response.data.channelProfilePictureUrl,
+                channelWallpaperPictureUrl: response.data.channelWallpaperPictureUrl,
             }
+            if (payload.channelProfilePictureUrl == "default")
+                payload.channelProfilePictureUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
+            if (payload.channelWallpaperPictureUrl == "default")
+                payload.channelWallpaperPictureUrl = "https://c4.wallpaperflare.com/wallpaper/432/64/19/404-not-found-black-dark-minimalism-wallpaper-preview.jpg";
             setWallpaperData(payload);
             setJoinButtonRender(true);
         }
@@ -38,10 +44,9 @@ function ChannelWallpaper() {
     }, []);
     return (
         <>
-          <StyledDiv>
-          </StyledDiv>
+          <StyledChannelWallpaperPicture imageLink={wallpaperData?.channelWallpaperPictureUrl ?? "default"} />
           <StyledDiv2>
-            <StyledCircle />
+            <StyledChannelProfilePicture imageLink={wallpaperData?.channelProfilePictureUrl ?? "default"} />
             <StyledSpan>
                 {"c/" + wallpaperData?.name}
             </StyledSpan>
@@ -63,11 +68,14 @@ function ChannelWallpaper() {
     );
 }
 
-const StyledDiv = styled.div`
+const StyledChannelWallpaperPicture = styled.div<{imageLink: string}>`
     height: 200px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: indigo;
+    background-image: url(${({imageLink}) => imageLink});
+    background-size: cover;
+    background-position: center center;
 `;
 
 const StyledDiv2 = styled.div`
@@ -76,7 +84,7 @@ const StyledDiv2 = styled.div`
     height: 70px;
 `;
 
-const StyledCircle = styled.div`
+const StyledChannelProfilePicture = styled.div<{imageLink: string}>`
     display: inline-block;
     position: relative;
     bottom: 50px;
@@ -85,7 +93,10 @@ const StyledCircle = styled.div`
     width:  100px;
     height: 100px;
     border-radius: 666px;
-    background-color: lime;
+    background-image: url(${({imageLink  = ""}) => imageLink});
+    background-color: black;
+    background-size: cover;
+    background-position: center center;
 `;
 
 const StyledSpan = styled.span`
