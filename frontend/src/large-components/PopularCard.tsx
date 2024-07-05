@@ -6,9 +6,9 @@ import {IPopularChannel} from "other/widelyUsedTypes";
 import axios from "axios";
 import Box from "@mui/material/Box";
 
-function PopularChannel({name, members, id}: IPopularChannel) {
-    const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
-    const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
+function PopularChannel({name, members, id, channelProfilePicture}: IPopularChannel) {
+    if (channelProfilePicture == "default")
+        channelProfilePicture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
     return (
         <StyledA href={"/c/" + id}>
           <StyledChannel>
@@ -23,8 +23,13 @@ function PopularChannel({name, members, id}: IPopularChannel) {
                   </div>
               </div>
             </div>
-            <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-            </StyledAvatarChannel>
+            <StyledAvatarChannel
+                style={{
+                    backgroundImage: `url(${channelProfilePicture})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                }}
+            />
           </StyledChannel>
         </StyledA>
     );
@@ -41,6 +46,7 @@ function PopularCard() {
                             id: onePopularChannel.id,
                             name : onePopularChannel.name,
                             members: onePopularChannel.members,
+                            channelProfilePicture: onePopularChannel.channelProfilePictureUrl,
                         }
                     }
                 );
@@ -59,6 +65,7 @@ function PopularCard() {
                                                                                 name = { element.name }
                                                                                 members = { element.members }
                                                                                 id = { element.id }
+                                                                                channelProfilePicture={ element.channelProfilePicture }
                                                                             />)
                 }
             </div>

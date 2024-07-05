@@ -20,6 +20,7 @@ export interface IPopularChannel {
     id: number,
     name: string,
     members: number,
+    channelProfilePicture: string,
 }
 export interface IChannelInfoWallpaper {
     name : string,
