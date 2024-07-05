@@ -48,8 +48,6 @@ function CommentCard(
 ) {
     const dispatch = useAppDispatch();
     const params = useParams();
-    const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
-    const [randomColor, setRandomColor] = useState<number>(Math.floor(100 * Math.random()) % colors.length);
     const [showOrEdit, setShowOrEdit] = useState<boolean>(true); // true = show, false = edit
     const [showCommentSwitch, setShowCommentSwitch] = useState<boolean>(false);
     const showComment = () :void => {setShowCommentSwitch(true)};

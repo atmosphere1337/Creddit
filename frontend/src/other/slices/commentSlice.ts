@@ -113,7 +113,7 @@ export const commentSlice = createSlice({
                         children: [],
                         isDeleted: false,
                         preVote: 0,
-                        isOwnedByUser: false,
+                        isOwnedByUser: true,
                         isEdited: false,
                         ownerId: 0,
                     };
