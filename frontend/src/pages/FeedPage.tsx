@@ -30,6 +30,7 @@ function FeedPage({type = "default"} : | { type: pageType}) {
                         ownerUserName: post.username,
                         ownerUserProfilePicture: post.userProflePictureUrl,
                         channelProfilePicture: post.channelProfilePictureUrl,
+                        ownerUserId: post.userId,
                     }
                 }
             );

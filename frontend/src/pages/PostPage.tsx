@@ -29,6 +29,7 @@ function PostPage() {
                 ownerUserName: response.data.username,
                 ownerUserProfilePicture: response.data.userProflePictureUrl,
                 channelProfilePicture: response.data.channelProfilePictureUrl,
+                ownerUserId: response.data.userId,
             };
             setPost(payload);
         };

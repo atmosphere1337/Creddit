@@ -70,6 +70,7 @@ export interface IPostMini {
     channelProfilePicture: string,
     preVote: number,
     isOwnedByUser: boolean,
+    ownerUserId: number,
     ownerUserName: string,
     ownerUserProfilePicture: string,
 }

@@ -59,33 +59,41 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
             <div style={{display: "flex"}}>
                 <Box>
                     <Box sx={{display: "flex", mb: 1}}>
-                        <Box 
-                            sx={{
-                                width: "20px",
-                                height: "20px",
-                                backgroundImage: `url(${props.channelProfilePicture})`,
-                                backgroundSize: "cover",
-                                borderRadius: "666px",
-                                mr: 1,
-                            }}
-                        />
-                        <Box>
-                            { `c/${props.channelName}`}
-                        </Box>
+                        <StyledA href={`/c/${props.channelId}`}>
+                            <Box sx={{display: "flex"}}>
+                                <Box 
+                                    sx={{
+                                        width: "20px",
+                                        height: "20px",
+                                        backgroundImage: `url(${props.channelProfilePicture})`,
+                                        backgroundSize: "cover",
+                                        borderRadius: "666px",
+                                        mr: 1,
+                                    }}
+                                />
+                                <Box>
+                                    { `c/${props.channelName}`}
+                                </Box>
+                            </Box>
+                        </StyledA>
                         <Box sx={{mx: 1.5}}>
                             ·
                         </Box>
-                        <Box 
-                            sx={{
-                                width: "20px",
-                                height: "20px",
-                                backgroundImage: `url(${props.ownerUserProfilePicture})`,
-                                backgroundSize: "cover",
-                                borderRadius: "666px",
-                                mr: 1,
-                            }}
-                        />
-                        <Box>{ `u/${props.ownerUserName}` }</Box>
+                        <StyledA href={`/user/${props.ownerUserId}`}>
+                            <Box sx={{display: "flex"}}>
+                                <Box 
+                                    sx={{
+                                        width: "20px",
+                                        height: "20px",
+                                        backgroundImage: `url(${props.ownerUserProfilePicture})`,
+                                        backgroundSize: "cover",
+                                        borderRadius: "666px",
+                                        mr: 1,
+                                    }}
+                                />
+                                <Box>{ `u/${props.ownerUserName}` }</Box>
+                            </Box>
+                        </StyledA>
                     </Box>
                     <Box>
                         <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
