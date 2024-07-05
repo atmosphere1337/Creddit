@@ -177,7 +177,7 @@ function CommentCard(
                             hide={ hideComment }
                             parentCommentId={ id }
                             postId={params.post ? params.post : ""}
-                            mode={"edit"}
+                            mode={"create"}
                         />
                     }
                     {children}
