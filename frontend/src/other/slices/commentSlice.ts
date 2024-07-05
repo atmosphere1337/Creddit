@@ -34,6 +34,7 @@ interface INewComment {
     parent: number,
     name: string,
     comment: string,
+    profilePicture: string,
 }
 
 interface ITreeComment extends IListedComment {
@@ -106,6 +107,7 @@ export const commentSlice = createSlice({
                         parent: action.payload.parent,
                         name: action.payload.name,
                         comment: action.payload.comment,
+                        profilePicture: action.payload.profilePicture,
                         rating: 0,
                         age: "0 seconds ago",
                         children: [],
@@ -113,7 +115,6 @@ export const commentSlice = createSlice({
                         preVote: 0,
                         isOwnedByUser: false,
                         isEdited: false,
-                        profilePicture: "default",
                         ownerId: 0,
                     };
                     currentNode.children.unshift(newComment);

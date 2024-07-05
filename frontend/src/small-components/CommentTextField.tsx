@@ -25,6 +25,7 @@ function CommentTextField({
     const [text, setText] = useState("");
     const dispatch = useAppDispatch();
     let getName: string = useAppSelector((state) => state.user.username);
+    let getProfilePicture: string = useAppSelector((state) => state.user.profilePicture);
     let getId: number = -1 * Math.floor(Math.random() * 1000) - 3; // get from api?
     useEffect((): void => {
         setText(editedBodyInitialState ? editedBodyInitialState : "");
@@ -37,7 +38,7 @@ function CommentTextField({
     }
 
     function sendCommentToRedux(): void {
-        let payload: INewComment = {id: getId, comment: text, name: getName, parent: parentCommentId};
+        let payload: INewComment = {id: getId, comment: text, name: getName, parent: parentCommentId, profilePicture: getProfilePicture};
         const config: {headers: {"Content-Type" : string, "Authorization" : string}} = {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
