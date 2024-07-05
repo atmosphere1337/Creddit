@@ -7,7 +7,7 @@ import RatingButton from "small-components/RatingButton/RatingButton";
 import CommentsButton from "small-components/CommentsButton/CommentsButton";
 import { StyledA } from "other/styles/CommonStyles";
 import {IPostMini} from "other/widelyUsedTypes";
-import {IconButton} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getCookie} from "../other/widelyUsedFunctions";
 import EditIcon from "@mui/icons-material/Edit";
@@ -57,9 +57,44 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const PostComponentToBeRendered : FC = () => (
         <Styleddiv>
             <div style={{display: "flex"}}>
-                <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
-                    {props.name}
-                </StyledA>
+                <Box>
+                    <Box sx={{display: "flex", mb: 1}}>
+                        <Box 
+                            sx={{
+                                width: "20px",
+                                height: "20px",
+                                backgroundImage: `url(${props.channelProfilePicture})`,
+                                backgroundSize: "cover",
+                                borderRadius: "666px",
+                                mr: 1,
+                            }}
+                        />
+                        <Box>
+                            { `c/${props.channelName}`}
+                        </Box>
+                        <Box sx={{mx: 1.5}}>
+                            ·
+                        </Box>
+                        <Box 
+                            sx={{
+                                width: "20px",
+                                height: "20px",
+                                backgroundImage: `url(${props.ownerUserProfilePicture})`,
+                                backgroundSize: "cover",
+                                borderRadius: "666px",
+                                mr: 1,
+                            }}
+                        />
+                        <Box>{ `u/${props.ownerUserName}` }</Box>
+                    </Box>
+                    <Box>
+                        <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
+                            <b>
+                                {props.name}
+                            </b>
+                        </StyledA>
+                    </Box>
+                </Box>
                 <div style={{marginLeft: "auto"}}>
                     {
                         props.isOwnedByUser &&
@@ -74,7 +109,7 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
                     }
                 </div>
             </div>
-            <div style={{whiteSpace: "pre-wrap"}}>
+            <div style={{whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "break-all"}}>
                 { parseBody() }
             </div>
             <StyledOptions>

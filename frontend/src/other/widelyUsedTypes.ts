@@ -67,8 +67,11 @@ export interface IPostMini {
     body: string,
     channelId: number,
     channelName: string,
+    channelProfilePicture: string,
     preVote: number,
     isOwnedByUser: boolean,
+    ownerUserName: string,
+    ownerUserProfilePicture: string,
 }
 export interface IListedComment {
     id: number,

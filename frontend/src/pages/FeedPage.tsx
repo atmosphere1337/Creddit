@@ -13,6 +13,10 @@ function FeedPage({type = "default"} : | { type: pageType}) {
         const successResponseCallback = (response : any) : void  => {
             const payload : IPostMini[] = response.data.map(
                 (post : any) : IPostMini => {
+                    if (post.userProflePictureUrl == "default")
+                        post.userProflePictureUrl = "https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg";
+                    if (post.channelProfilePicture == "default")
+                        post.channelProfilePicture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
                     return {
                         id : post.id,
                         name: post.title,
@@ -23,6 +27,9 @@ function FeedPage({type = "default"} : | { type: pageType}) {
                         body: post.body,
                         preVote: post.hasUserEverVoted,
                         isOwnedByUser: post.isOwnedByTheUser,
+                        ownerUserName: post.username,
+                        ownerUserProfilePicture: post.userProflePictureUrl,
+                        channelProfilePicture: post.channelProfilePictureUrl,
                     }
                 }
             );

@@ -12,6 +12,10 @@ function PostPage() {
     const [post, setPost] = useState<IPostMini | undefined>();
     useEffect(() : void => {
         const successResponseCallback = (response: any) : void  => {
+            if (response.data.userProflePictureUrl == "default")
+                response.data.userProflePictureUrl = "https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg";
+            if (response.data.channelProfilePicture == "default")
+                response.data.channelProfilePicture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
             const payload : IPostMini = {
                 id : response.data.id,
                 name: response.data.title,
@@ -22,6 +26,9 @@ function PostPage() {
                 channelName: response.data.channelName, /* go to controller */
                 preVote: response.data.hasUserEverVoted,
                 isOwnedByUser: response.data.isOwnedByTheUser,
+                ownerUserName: response.data.username,
+                ownerUserProfilePicture: response.data.userProflePictureUrl,
+                channelProfilePicture: response.data.channelProfilePictureUrl,
             };
             setPost(payload);
         };
