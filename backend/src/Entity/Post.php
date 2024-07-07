@@ -34,6 +34,7 @@ class Post
     private ?string $username = null;
     private ?string $userProflePictureUrl = null;
     private ?string $channelProfilePictureUrl = null;
+    private ?Channel $channel = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +94,10 @@ class Post
     {
         return $this->channelProfilePictureUrl;
     }
+    public function getChannel(): ?Channel 
+    {
+        return $this->channel;
+    }
 //--------------------------------------------------------------------------------------------------------
     public function setRating(int $newRating) : void
     {
@@ -149,5 +154,9 @@ class Post
     public function setChannelProfilePictureUrl(string $newChannelProfilePictureUrl) : void
     {
         $this->channelProfilePictureUrl = $newChannelProfilePictureUrl;
+    }
+    public function setChannel(?Channel $newChannel): void 
+    {
+        $this->channel = $newChannel;
     }
 }
