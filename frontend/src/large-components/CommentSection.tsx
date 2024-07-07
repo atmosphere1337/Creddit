@@ -62,6 +62,16 @@ function CommentSection() {
             );
             dispatch(setListFirstLoad(payload));
             dispatch(treeFirstLoad());
+            if (window.location.href.includes("#comments")) {
+                setTimeout(
+                    () => {
+                        const element = document.getElementById("comments");
+                        if (element)
+                            element.scrollIntoView({behavior: "smooth"});
+                    },
+                    300
+                )
+            }
         };
         const config : {headers: {"Authorization" : string}} = {
             headers: {
