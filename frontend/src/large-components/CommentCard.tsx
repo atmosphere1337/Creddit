@@ -90,7 +90,7 @@ function CommentCard(
     const NormalMarkup = () => {
         return (
             <>
-                <StyledDiv>
+                <StyledDiv id={`c=${id}`}>
                     <div style={{display: "flex"}}>
                         <div style={{marginRight: "20px", width: "40px"}}>
                             <StyledA href={"/user/" + ownerId}>

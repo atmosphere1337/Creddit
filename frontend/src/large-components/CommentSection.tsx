@@ -62,12 +62,10 @@ function CommentSection() {
             );
             dispatch(setListFirstLoad(payload));
             dispatch(treeFirstLoad());
-            if (window.location.href.includes("#comments")) {
+            if (window.location.href.includes("#")) {
                 setTimeout(
                     () => {
-                        const element = document.getElementById("comments");
-                        if (element)
-                            element.scrollIntoView({behavior: "smooth"});
+                        window.location.href = window.location.href;
                     },
                     300
                 )
