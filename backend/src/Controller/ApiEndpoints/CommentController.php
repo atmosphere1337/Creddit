@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Comment;
 use App\Entity\Vote;
 use App\Entity\User;
+use App\Entity\Notification;
 
 class CommentController extends AbstractController
 {
@@ -64,6 +65,19 @@ class CommentController extends AbstractController
         $newComment->setUserId($userId);
         $entityManager->persist($newComment);
         $entityManager->flush();
+
+
+        $parentComment     = $entityManager->getRepository(Comment::class)->find($newComment->getParentCommentId());
+        $parentCommentUser = $entityManager->getRepository(User::class)->find($parentComment->getUserId());
+        $newNotification = new Notification(1, $newComment->getId(), $parentCommentUser->getId(), $userId, false);
+        $allNotifications = $entityManager->getRepository(Notification::class)->findBy(['receiverUserId' => $parentCommentUser->getId()]);
+        if (count($allNotifications) > 10) {
+            $entityManager->remove(end($allNotifications));
+            $entityManager->flush();
+        }
+        $entityManager->persist($newNotification);
+        $entityManager->flush();
+
         return $this->json(["idOfCreatedComment" => $newComment->getId()]);
     }
 
