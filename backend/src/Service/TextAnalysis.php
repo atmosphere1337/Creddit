@@ -17,43 +17,19 @@ class ProtocolRule {
 }
 class TextAnalysis {
 
-    private array $buzzWords = [
-        [
-            'pattern' => 'leftist',
-            'action' => [
-                'criteria' => 'left-right',
-                'degree' => 7,
-            ]
-        ],
-        [
-            'pattern' => 'nazi',
-            'action' => [
-                'criteria' => 'left-right',
-                'degree' => 1,
-            ],
-        ],
-        [
-            'pattern' => 'liberals',
-            'action' => [
-                'criteria' => 'lib-auth',
-                'degree' => 7,
-            ],
-        ],
-        [
-            'pattern' => 'freedom',
-            'action' => [
-                'criteria' => 'lib-auth',
-                'degree' => 2,
-            ],
-        ],
-        //new ProtocolRule('leftist', 'left-right', 7),
+    private array $buzzWords = [];
+    public function __construct()
+    {
+        $this->buzzWords[] = new ProtocolRule('leftist', 'left-right', 7);
+        $this->buzzWords[] = new ProtocolRule('nazi', 'left-right', 1);
+        $this->buzzWords[] = new ProtocolRule('liberals', 'lib-auth', 7);
+        $this->buzzWords[] = new ProtocolRule('freedom', 'lib-auth', 1);
+    }
 
-
-    ];
     public function basic($text) {
         foreach ($this->buzzWords as $buzzWord) {
-            if (str_contains($text, $buzzWord['pattern']))
-                return $buzzWord['action']['degree'];
+            if (str_contains($text, $buzzWord->pattern))
+                return $buzzWord->action->degree;
         }
 
     }
