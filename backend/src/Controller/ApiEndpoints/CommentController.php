@@ -2,6 +2,7 @@
 
 namespace App\Controller\ApiEndpoints;
 
+use App\Service\TextAnalysis;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +67,7 @@ class CommentController extends AbstractController
         $entityManager->persist($newComment);
         $entityManager->flush();
 
-
+        //  notification part start
         $parentComment     = $entityManager->getRepository(Comment::class)->find($newComment->getParentCommentId());
         $parentCommentUser = $entityManager->getRepository(User::class)->find($parentComment->getUserId());
         $newNotification = new Notification(1, $newComment->getId(), $parentCommentUser->getId(), $userId, false);
@@ -77,7 +78,15 @@ class CommentController extends AbstractController
         }
         $entityManager->persist($newNotification);
         $entityManager->flush();
-
+        // notification part ends
+        // analytics gathering
+        $ta = new TextAnalysis();
+        $result = $ta->analyzeText($newComment->getBody());
+        // 1 for users, 2 for channels, 3 for comments, 4 for posts,
+        $result->setTargetType(3);
+        $result->setTargetId($newComment->getId());
+        $entityManager->persist($result);
+        $entityManager->flush();
         return $this->json(["idOfCreatedComment" => $newComment->getId()]);
     }
 
@@ -130,7 +139,7 @@ class CommentController extends AbstractController
         $entityManager->flush();
         return $this->json(["id" => $id], Response::HTTP_OK);
     }
-    #[Route('/api/user/{userId}/comments')]
+    #[Route('/api/user/{userId}/comments', methods: ['GET'])]
     public function getUserComments(int $userId, EntityManagerInterface $entityManager): Response
     {
         $user = $entityManager->getRepository(User::class)->find($userId);

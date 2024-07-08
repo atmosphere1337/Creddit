@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\ApiEndpoints;
 
+use App\Entity\SocialMetrics;
 use App\Entity\User;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,6 +53,18 @@ class ChannelController extends AbstractController  {
             ->retrieveSubscriptionAwareChannels($channelsFound, $userId, $entityManager);
         return $this->json($channelsFound);
     }
+    //RECOMMEND  v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND
+    #[Route('/api/recommendedchannels', methods: ['GET'])]
+    public function getRecommended(EntityManagerInterface $entityManager, int $channelId) : Response {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userMetrics = $entityManager
+            ->getRepository(SocialMetrics::class)
+            ->findOneBy(['targetType' => 1, 'targetId' => $user->getId()]);
+
+        return $this->json([]);
+    }
+    //RECOMMEND  ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND
     #[Route('/api/channel', methods: ['POST'])]
     public function addOne(EntityManagerInterface $entityManager, Request $request) : Response
     {
