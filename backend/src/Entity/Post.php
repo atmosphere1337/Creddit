@@ -35,6 +35,8 @@ class Post
     private ?string $userProflePictureUrl = null;
     private ?string $channelProfilePictureUrl = null;
     private ?Channel $channel = null;
+    private ?SocialMetrics $socialMetrics = null;
+    private ?float $euclideanDistance = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -98,6 +100,14 @@ class Post
     {
         return $this->channel;
     }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
+    public function getEuclideanDistance(): ?float
+    {
+        return $this->euclideanDistance;
+    }
 //--------------------------------------------------------------------------------------------------------
     public function setRating(int $newRating) : void
     {
@@ -158,5 +168,13 @@ class Post
     public function setChannel(?Channel $newChannel): void 
     {
         $this->channel = $newChannel;
+    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
+    }
+    public function setEuclideanDistance(float $euclideanDistance) : void
+    {
+        $this->euclideanDistance = $euclideanDistance;
     }
 }

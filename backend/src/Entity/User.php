@@ -42,6 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:'datetime', nullable: true)]
     private ?DateTime $registerDate = null;
 
+    private ?SocialMetrics $socialMetrics = null;
     private ?int $notCheckedNotificationAmount = 0;
 
     public function getId(): ?int
@@ -149,5 +150,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRegisterDate(DateTime $newRegisterDate): void
     {
         $this->registerDate = $newRegisterDate;
+    }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
     }
 }

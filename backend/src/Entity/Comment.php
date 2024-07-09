@@ -35,6 +35,7 @@ class Comment
     private ?string $profilePicture = "default";
     private ?Post $post = null;
     private ?User $user = null;
+    private ?SocialMetrics $socialMetrics = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -110,6 +111,10 @@ class Comment
     {
         return $this->user;
     }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
 //------------------------------------------------------------------------------------------------
     public function setRating(int $newRating): void
     {
@@ -178,5 +183,9 @@ class Comment
     public function setUser(?User $newUser): void
     {
         $this->user = $newUser;
+    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
     }
 }

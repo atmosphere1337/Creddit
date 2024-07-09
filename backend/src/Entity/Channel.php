@@ -23,6 +23,9 @@ class Channel
     #[ORM\Column(length: 700, nullable: true)]
     private ?string $channelWallpaperPictureUrl = "default";
 
+    private ?SocialMetrics $socialMetrics = null;
+    private ?float $euclideanDistance = null;
+
     private ?int $membersOnline = null;
     private ?int $members = null;
     private ?int $subscriptionLevel = 1; // 1 is for "non-subscriber", 2 is for "subscriber"
@@ -58,6 +61,14 @@ class Channel
     {
         return $this->channelWallpaperPictureUrl;
     }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
+    public function getEuclideanDistance(): ?float
+    {
+        return $this->euclideanDistance;
+    }
 //------------------------------------------------------------------------------------------------
     public function __construct(string $newName, $newDescription)
     {
@@ -84,4 +95,12 @@ class Channel
    {
        $this->channelWallpaperPictureUrl = $channelWallpaperPictureUrl;
    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
+    }
+    public function setEuclideanDistance(int $newEuclideanDistance) : void
+    {
+        $this->euclideanDistance = $newEuclideanDistance;
+    }
 }
