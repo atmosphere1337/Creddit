@@ -1,26 +1,36 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity\SocialMetrics;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProtocolRuleAction {
+class ProtocolRuleAction
+{
     public string $criteria;
     public int $degree;
 }
-class ProtocolRule {
+
+class ProtocolRule
+{
     public string $pattern;
     public ProtocolRuleAction $action;
-    public function __construct(string $newPattern, string $newCriteria, int $newDegree) {
+
+    public function __construct(string $newPattern, string $newCriteria, int $newDegree)
+    {
         $this->pattern = $newPattern;
         $this->action = new ProtocolRuleAction();
         $this->action->criteria = $newCriteria;
         $this->action->degree = $newDegree;
     }
 }
-class TextAnalysis {
 
-    private array $buzzWords = [];
+class TextAnalysis
+{
+
+    private static array $buzzWords = [];
+
     public function __construct()
     {
         $this->buzzWords[] = new ProtocolRule('leftist', 'left-right', 7);
@@ -33,14 +43,15 @@ class TextAnalysis {
         $this->buzzWords[] = new ProtocolRule('poor', 'income', 6);
     }
 
-    public function analyzeText($text): SocialMetrics {
+    static function analyzeText($text): SocialMetrics
+    {
         $socialMetrics = new SocialMetrics();
         $result = [];
         $result['left-right'] = [];
         $result['lib-auth'] = [];
         $result['income'] = [];
         $reducer = [];
-        foreach ($this->buzzWords as $buzzWord) {
+        foreach (self::$buzzWords as $buzzWord) {
             if (str_contains($text, $buzzWord->pattern)) {
                 $result[$buzzWord->criteria][] = $buzzWord->degree;
             }
@@ -55,16 +66,56 @@ class TextAnalysis {
         $socialMetrics->setConfidence(1);
         return $socialMetrics;
     }
-    public function saveStatistics(EntityManagerInterface &$entityManager): void {
+
+    static function calculateEuclideanDistance(User &$user, mixed &$ChannelOrPost): void
+    {
+        $userIncome = $user->getSocialMetrics()->getIntegratedIncome();
+        $userLeftRight = $user->getSocialMetrics()->getIntegratedLeftRight();
+        $userLibAuth = $user->getSocialMetrics()->getIntegratedLibAuth();
+        $otherIncome = $ChannelOrPost->getSocialMetrics()->getOtherIncome();
+        $otherLeftRight = $otherIncome->getSocialMetrics()->getOtherLeftRight();
+        $otherLibAuth = $otherIncome->getSocialMetrics()->getOtherLibAuth();
+        $answer = ($userIncome - $otherIncome) ** 2;
+        $answer += ($userLeftRight - $otherLeftRight) ** 2;
+        $answer += ($userLibAuth - $otherLibAuth) ** 2;
+        $ChannelOrPost->setEuclideanDistance($answer);
+    }
+
+    static function sortThingsOut(array &$ChannelsOrPosts): void
+    {
+        usort($ChannelsOrPosts, function ($a, $b) {
+            $a_ed = $a->getEuclideanDistance();
+            $b_ed = $b->getEuclideanDistance();
+            if ($a_ed == $b_ed)
+                return 0;
+            return ($a_ed < $b_ed) ? -1 : 1;
+        });
+    }
+
+    static function recommendChannels(User &$user, array &$channelsFound, EntityManagerInterface &$em): void
+    {
+        $userMetrics = $em
+            ->getRepository(SocialMetrics::class)
+            ->findOneBy(['targetType' => 1, 'targetId' => $user->getId()]);
+        $user->setSocialMetrics($userMetrics);
+        foreach ($channelsFound as $channel) {
+            $channel->setSocialMetrics($em->getRepository(SocialMetrics::class)->findOneBy(['targetId', $channel->getId()]));
+            self::calculateEuclideanDistance($user, $channel);
+        }
+        self::sortThingsOut($channelsFound);
+    }
+
+    public function saveStatistics(EntityManagerInterface &$entityManager): void
+    {
         $socialMetric = new SocialMetrics();
 
-            $id = null;
-            $leftRight = 4; //
-            $libAuth = 4; //
-            $income = 4; //
-            $confidence = 1;
-            $targetType = 1;
-            $targetId = null;
+        $id = null;
+        $leftRight = 4;
+        $libAuth = 4;
+        $income = 4;
+        $confidence = 1;
+        $targetType = 1;
+        $targetId = null;
         $entityManager->persist($socialMetric);
         $entityManager->flush();
     }

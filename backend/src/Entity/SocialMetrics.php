@@ -35,7 +35,7 @@ class SocialMetrics
     }
     private function calculateIntegratedMetric(int $criteria): ?float
     {
-        return ($criteria / $this->confidence) * (1 - 1 / $this->confidence); // metric normalization and confidence factor
+        return ($criteria / $this->confidence - 5) * (1 - 1 / $this->confidence) + 5; // metric normalization and confidence factor
     }
     public function getIntegratedLeftRight(): ?float
     {
