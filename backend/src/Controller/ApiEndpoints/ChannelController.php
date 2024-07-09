@@ -3,7 +3,9 @@ namespace App\Controller\ApiEndpoints;
 
 use App\Entity\SocialMetrics;
 use App\Entity\User;
+use App\Service\TextAnalysis;
 use DateTime;
+use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,14 +57,12 @@ class ChannelController extends AbstractController  {
     }
     //RECOMMEND  v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND v RECOMMEND
     #[Route('/api/recommendedchannels', methods: ['GET'])]
-    public function getRecommended(EntityManagerInterface $entityManager, int $channelId) : Response {
+    public function getRecommended(EntityManagerInterface $em) : Response {
         /** @var User $user */
         $user = $this->getUser();
-        $userMetrics = $entityManager
-            ->getRepository(SocialMetrics::class)
-            ->findOneBy(['targetType' => 1, 'targetId' => $user->getId()]);
-
-        return $this->json([]);
+        $channelsFound = $em->getRepository(Channel::class)->findAll();
+        TextAnalysis::recommendChannels($user, $channelsFound, $em);
+        return $this->json($channelsFound);
     }
     //RECOMMEND  ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND ^ RECOMMEND
     #[Route('/api/channel', methods: ['POST'])]

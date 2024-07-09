@@ -78,15 +78,19 @@ class CommentController extends AbstractController
         }
         $entityManager->persist($newNotification);
         $entityManager->flush();
+
+
         // notification part ends
         // analytics gathering
-        $ta = new TextAnalysis();
-        $result = $ta->analyzeText($newComment->getBody());
+        /*
+        $resultMetric = TextAnalysis::analyzeText($newComment->getBody());
         // 1 for users, 2 for channels, 3 for comments, 4 for posts,
-        $result->setTargetType(3);
-        $result->setTargetId($newComment->getId());
-        $entityManager->persist($result);
+        $resultMetric->setTargetType(3);
+        $resultMetric->setTargetId($newComment->getId());
+        $entityManager->persist($resultMetric);
         $entityManager->flush();
+        */
+
         return $this->json(["idOfCreatedComment" => $newComment->getId()]);
     }
 
