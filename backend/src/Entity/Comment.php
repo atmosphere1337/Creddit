@@ -29,13 +29,26 @@ class Comment
     private ?bool $isDeleted = null;
     private ?int $rating = 0;
     private ?int $amountOfChildComments = 0;
-    private ?string $username = null;
+    private ?string $username = null; // user
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
-    private ?bool $isOwnedByTheUser = false;
-    private ?string $profilePicture = "default";
+    private ?bool $isOwnedByTheUser = false; // ?
+    private ?string $profilePicture = "default"; // user
     private ?Post $post = null;
     private ?User $user = null;
+    private ?Comment $comment = null;
     private ?SocialMetrics $socialMetrics = null;
+    //----------------------------------------------------------------------------------------------------------------
+    public function __construct(array $validatedRequestBodyData, int $userId)
+    {
+        $this->body = $validatedRequestBodyData['commentBody'];
+        $this->postId = $validatedRequestBodyData['postId'];
+        $this->parentCommentId = $validatedRequestBodyData['setParentCommentId'];
+        $this->createdAt = new DateTime();
+        $this->isEdited = false;
+        $this->isDeleted = false;
+        $this->userId = $userId;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,26 +147,6 @@ class Comment
     public function setBody(string $newBody): void
     {
         $this->body = $newBody;
-    }
-
-    public function setUserId(?int $newUserId): void
-    {
-        $this->userId = $newUserId;
-    }
-
-    public function setParentCommentId(?int $newParentCommentId): void
-    {
-        $this->parentCommentId = $newParentCommentId;
-    }
-
-    public function setPostId(?int $newPostId): void
-    {
-        $this->postId = $newPostId;
-    }
-
-    public function setCreatedAt(DateTime $newCreatedAt): void
-    {
-        $this->createdAt = $newCreatedAt;
     }
 
     public function setIsDeleted(bool $newIsDeleted): void

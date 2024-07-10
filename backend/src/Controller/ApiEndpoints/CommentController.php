@@ -55,32 +55,25 @@ class CommentController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $userId = $user->getId();
-        $newComment = new Comment();
-        $newComment->setBody($request->request->get('commentBody'));
-        $newComment->setPostId($request->request->get('postId'));
-        $newComment->setParentCommentId($request->request->get('setParentCommentId'));
-        $newComment->setCreatedAt(new DateTime());
-        $newComment->setIsDeleted(false);
-        $newComment->setIsEdited(false);
-        $newComment->setUserId($userId);
+        // can you validate postData here already ffs?
+        $newComment = new Comment($request->request->all(), $user->getId());
         $entityManager->persist($newComment);
         $entityManager->flush();
-
         //  notification part start
-        $parentComment     = $entityManager->getRepository(Comment::class)->find($newComment->getParentCommentId());
-        $parentCommentUser = $entityManager->getRepository(User::class)->find($parentComment->getUserId());
-        $newNotification = new Notification(1, $newComment->getId(), $parentCommentUser->getId(), $userId, false);
-        $allNotifications = $entityManager->getRepository(Notification::class)->findBy(['receiverUserId' => $parentCommentUser->getId()]);
-        if (count($allNotifications) > 10) {
-            $entityManager->remove(end($allNotifications));
+        if ($newComment->getParentCommentId() > 0) {
+            $parentComment     = $entityManager->getRepository(Comment::class)->find($newComment->getParentCommentId());
+            $parentCommentUser = $entityManager->getRepository(User::class)->find($parentComment->getUserId());
+            $newNotification = new Notification(1, $newComment->getId(), $parentCommentUser->getId(), $user->getId(), false);
+            $allNotifications = $entityManager->getRepository(Notification::class)->findBy(['receiverUserId' => $parentCommentUser->getId()]);
+            if (count($allNotifications) > 10) {
+                $entityManager->remove(end($allNotifications));
+                $entityManager->flush();
+            }
+            $entityManager->persist($newNotification);
             $entityManager->flush();
         }
-        $entityManager->persist($newNotification);
-        $entityManager->flush();
-
-
         // notification part ends
+
         // analytics gathering
         /*
         $resultMetric = TextAnalysis::analyzeText($newComment->getBody());
