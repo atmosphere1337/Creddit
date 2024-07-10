@@ -37,6 +37,15 @@ class Post
     private ?Channel $channel = null;
     private ?SocialMetrics $socialMetrics = null;
     private ?float $euclideanDistance = null;
+    //---------------------------------------------------------------------------------------------------------
+    public function __construct(array $validatedRequestBodyData, int $userId)
+    {
+        $this->title = $validatedRequestBodyData['postTitle'];
+        $this->body = $validatedRequestBodyData['postBody'];
+        $this->channelId = $validatedRequestBodyData['channelId'];
+        $this->createdAt = new DateTime('now');
+        $this->userId = $userId;
+    }
     public function getId(): ?int
     {
         return $this->id;

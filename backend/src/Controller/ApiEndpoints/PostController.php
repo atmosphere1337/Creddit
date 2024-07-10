@@ -49,14 +49,8 @@ class PostController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $userId = $user->getId();
-        $newPost = new Post();
-        $newPost->setTitle($request->get('postTitle'));
-        $newPost->setBody($request->get('postBody'));
-        $newPost->setChannelId($request->get('channelId'));
-        $newPost->setUserId($userId);
-        $newPost->setCreatedAt(new \DateTime('now'));
-
+        // can you validate postData here already ffs?
+        $newPost = new Post($request->request->all(), $user->getId());
         $entityManager->persist($newPost);
         $entityManager->flush();
         return $this->json(["createdPostId" => $newPost->getId()]);
