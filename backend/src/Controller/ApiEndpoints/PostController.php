@@ -3,6 +3,7 @@
 namespace App\Controller\ApiEndpoints;
 
 use App\Entity\User;
+use App\Service\RatingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,27 +83,16 @@ class PostController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $userId = $user ? $user->getId() : 0;
-        $votes = $entityManager
-            ->getRepository(Vote::class)
-            ->findBy(['targetId' => $post, 'type' => 1]);
-        $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
-        $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+        $post->setRating(RatingService::calculatePostRating($entityManager, $post->getId()));
         $amountOfCommentsFound = $entityManager
             ->getRepository(Comment::class)
             ->getAmountOfCommentsOfPost($post->getId());
         $domainChannel = $entityManager->getRepository(Channel::class)->findOneBy(['id' => $post->getChannelId()]);
         if ($user) {
-            $userSpecificVotes = $entityManager
-                ->getRepository(Vote::class)
-                ->findBy(['targetId' => $post->getId(), 'type' => 1, 'initiatorUserId' => $userId]);
-            if (count($userSpecificVotes) > 0)
-                $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
-            else
-                $post->setHasUserEverVoted(0);
+            $post->setHasUserEverVoted(RatingService::checkIfUserEverVotedOnPost($entityManager, $post->getId(), $user));
             if ($post->getUserId() == $user->getId())
                 $post->setIsOwnedByTheUser(true);
         }
-        $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
         $post->setChannelName($domainChannel->getName());
         $post->setChannelProfilePictureUrl($domainChannel->getChannelProfilePictureUrl());

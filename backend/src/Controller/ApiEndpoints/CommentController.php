@@ -2,6 +2,7 @@
 
 namespace App\Controller\ApiEndpoints;
 
+use App\Service\RatingService;
 use App\Service\TextAnalysis;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,29 +20,19 @@ class CommentController extends AbstractController
     #[Route('api/comment/{postId}', methods: ['GET'])]
     public function getMany(int $postId, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user ? $user->getId() : 0;
         $comments = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postId]);
         foreach ($comments as $comment) {
-            $votes = $entityManager
-                ->getRepository(Vote::class)
-                ->findBy(['type' => 2, 'targetId' => $comment->getId()]);
-            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
-            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $comment->setRating(RatingService::calculateCommentRating($entityManager, $comment->getId()));
+            //---------------------------------------------------------------------------------------------------
             $childrenCommentsFound = $entityManager
                 ->getRepository(Comment::class)
                 ->findBy(['parentCommentId' => $comment->getId()]);
-            /** @var User $user */
-            $user = $this->getUser();
-            $userId = $user ? $user->getId() : 0;
-            $userSpecificVotes = $user ? $entityManager
-                ->getRepository(Vote::class)
-                ->findBy(['targetId' => $comment->getId(), 'type' => 2, 'initiatorUserId' => $userId]) : [];
-            if (count($userSpecificVotes) > 0)
-                $comment->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
-            else
-                $comment->setHasUserEverVoted(0);
+            $comment->setHasUserEverVoted(RatingService::checkIfUserEverVotedOnComment($entityManager, $comment->getId(), $user));
             if ($user && $comment->getUserId() == $user->getId())
                 $comment->setIsOwnedByTheUser(true);
-            $comment->setRating(count($upVotes) - count($downVotes));
             $comment->setAmountOfChildComments(count($childrenCommentsFound));
             $authorOfComment = $entityManager->getRepository(User::class)->find($comment->getUserId());
             $comment->setUsername($authorOfComment->getUsername());
@@ -75,14 +66,12 @@ class CommentController extends AbstractController
         // notification part ends
 
         // analytics gathering
-        /*
         $resultMetric = TextAnalysis::analyzeText($newComment->getBody());
         // 1 for users, 2 for channels, 3 for comments, 4 for posts,
         $resultMetric->setTargetType(3);
         $resultMetric->setTargetId($newComment->getId());
         $entityManager->persist($resultMetric);
         $entityManager->flush();
-        */
 
         return $this->json(["idOfCreatedComment" => $newComment->getId()]);
     }
