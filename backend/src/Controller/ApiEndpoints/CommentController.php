@@ -17,6 +17,11 @@ use App\Entity\Notification;
 
 class CommentController extends AbstractController
 {
+    private RatingService $ratingService;
+    public function __construct(RatingService $ratingService)
+    {
+        $this->ratingService = $ratingService;
+    }
     #[Route('api/comment/{postId}', methods: ['GET'])]
     public function getMany(int $postId, EntityManagerInterface $entityManager): Response
     {
@@ -25,12 +30,12 @@ class CommentController extends AbstractController
         $userId = $user ? $user->getId() : 0;
         $comments = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postId]);
         foreach ($comments as $comment) {
-            $comment->setRating(RatingService::calculateCommentRating($entityManager, $comment->getId()));
+            $comment->setRating($this->ratingService->calculateCommentRating($comment->getId()));
             //---------------------------------------------------------------------------------------------------
             $childrenCommentsFound = $entityManager
                 ->getRepository(Comment::class)
                 ->findBy(['parentCommentId' => $comment->getId()]);
-            $comment->setHasUserEverVoted(RatingService::checkIfUserEverVotedOnComment($entityManager, $comment->getId(), $user));
+            $comment->setHasUserEverVoted($this->ratingService->checkIfUserEverVotedOnComment($comment->getId(), $user));
             if ($user && $comment->getUserId() == $user->getId())
                 $comment->setIsOwnedByTheUser(true);
             $comment->setAmountOfChildComments(count($childrenCommentsFound));

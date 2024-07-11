@@ -17,6 +17,12 @@ use App\Entity\Vote;
 
 class PostController extends AbstractController
 {
+    private RatingService $ratingService;
+    public function __construct(RatingService $ratingService)
+    {
+        $this->ratingService = $ratingService;
+    }
+
     #[Route('api/post', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager): Response
     {
@@ -83,13 +89,13 @@ class PostController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $userId = $user ? $user->getId() : 0;
-        $post->setRating(RatingService::calculatePostRating($entityManager, $post->getId()));
+        $post->setRating($this->ratingService->calculatePostRating($post->getId()));
         $amountOfCommentsFound = $entityManager
             ->getRepository(Comment::class)
             ->getAmountOfCommentsOfPost($post->getId());
         $domainChannel = $entityManager->getRepository(Channel::class)->findOneBy(['id' => $post->getChannelId()]);
         if ($user) {
-            $post->setHasUserEverVoted(RatingService::checkIfUserEverVotedOnPost($entityManager, $post->getId(), $user));
+            $post->setHasUserEverVoted($this->ratingService->checkIfUserEverVotedOnPost($post->getId(), $user));
             if ($post->getUserId() == $user->getId())
                 $post->setIsOwnedByTheUser(true);
         }

@@ -6,8 +6,13 @@ use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RatingService {
-    private static function calculateRating(EntityManagerInterface &$em, int $targetId, int $targetType) : int {
-        $votes = $em
+    private EntityManagerInterface $em;
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
+    }
+
+    private function calculateRating(int $targetId, int $targetType) : int {
+        $votes = $this->em
             ->getRepository(Vote::class)
             ->findBy(['type' => $targetType, 'targetId' => $targetId]);
         $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
@@ -15,16 +20,16 @@ class RatingService {
         return (count($upVotes) - count($downVotes));
     }
 
-    public static function calculateCommentRating(EntityManagerInterface &$em, int $commentId) : int {
-        return self::calculateRating($em, $commentId, 2);
+    public function calculateCommentRating(int $commentId) : int {
+        return $this->calculateRating($commentId, 2);
     }
 
-    public static function calculatePostRating(EntityManagerInterface &$em, int $postId) : int {
-        return self::calculateRating($em, $postId, 1);
+    public function calculatePostRating(int $postId) : int {
+        return $this->calculateRating($postId, 1);
     }
 
-    private static function checkIfUserEverVoted(EntityManagerInterface &$em, int $targetId, int $targetType, ?User &$user) : int {
-        $userSpecificVotes = $user ? $em
+    private function checkIfUserEverVoted(int $targetId, int $targetType, ?User &$user) : int {
+        $userSpecificVotes = $user ? $this->em
             ->getRepository(Vote::class)
             ->findBy(['targetId' => $targetId, 'type' => $targetType, 'initiatorUserId' => $user->getId()]) : [];
         if (count($userSpecificVotes) > 0)
@@ -32,11 +37,11 @@ class RatingService {
         else
             return 0;
     }
-    public static function checkIfUserEverVotedOnComment(EntityManagerInterface &$em, int $commentId, ?User &$user) : int {
-        return self::checkIfUserEverVoted($em, $commentId, 2,$user);
+    public function checkIfUserEverVotedOnComment(int $commentId, ?User &$user) : int {
+        return $this->checkIfUserEverVoted($commentId, 2,$user);
     }
-    public static function checkIfUserEverVotedOnPost(EntityManagerInterface &$em, int $postId, ?User &$user) : int {
-        return self::checkIfUserEverVoted($em, $postId, 1,$user);
+    public function checkIfUserEverVotedOnPost(int $postId, ?User &$user) : int {
+        return $this->checkIfUserEverVoted($postId, 1,$user);
     }
 
 }
