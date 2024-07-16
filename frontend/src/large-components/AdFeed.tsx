@@ -2,7 +2,6 @@ import AdBanner from "small-components/AdBanner/AdBanner";
 import {IAdvertisementPublic, IChannelInfoWallpaper} from "other/widelyUsedTypes";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {rawDataAdvertisementPublic, rawDataChannelInfoWallpaper} from "../other/mocking-data/firstLoadData";
 
 function AdFeed() {
     const [ads, setAds] = useState<IAdvertisementPublic[]>([]);
@@ -21,7 +20,7 @@ function AdFeed() {
                 setAds(payload);
             })
             .catch( error => {
-                setAds(rawDataAdvertisementPublic);
+                console.log(error);
             });
     }, []);
     return (

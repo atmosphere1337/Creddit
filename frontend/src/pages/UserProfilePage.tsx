@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {JSX, useState} from 'react';
 import {useAppSelector} from "other/hooks";
 import { Typography, Divider, Box, Button, Grid, Stack, Paper, Chip, IconButton} from '@mui/material';
 import {Card, CardActions, CardContent} from '@mui/material';
@@ -11,14 +11,24 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import FlagIcon from '@mui/icons-material/Flag';
 
 import {IPostMiniCardNew, ICommentMiniCardNew, IUserInfoCardNew} from "../other/widelyUsedTypes";
+import axios from "axios";
+import { useParams } from 'react-router-dom';
 
-function CommentMiniCard({rating, content, avatarColor, channelName, postName, authorName} : ICommentMiniCardNew) {
+function CommentMiniCard({rating, content, profilePicture, channelName, postName, authorName} : ICommentMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
                 <Box sx={{color: "gray", mb: 1}}> 
                     <Stack direction="row" alignItems="center" gap={1}>
-                        <Box sx={{width: "30px", height: "30px", backgroundColor: avatarColor, borderRadius: "666px"}} />
+                        <Box
+                            sx={{
+                                width: "30px",
+                                height: "30px",
+                                backgroundImage: `url(${profilePicture})`,
+                                backgroundSize: "100% 100%",
+                                borderRadius: "666px",
+                            }}
+                        />
                         <Typography>
                             c/{channelName}
                         </Typography>
@@ -31,7 +41,7 @@ function CommentMiniCard({rating, content, avatarColor, channelName, postName, a
                         {authorName}
                     </Typography>
                 </Box>
-                <Typography component="p">
+                <Typography component="p" sx={{whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "break-all"}}>
                     {content}
                 </Typography>
             </CardContent>
@@ -60,7 +70,8 @@ function CommentMiniCard({rating, content, avatarColor, channelName, postName, a
     );
 }
 
-function PostMiniCardNew({channelName, age, title, postColor, avatarColor, rating, comments}: IPostMiniCardNew) {
+
+function PostMiniCardNew({channelName, age, title, content, avatarColor, rating, comments}: IPostMiniCardNew) {
     return (
         <Card sx={{maxWidth: 765}}>
             <CardContent>
@@ -77,7 +88,10 @@ function PostMiniCardNew({channelName, age, title, postColor, avatarColor, ratin
                 <Typography sx={{fontWeight: "bold"}}>
                     {title}
                 </Typography>
-                <Paper sx={{backgroundColor: postColor, height: "500px", borderRadius: "15px"}} />
+                <Paper sx={{backgroundColor: "blue", height: "500px", borderRadius: "15px"}} />
+                <Typography>
+                    {content}
+                </Typography>
             </CardContent>
             <CardActions>
                 <Button>
@@ -103,19 +117,102 @@ function PostMiniCardNew({channelName, age, title, postColor, avatarColor, ratin
         </Card>
     );
 }
+interface IUserInfoProfile {
+    userName: string,
+    profilePictureUrl: string,
+    commentRating: number,
+    postRating: number,
+    joinDate: string,
+}
 
 export function UserProfileFeed() {
-    const selectUserMainInfo: IUserInfoCardNew = useAppSelector(state => state.userData.userMainInfo);
-    const selectUserPosts: IPostMiniCardNew[] = useAppSelector(state => state.userData.userPosts);
-    const selectUserComments: ICommentMiniCardNew[] = useAppSelector(state => state.userData.userComments);
+    const params = useParams();
+    const [userPostsData, setUserPostsData] = useState<IPostMiniCardNew[]>(); 
+    const [userCommentsData, setUserCommentsData] = useState<ICommentMiniCardNew[]>();
     const [showComments, setShowComments] = useState<boolean>(true);
     const [showPosts, setShowPosts] = useState<boolean>(true);
+    const [userInfoProfileData, setUserInfoProfileData] = useState<IUserInfoProfile | undefined>();
+    useState((): void => {
+        const url: string = `/api/user/${params.username}`;
+        axios.get(url)
+            .then(
+                (response): void => {
+                    if (response.data.profilePictureUrl == "default")
+                        response.data.profilePictureUrl = "https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg";
+                    const obtainedUserInfoProfileData: IUserInfoProfile = {
+                        userName : response.data.userName,
+                        profilePictureUrl : response.data.profilePictureUrl,
+                        commentRating : response.data.commentRating,
+                        postRating: response.data.postRating,
+                        joinDate: response.data.joinDate,
+                    }
+                    setUserInfoProfileData(obtainedUserInfoProfileData);
+                }
+            )
+            .catch(
+                error => alert(error)
+            );
+        const url2: string = `/api/user/${params.username}/posts`;
+        axios.get(url2)
+            .then(
+                (response): void => {
+                    const recievedUserPostsData: IPostMiniCardNew[] = response.data.map(
+                        (element: any): IPostMiniCardNew => {
+                            return {
+                                channelName: element.channelName,
+                                age: element.age,
+                                title: element.title,
+                                postColor: element.postColor,
+                                rating: element.rating,
+                                comments: element.comments,
+                                avatarColor: element.avatarColor,
+                                content: element.body,
+                            } 
+                        }
+                    );
+                    setUserPostsData(recievedUserPostsData);
+                }
+            )
+            .catch((error) => alert(error));
+        const url3: string = `/api/user/${params.username}/comments`;
+        axios.get(url3)
+            .then(
+                (response): void => {
+                    const recievedUserCommentsData: ICommentMiniCardNew[] = response.data.map(
+                        (element: any): ICommentMiniCardNew => {
+                            return {
+                                rating: element.rating,
+                                content: element.body,
+                                channelName: element.channelName,
+                                postName: element.postName,
+                                authorName: element.username,
+                                profilePicture: element.profilePicture,
+                            }; 
+                        }
+                    );
+                    setUserCommentsData(recievedUserCommentsData);
+                }
+            )
+            .catch(
+                (error): void => {
+                    alert(error);
+                }
+            );
+    });
     return (
         <Box sx={{minWidth: "765px", p: "30px"}}>
             <Stack direction={"row"} alignItems={"center"} gap={3} sx={{mb: 2}}>
-                <Box sx={{backgroundColor: "green", height: "100px", width: "100px", borderRadius: "666px"}} />
+                <Box 
+                    sx={{
+                        backgroundImage: `url(${userInfoProfileData?.profilePictureUrl})`,
+                        backgroundSize: "100% 100%",
+                        height: "100px",
+                        width: "100px",
+                        borderRadius: "666px"
+                    }} 
+                />
                 <Typography>
-                    { selectUserMainInfo.name }
+                    { userInfoProfileData?.userName }
                 </Typography>
             </Stack>
             <Stack direction="row" gap={1} sx={{mb: 2}}>
@@ -132,20 +229,20 @@ export function UserProfileFeed() {
             <Stack gap={2}>
                 {
                     showComments &&
-                    selectUserComments.map((element : ICommentMiniCardNew) =>
+                    userCommentsData?.map((element: ICommentMiniCardNew) : JSX.Element =>
                         <CommentMiniCard
                             rating = {element.rating}
                             content = {element.content}
                             channelName = {element.channelName}
                             postName = {element.postName}
                             authorName = {element.authorName}
-                            avatarColor = {element.avatarColor}
+                            profilePicture = {element.profilePicture}
                          />
                     )
                 }
                 {
                     showPosts &&
-                    selectUserPosts.map((element : IPostMiniCardNew) =>
+                    userPostsData?.map((element : IPostMiniCardNew): JSX.Element =>
                         <PostMiniCardNew 
                             channelName = {element.channelName}
                             age = {element.age }
@@ -154,6 +251,7 @@ export function UserProfileFeed() {
                             comments = { element.comments }
                             avatarColor = { element.avatarColor }
                             postColor = { element.postColor }
+                            content= {element.content}
                         />
                     )
                 }
@@ -163,11 +261,31 @@ export function UserProfileFeed() {
 }
 
 export function UserProfileInfoCard() {
-    const selectUserMainInfo: IUserInfoCardNew = useAppSelector(state => state.userData.userMainInfo);
+    const params = useParams();
+    const [userInfoProfileData, setUserInfoProfileData] = useState<IUserInfoProfile | undefined>();
+    useState((): void => {
+        const url: string = `/api/user/${params.username}`;
+        axios.get(url)
+            .then(
+                (response): void => {
+                    const obtainedUserInfoProfileData: IUserInfoProfile = {
+                        userName : response.data.userName,
+                        profilePictureUrl : response.data.profilePictureUrl,
+                        commentRating : response.data.commentRating,
+                        postRating: response.data.postRating,
+                        joinDate: response.data.joinDate,
+                    }
+                    setUserInfoProfileData(obtainedUserInfoProfileData);
+                }
+            )
+            .catch(
+                error => alert(error)
+            );
+    });
     return (
         <Box sx={{backgroundColor: "black", p: "15px", borderRadius: "15px" }}>
             <Typography component="div" sx={{pb: 1}}>
-                { selectUserMainInfo.name }
+                { userInfoProfileData?.userName }
             </Typography>
             <Stack direction="row" justifyContent={"space-between"}>
                 <Button>
@@ -187,13 +305,13 @@ export function UserProfileInfoCard() {
                 <Typography component="div" align="center" justifyContent="center">
                     <Grid container rowSpacing={0} columnSpacing={1}>
                         <Grid item xs={4}>
-                            {selectUserMainInfo.commentRating}
+                            {userInfoProfileData?.commentRating}
                         </Grid>
                         <Grid item xs={4}>
-                            {selectUserMainInfo.postRatin}
+                            {userInfoProfileData?.postRating}
                         </Grid>
                         <Grid item xs={4}>
-                            {selectUserMainInfo.joinDate}
+                            {userInfoProfileData?.joinDate.substr(0,10)}
                         </Grid>
                         <Grid item xs={4} sx={{fontSize: "12px", color: "gray"}}>
                             Comment rating

@@ -7,9 +7,10 @@ import RatingButton from "small-components/RatingButton/RatingButton";
 import CommentsButton from "small-components/CommentsButton/CommentsButton";
 import { StyledA } from "other/styles/CommonStyles";
 import {IPostMini} from "other/widelyUsedTypes";
-import {IconButton} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {getCookie} from "../other/widelyUsedFunctions";
+import EditIcon from "@mui/icons-material/Edit";
 
 function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const [isHidden, setIsHidden] = useState<boolean>(false);
@@ -56,14 +57,69 @@ function PostSmall({props} : {props: IPostMini}) : JSX.Element {
     const PostComponentToBeRendered : FC = () => (
         <Styleddiv>
             <div style={{display: "flex"}}>
-                <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
-                    {props.name}
-                </StyledA>
-                <IconButton sx={{marginLeft: "auto"}} onClick={deletePostHandler}>
-                    <DeleteIcon fontSize="small"/>
-                </IconButton>
+                <Box>
+                    <Box sx={{display: "flex", mb: 1}}>
+                        <StyledA href={`/c/${props.channelId}`}>
+                            <Box sx={{display: "flex"}}>
+                                <Box 
+                                    sx={{
+                                        width: "20px",
+                                        height: "20px",
+                                        backgroundImage: `url(${props.channelProfilePicture})`,
+                                        backgroundSize: "cover",
+                                        borderRadius: "666px",
+                                        mr: 1,
+                                    }}
+                                />
+                                <Box>
+                                    { `c/${props.channelName}`}
+                                </Box>
+                            </Box>
+                        </StyledA>
+                        <Box sx={{mx: 1.5}}>
+                            ·
+                        </Box>
+                        <StyledA href={`/user/${props.ownerUserId}`}>
+                            <Box sx={{display: "flex"}}>
+                                <Box 
+                                    sx={{
+                                        width: "20px",
+                                        height: "20px",
+                                        backgroundImage: `url(${props.ownerUserProfilePicture})`,
+                                        backgroundSize: "cover",
+                                        borderRadius: "666px",
+                                        mr: 1,
+                                    }}
+                                />
+                                <Box>{ `u/${props.ownerUserName}` }</Box>
+                            </Box>
+                        </StyledA>
+                    </Box>
+                    <Box>
+                        <StyledA href={ `/c/${props.channelId}/posts/${props.id}`}>
+                            <b>
+                                {props.name}
+                            </b>
+                        </StyledA>
+                    </Box>
+                </Box>
+                <div style={{marginLeft: "auto"}}>
+                    {
+                        props.isOwnedByUser &&
+                        <>
+                            <IconButton onClick={(): void => {}}>
+                                <EditIcon fontSize="small"/>
+                            </IconButton>
+                            <IconButton onClick={deletePostHandler}>
+                                <DeleteIcon fontSize="small"/>
+                            </IconButton>
+                        </>
+                    }
+                </div>
             </div>
-            { parseBody() }
+            <div style={{whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "break-all"}}>
+                { parseBody() }
+            </div>
             <StyledOptions>
                 <RatingButton value={props.rating} type={1} targetId={props.id} preVote={props.preVote}/>
                 <StyledA href={`/c/${props.channelId}/posts/${props.id}#comments`}>

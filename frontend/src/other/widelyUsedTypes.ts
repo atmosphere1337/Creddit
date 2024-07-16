@@ -20,10 +20,13 @@ export interface IPopularChannel {
     id: number,
     name: string,
     members: number,
+    channelProfilePicture: string,
 }
 export interface IChannelInfoWallpaper {
     name : string,
     subscribeLevel: number // 1 for unsub 2 for sub
+    channelProfilePictureUrl: string,
+    channelWallpaperPictureUrl: string,
 }
 export interface IChannelInfoCard {
     name: string,
@@ -38,7 +41,7 @@ export interface ICommentMiniCardNew {
     channelName: string,
     postName: string,
     authorName: string,
-    avatarColor: string,
+    profilePicture: string,
 }
 export interface IPostMiniCardNew {
     channelName: string,
@@ -48,6 +51,7 @@ export interface IPostMiniCardNew {
     rating: number,
     comments: number,
     avatarColor: string,
+    content: string,
 }
 export interface IUserInfoCardNew {
     name: string,
@@ -63,7 +67,12 @@ export interface IPostMini {
     body: string,
     channelId: number,
     channelName: string,
+    channelProfilePicture: string,
     preVote: number,
+    isOwnedByUser: boolean,
+    ownerUserId: number,
+    ownerUserName: string,
+    ownerUserProfilePicture: string,
 }
 export interface IListedComment {
     id: number,
@@ -74,6 +83,10 @@ export interface IListedComment {
     age: string,
     isDeleted: boolean,
     preVote: number,
+    isOwnedByUser: boolean,
+    isEdited: boolean,
+    profilePicture: string,
+    ownerId: number,
 }
 export interface ICommentCard {
     name:string,

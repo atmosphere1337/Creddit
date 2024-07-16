@@ -6,7 +6,6 @@ import {ITreeComment, setListFirstLoad, treeFirstLoad} from 'other/slices/commen
 import { useAppSelector, useAppDispatch } from 'other/hooks'
 import axios from "axios";
 import {ICommentCard, IListedComment, IPostMini} from "../other/widelyUsedTypes";
-import {rawDataPostMany, rawListComments} from "../other/mocking-data/firstLoadData";
 import {useParams} from "react-router";
 import {getCookie, getDateTimeStringAndTranslateItToAgeString} from "../other/widelyUsedFunctions";
 
@@ -21,6 +20,10 @@ function RecursiveComment( { node } : {node: ITreeComment}) {
             age={node.age}
             isDeleted={node.isDeleted}
             preVote={node.preVote}
+            isOwnedByUser={node.isOwnedByUser}
+            isEdited={node.isEdited}
+            profilePicture={node.profilePicture}
+            ownerId={node.ownerId}
         >
             {
                 node.children.map(
@@ -49,12 +52,24 @@ function CommentSection() {
                         rating: comment.rating,
                         age: age,
                         isDeleted: comment.isDeleted,
-                        preVote: comment.preVote,
+                        isEdited: comment.isEdited,
+                        preVote: comment.hasUserEverVoted,
+                        isOwnedByUser: comment.isOwnedByTheUser,
+                        profilePicture: comment.profilePicture,
+                        ownerId: comment.userId,
                     }
                 }
             );
             dispatch(setListFirstLoad(payload));
             dispatch(treeFirstLoad());
+            if (window.location.href.includes("#")) {
+                setTimeout(
+                    () => {
+                        window.location.href = window.location.href;
+                    },
+                    300
+                )
+            }
         };
         const config : {headers: {"Authorization" : string}} = {
             headers: {
@@ -67,9 +82,8 @@ function CommentSection() {
             .catch( (): void => {
                 axios.get(url)
                     .then(successResponseCallback)
-                    .catch((): void => {
-                        dispatch(setListFirstLoad(rawListComments));
-                        dispatch(treeFirstLoad());
+                    .catch((error): void => {
+                        console.log(error);
                     });
             });
     }, []);
@@ -87,6 +101,7 @@ function CommentSection() {
                         hide={ switchDefaultComment }
                         parentCommentId={ 0 }
                         postId={params.post ? params.post : ""}
+                        mode={"create"}
                     />
                 </div>
             }

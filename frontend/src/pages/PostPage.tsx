@@ -5,15 +5,17 @@ import { useParams } from 'react-router';
 import PostSmall from "large-components/PostSmall";
 import CommentSection from "large-components/CommentSection";
 import {IPostMini} from "other/widelyUsedTypes";
-import {rawDataPostOne} from "other/mocking-data/firstLoadData";
 import {getCookie} from "../other/widelyUsedFunctions";
 
 function PostPage() {
     const params = useParams();
-    const initialPostState : IPostMini = {id: 0, name: "", body: "", comments: 0, rating: 0, channelName: "", channelId: 0, preVote: 0};
-    const [post, setPost] = useState<IPostMini>(initialPostState);
+    const [post, setPost] = useState<IPostMini | undefined>();
     useEffect(() : void => {
         const successResponseCallback = (response: any) : void  => {
+            if (response.data.userProflePictureUrl == "default")
+                response.data.userProflePictureUrl = "https://i.pinimg.com/736x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg";
+            if (response.data.channelProfilePicture == "default")
+                response.data.channelProfilePicture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
             const payload : IPostMini = {
                 id : response.data.id,
                 name: response.data.title,
@@ -23,6 +25,11 @@ function PostPage() {
                 channelId: response.data.channelId, /* go to controller */
                 channelName: response.data.channelName, /* go to controller */
                 preVote: response.data.hasUserEverVoted,
+                isOwnedByUser: response.data.isOwnedByTheUser,
+                ownerUserName: response.data.username,
+                ownerUserProfilePicture: response.data.userProflePictureUrl,
+                channelProfilePicture: response.data.channelProfilePictureUrl,
+                ownerUserId: response.data.userId,
             };
             setPost(payload);
         };
@@ -37,19 +44,19 @@ function PostPage() {
             .catch( (): void => {
                 axios.get(url)
                     .then(successResponseCallback)
-                    .catch( (): void => setPost(rawDataPostOne) );
+                    .catch( (error): void => console.log(error) );
             });
     }, []);
     return (
       <StyledDiv>
-        <PostSmall props={post} />
+          { post && <PostSmall props={post} /> }
         <CommentSection />
       </StyledDiv>
     );
 }
 
 const StyledDiv = styled.div`
-    min-width: 765px;
+    width: 765px;
     padding: 30px;
 `;
 

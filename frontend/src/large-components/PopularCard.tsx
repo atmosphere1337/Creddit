@@ -1,17 +1,14 @@
 import React, {useEffect} from 'react';
 import styled from "styled-components";
 import { useState } from "react";
-import {useAppSelector} from "other/hooks";
 import { StyledA } from "other/styles/CommonStyles";
 import {IPopularChannel} from "other/widelyUsedTypes";
 import axios from "axios";
-import {rawDataPopularChannels} from "../other/mocking-data/firstLoadData";
-import popularCard from "./PopularCard";
 import Box from "@mui/material/Box";
 
-function PopularChannel({name, members, id}: IPopularChannel) {
-    const [randomColor, setRandomColor] = useState(Math.floor(100 * Math.random()));
-    const colors : string[] = ["red", "blue", "yellow", "green", "gray", "blueviolet", "brown", "aquamarine"];
+function PopularChannel({name, members, id, channelProfilePicture}: IPopularChannel) {
+    if (channelProfilePicture == "default")
+        channelProfilePicture = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/White-noise-mv255-240x180.png/220px-White-noise-mv255-240x180.png";
     return (
         <StyledA href={"/c/" + id}>
           <StyledChannel>
@@ -26,16 +23,20 @@ function PopularChannel({name, members, id}: IPopularChannel) {
                   </div>
               </div>
             </div>
-            <StyledAvatarChannel style={{backgroundColor: colors[randomColor % colors.length]}}>
-            </StyledAvatarChannel>
+            <StyledAvatarChannel
+                style={{
+                    backgroundImage: `url(${channelProfilePicture})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                }}
+            />
           </StyledChannel>
         </StyledA>
     );
 }
 
 function PopularCard() {
-    //const selectFewPopularChannels : IPopularChannel[] = useAppSelector(state => state.popularChannel.getFew);
-    const [fewPopularChannels, setFewPopularChannels] = useState<IPopularChannel[]>([]);
+    const [fewPopularChannels, setFewPopularChannels] = useState<IPopularChannel[] | undefined>();
     useEffect(() : void => {
         axios.get('/api/popularchannels')
             .then((response) : void  => {
@@ -45,14 +46,13 @@ function PopularCard() {
                             id: onePopularChannel.id,
                             name : onePopularChannel.name,
                             members: onePopularChannel.members,
+                            channelProfilePicture: onePopularChannel.channelProfilePictureUrl,
                         }
                     }
                 );
                 setFewPopularChannels(payload);
             })
-            .catch( error => {
-                setFewPopularChannels(rawDataPopularChannels);
-            });
+            .catch( error => { console.log(error) });
     }, []);
     return (
         <StyledDiv>
@@ -60,11 +60,12 @@ function PopularCard() {
                 Popular Channels
             </div>
             <div>
-                { fewPopularChannels.map((element : IPopularChannel) =>
+                { fewPopularChannels?.map((element : IPopularChannel) =>
                                                                             <PopularChannel
                                                                                 name = { element.name }
                                                                                 members = { element.members }
                                                                                 id = { element.id }
+                                                                                channelProfilePicture={ element.channelProfilePicture }
                                                                             />)
                 }
             </div>

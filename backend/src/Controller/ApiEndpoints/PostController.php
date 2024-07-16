@@ -3,6 +3,7 @@
 namespace App\Controller\ApiEndpoints;
 
 use App\Entity\User;
+use App\Service\RatingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,12 @@ use App\Entity\Vote;
 
 class PostController extends AbstractController
 {
+    private RatingService $ratingService;
+    public function __construct(RatingService $ratingService)
+    {
+        $this->ratingService = $ratingService;
+    }
+
     #[Route('api/post', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager): Response
     {
@@ -47,13 +54,10 @@ class PostController extends AbstractController
     #[Route('api/post', methods: ['POST'])]
     public function addOne(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $newPost = new Post();
-        $newPost->setTitle($request->get('postTitle'));
-        $newPost->setBody($request->get('postBody'));
-        $newPost->setChannelId($request->get('channelId'));
-        $newPost->setUserId(1); /* update it with authenticated user id value */
-        $newPost->setCreatedAt(new \DateTime('now'));
-
+        /** @var User $user */
+        $user = $this->getUser();
+        // can you validate postData here already ffs?
+        $newPost = new Post($request->request->all(), $user->getId());
         $entityManager->persist($newPost);
         $entityManager->flush();
         return $this->json(["createdPostId" => $newPost->getId()]);
@@ -62,7 +66,12 @@ class PostController extends AbstractController
     #[Route('api/post/{id}', methods: ['DELETE'])]
     public function deleteOne(int $id, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $userId = $user->getId();
         $postToDelete = $entityManager->getRepository(Post::class)->find($id);
+        if ($postToDelete->getUserId() !== $user->getId())
+            return $this->json([], Response::HTTP_FORBIDDEN);
         $manyCommentsToDelete = $entityManager->getRepository(Comment::class)->findBy(['postId' => $postToDelete->getId()]);
         foreach ($manyCommentsToDelete as $oneCommentToDelete) {
             $entityManager->getRepository(Vote::class)->deleteAllVotesUnderComment($oneCommentToDelete->getId());
@@ -80,31 +89,40 @@ class PostController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $userId = $user ? $user->getId() : 0;
-        $votes = $entityManager
-            ->getRepository(Vote::class)
-            ->findBy(['targetId' => $post, 'type' => 1]);
-        $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
-        $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+        $post->setRating($this->ratingService->calculatePostRating($post->getId()));
         $amountOfCommentsFound = $entityManager
             ->getRepository(Comment::class)
             ->getAmountOfCommentsOfPost($post->getId());
-        $channelName = $entityManager
-            ->getRepository(Channel::class)
-            ->findOneBy(['id' => $post
-                ->getChannelId()])
-            ->getName();
+        $domainChannel = $entityManager->getRepository(Channel::class)->findOneBy(['id' => $post->getChannelId()]);
         if ($user) {
-            $userSpecificVotes = $entityManager
-                ->getRepository(Vote::class)
-                ->findBy(['targetId' => $post->getId(), 'type' => 1, 'initiatorUserId' => $userId]);
-            if (count($userSpecificVotes) > 0)
-                $post->setHasUserEverVoted($userSpecificVotes[0]->getUpDown() ? 1 : 2);
-            else
-                $post->setHasUserEverVoted(0);
+            $post->setHasUserEverVoted($this->ratingService->checkIfUserEverVotedOnPost($post->getId(), $user));
+            if ($post->getUserId() == $user->getId())
+                $post->setIsOwnedByTheUser(true);
         }
-        $post->setRating(count($upVotes) - count($downVotes));
         $post->setAmountOfComments($amountOfCommentsFound);
-        $post->setChannelName($channelName);
+        $post->setChannelName($domainChannel->getName());
+        $post->setChannelProfilePictureUrl($domainChannel->getChannelProfilePictureUrl());
+        $ownerUser = $entityManager->getRepository(User::class)->find($post->getUserId());
+        $post->setUsername($ownerUser->getUsername());    
+        $post->setUserProflePictureUrl($ownerUser->getProfilePictureUrl());
     }
 
+    #[Route('/api/user/{userId}/posts')]
+    public function getUserPosts(int $userId, EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($userId);
+        $userSpecificPosts = $entityManager->getRepository(Post::class)->findBy(['userId' => $user->getId()]);
+        foreach ($userSpecificPosts as $post) {
+            $post->setUsername($user->getUsername());
+            $channelName = $entityManager->getRepository(Channel::class)->find($post->getChannelId())->getName();
+            $post->setChannelName($channelName);
+            $votes = $entityManager
+                ->getRepository(Vote::class)
+                ->findBy(['targetId' => $post->getId(), 'type' => 1]);
+            $upVotes = array_filter($votes, fn($v) => $v->getUpDown() == true);
+            $downVotes = array_filter($votes, fn($v) => $v->getUpDown() == false);
+            $post->setRating(count($upVotes) - count($downVotes));
+        }
+        return $this->json($userSpecificPosts);
+    }
 }

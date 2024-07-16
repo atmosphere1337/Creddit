@@ -29,8 +29,25 @@ class Comment
     private ?bool $isDeleted = null;
     private ?int $rating = 0;
     private ?int $amountOfChildComments = 0;
-    private ?string $username = null;
+    private ?string $username = null; // user
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
+    private ?bool $isOwnedByTheUser = false; // ?
+    private ?string $profilePicture = "default"; // user
+    private ?Post $post = null;
+    private ?User $user = null;
+    private ?Comment $comment = null;
+    private ?SocialMetrics $socialMetrics = null;
+    //----------------------------------------------------------------------------------------------------------------
+    public function __construct(array $validatedRequestBodyData, int $userId)
+    {
+        $this->body = $validatedRequestBodyData['commentBody'];
+        $this->postId = $validatedRequestBodyData['postId'];
+        $this->parentCommentId = $validatedRequestBodyData['setParentCommentId'];
+        $this->createdAt = new DateTime();
+        $this->isEdited = false;
+        $this->isDeleted = false;
+        $this->userId = $userId;
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +108,26 @@ class Comment
     {
         return $this->hasUserEverVoted;
     }
+    public function getIsOwnedByTheUser(): ?bool
+    {
+        return $this->isOwnedByTheUser;
+    }
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
 //------------------------------------------------------------------------------------------------
     public function setRating(int $newRating): void
     {
@@ -112,34 +149,36 @@ class Comment
         $this->body = $newBody;
     }
 
-    public function setUserId(?int $newUserId): void
-    {
-        $this->userId = $newUserId;
-    }
-
-    public function setParentCommentId(?int $newParentCommentId): void
-    {
-        $this->parentCommentId = $newParentCommentId;
-    }
-
-    public function setPostId(?int $newPostId): void
-    {
-        $this->postId = $newPostId;
-    }
-
-    public function setCreatedAt(DateTime $newCreatedAt): void
-    {
-        $this->createdAt = $newCreatedAt;
-    }
-
     public function setIsDeleted(bool $newIsDeleted): void
     {
         $this->isDeleted = $newIsDeleted;
     }
-
+    public function setIsEdited(bool $newIsEdited): void
+    {
+        $this->isEdited = $newIsEdited;
+    }
     public function setHasUserEverVoted(int $newHasUserEverVoted) : void
     {
         $this->hasUserEverVoted = $newHasUserEverVoted;
     }
-
+    public function setIsOwnedByTheUser(bool $newIsOwnedByTheUser): void
+    {
+        $this->isOwnedByTheUser = $newIsOwnedByTheUser;
+    }
+    public function setProfilePicture(string $newProfilePicture): void
+    {
+        $this->profilePicture = $newProfilePicture;
+    }
+    public function setPost(?Post $newPost): void
+    {
+        $this->post = $newPost;
+    }
+    public function setUser(?User $newUser): void
+    {
+        $this->user = $newUser;
+    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
+    }
 }

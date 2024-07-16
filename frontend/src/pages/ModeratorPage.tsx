@@ -1,10 +1,16 @@
-import React from 'react';
-import {useAppSelector} from "other/hooks";
+import React, {useEffect, useState} from 'react';
 import { Box, Table, TableContainer, Paper, TableHead, TableBody, TableRow, TableCell, Typography } from '@mui/material';
 import {IReportData} from "other/widelyUsedTypes";
+import axios from "axios";
 
 function ModeratorPage() {
-    const selectReports : IReportData[] = useAppSelector((state) => state.report.getAll);
+    //const selectReports : IReportData[] = useAppSelector((state) => state.report.getAll);
+    const [reportData, setReportData] = useState<IReportData[] | undefined>();
+    useEffect((): void => {
+        axios.get("/comebackalter")
+            .then((response): void => {alert("success");})
+            .catch((error): void => alert(error) );
+    }, []);
     return (
         <Box sx={{minWidth: "765px", p: "30px"}}>
             <Typography>
@@ -27,7 +33,7 @@ function ModeratorPage() {
                     </TableHead>
                     <TableBody>
                         {
-                            selectReports.map((element : IReportData) =>
+                            reportData?.map((element : IReportData) =>
                                 <TableRow>
                                     <TableCell>
                                         {element.id}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAppSelector} from "other/hooks";
 import {IAdvertisementPrivate} from "other/widelyUsedTypes";
 import {
@@ -17,6 +17,7 @@ import {
     Typography
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
 
 function AdminPage() {
     return (
@@ -42,7 +43,17 @@ function AdminPage() {
 }
 
 function AdTable() {
-    const getAdsPrivate : IAdvertisementPrivate[] = useAppSelector(state => state.ads.allAdsPrivate);
+    const [adsPrivate, setAdsPrivate] = useState<IAdvertisementPrivate[] | undefined>();
+    useEffect((): void => {
+        // FIX LATER
+        axios.get("/comebackalter")
+            .then(
+                (response): void => {
+                    alert("success");
+                }
+            )
+            .catch( error => alert("error") );
+    }, []);
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -64,7 +75,7 @@ function AdTable() {
                 </TableHead>
                 <TableBody>
                     {
-                        getAdsPrivate.map((x : IAdvertisementPrivate) =>
+                        adsPrivate?.map((x : IAdvertisementPrivate) =>
                             <TableRow>
                                 <TableCell>
                                     {x.id}
