@@ -3,46 +3,52 @@ import {IChannelInfoCard, IChannelInfoWallpaper} from "other/widelyUsedTypes";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
-import {rawDataChannelInfoCard, rawDataChannelInfoWallpaper} from "../other/mocking-data/firstLoadData";
 import {getCookie} from "../other/widelyUsedFunctions";
 
 function ChannelInfoCard() {
-    const emptyData : IChannelInfoCard = {name: "", description: "", rules: [""], online: 0, members: 0}
-    const [channelInfoData, setChannelInfoData] = useState<IChannelInfoCard>(emptyData);
+    const [channelInfoData, setChannelInfoData] = useState<IChannelInfoCard | undefined>();
     const params = useParams();
     useEffect(() : void => {
+        const channelInfoSuccessHandlerCallback = (response: any) : void  => {
+            const payload : IChannelInfoCard = {
+                name: response.data.name,
+                description: response.data.description,
+                members: response.data.members,
+                online: response.data.membersOnline,
+                rules: response.data.rules,
+            }
+            setChannelInfoData(payload);
+        };
         const config : {headers: {"Authorization" : string}} = {
             headers: {
                 "Authorization" : `Bearer ${getCookie("token")}`,
             }
         }
-        axios.get('/api/channel/' + params.channel, config)
-            .then((response) : void  => {
-                const payload : IChannelInfoCard = {
-                    name: response.data.name,
-                    description: response.data.description,
-                    members: response.data.members,
-                    online: response.data.membersOnline,
-                    rules: response.data.rules,
-                }
-                setChannelInfoData(payload);
-            })
-            .catch( error => {
-                setChannelInfoData(rawDataChannelInfoCard);
+        const url: string = `/api/channel/${params.channel}`;
+        axios.get(url, config)
+            .then(channelInfoSuccessHandlerCallback)
+            .catch( (): void => {
+                axios.get(url)
+                    .then(channelInfoSuccessHandlerCallback)
+                    .catch(
+                        (error): void => {
+                            console.log(error);
+                        }
+                    );
             });
     }, []);
     return (
         <StyledDiv1>
           <div style={{ fontSize: "25px", marginBottom: "10px" }}>
-            { channelInfoData.name }
+            { channelInfoData?.name }
           </div>
           <div style={{ color: "#777777", marginBottom: "15px" }}>
-            { channelInfoData.description }
+            { channelInfoData?.description }
           </div>
             <div style={{ display: "flex", gap: "20px" }}>
               <div>
                 <div>
-                  { channelInfoData.members }
+                  { channelInfoData?.members }
                 </div>
                 <div style={{ color: "#777777" }}>
                   Members
@@ -50,7 +56,7 @@ function ChannelInfoCard() {
               </div>
               <div>
                 <div>
-                  { channelInfoData.online }
+                  { channelInfoData?.online }
                 </div>
                 <div style={{ color: "#777777" }}>
                   <StyledGreenCircle />

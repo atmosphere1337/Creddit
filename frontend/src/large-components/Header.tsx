@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components"
 import { useAppSelector, useAppDispatch } from 'other/hooks'
-import { setColorModeDark, setColorModeLight, setLoggedIn, setLoggedOut } from 'other/slices/userSlice';
+import { setColorModeDark, setColorModeLight, setId, setLoggedOut, setUsername, setProfilepicture } from 'other/slices/userSlice';
 import ModalLogin from 'large-components/modal-windows/ModalLogin';
 import ModalRegister from 'large-components/modal-windows/ModalRegister';
 import CredditLogo from "small-components/CredditLogo/CredditLogo";
@@ -15,6 +15,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
 import axios from "axios";
+import NotificationFeed from './NotificationFeed';
 
 function Header() {
     const selectorColorTheme = useAppSelector((state) => state.user.colorMode);
@@ -44,6 +45,9 @@ function Header() {
                         profilePictureUrl: response.data.profilePictureUrl,
                         notCheckedNotificationAmount: response.data.notCheckedNotificationAmount,
                     };
+                    dispatch(setId(response.data.id));
+                    dispatch(setUsername(response.data.username));
+                    dispatch(setProfilepicture(response.data.profilePictureUrl));
                     setUserHeaderSmallInfoState(payload);
                     setHeaderAuth(true);
                 }
@@ -106,13 +110,16 @@ function Header() {
                   <IconButton href="/admin">
                     <AdminPanelSettingsIcon />
                   </IconButton>
-                  <IconButton>
-                      <Badge badgeContent={userHeaderSmallInfoState.notCheckedNotificationAmount} color="primary">
-                        <NotificationsNoneIcon />
-                      </Badge>
-                  </IconButton>
+                  <NotificationFeed />
                   <IconButton onClick={ handleClick }>
-                    <Avatar sx={{width: 32, height: 32}} />
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl == "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} />
+                      }
+                      {
+                          userHeaderSmallInfoState.profilePictureUrl != "default" &&
+                          <Avatar sx={{height: 32, width: 32, mr: 1}} src={userHeaderSmallInfoState.profilePictureUrl}/>
+                      }
                   </IconButton>
                   <Menu
                     anchorEl={anchorEl}

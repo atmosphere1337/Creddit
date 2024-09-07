@@ -30,6 +30,22 @@ class Post
     private ?int $rating = 0;
     private ?int $amountOfComments = 0;
     private ?int $hasUserEverVoted = 0; // 0 for "didn't vote", 1 for "upvoted", 2 for "downvoted"
+    private ?bool $isOwnedByTheUser = false;
+    private ?string $username = null;
+    private ?string $userProflePictureUrl = null;
+    private ?string $channelProfilePictureUrl = null;
+    private ?Channel $channel = null;
+    private ?SocialMetrics $socialMetrics = null;
+    private ?float $euclideanDistance = null;
+    //---------------------------------------------------------------------------------------------------------
+    public function __construct(array $validatedRequestBodyData, int $userId)
+    {
+        $this->title = $validatedRequestBodyData['postTitle'];
+        $this->body = $validatedRequestBodyData['postBody'];
+        $this->channelId = $validatedRequestBodyData['channelId'];
+        $this->createdAt = new DateTime('now');
+        $this->userId = $userId;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -73,12 +89,35 @@ class Post
     {
         return $this->hasUserEverVoted;
     }
-
-
-
-
-
-
+    public function getIsOwnedByTheUser(): ?bool
+    {
+        return $this->isOwnedByTheUser;
+    }
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+    public function getUserProflePictureUrl(): ?string
+    {
+        return $this->userProflePictureUrl;
+    }
+    public function getChannelProfilePictureUrl(): ?string
+    {
+        return $this->channelProfilePictureUrl;
+    }
+    public function getChannel(): ?Channel 
+    {
+        return $this->channel;
+    }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
+    public function getEuclideanDistance(): ?float
+    {
+        return $this->euclideanDistance;
+    }
+//--------------------------------------------------------------------------------------------------------
     public function setRating(int $newRating) : void
     {
         $this->rating = $newRating;
@@ -119,5 +158,32 @@ class Post
     {
         $this->hasUserEverVoted = $newHasUserEverVoted;
     }
-
+    public function setIsOwnedByTheUser(bool $newIsOwnedByTheUser) : void
+    {
+        $this->isOwnedByTheUser = $newIsOwnedByTheUser;
+    }
+    public function setUsername(string $newUsername) : void
+    {
+        $this->username = $newUsername;
+    }
+    public function setUserProflePictureUrl(string $newUserProflePictureUrl) : void
+    {
+        $this->userProflePictureUrl = $newUserProflePictureUrl;
+    }
+    public function setChannelProfilePictureUrl(string $newChannelProfilePictureUrl) : void
+    {
+        $this->channelProfilePictureUrl = $newChannelProfilePictureUrl;
+    }
+    public function setChannel(?Channel $newChannel): void 
+    {
+        $this->channel = $newChannel;
+    }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
+    }
+    public function setEuclideanDistance(float $euclideanDistance) : void
+    {
+        $this->euclideanDistance = $euclideanDistance;
+    }
 }

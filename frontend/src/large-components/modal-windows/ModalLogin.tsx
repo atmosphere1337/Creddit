@@ -8,7 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
 function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: () => void}) {
-    const [login, setLogin] = useState<string>("");
     const [email, setEmail] = useState<string>("root");
     const [password, setPassword] = useState<string>("1337");
     const dispatch = useAppDispatch();
@@ -60,13 +59,6 @@ function  ModalLogin({open = false, close = () => {}} : {open: boolean, close: (
                         <CloseIcon />
                     </IconButton>
                     <Box sx={{p: 5}}>
-                        <Box sx={{mb: 2, }}>
-                            <TextField
-                                label="login *"
-                                value={login}
-                                onChange={(e) => {setLogin(e.target.value)}}
-                            />
-                        </Box>
                         <Box sx={{mb: 2, }}>
                             <TextField
                                 label="email *"

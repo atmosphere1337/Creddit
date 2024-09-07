@@ -3,8 +3,8 @@ import axios from "axios";
 import {JSX, useState} from "react";
 import {getCookie} from "../other/widelyUsedFunctions";
 
-function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave: number}) : JSX.Element {
-    const [switchJoinOrLeaveState, setSwitchJoinOrLeaveState] = useState<number>(joinOrLeave);
+function JoinButton({channelId, joinOrLeave} : {channelId : number, joinOrLeave?: number}) : JSX.Element {
+    const [switchJoinOrLeaveState, setSwitchJoinOrLeaveState] = useState<number | undefined>(joinOrLeave);
     function subscribeHandler() : void {
         const config: {headers: {"Authorization" : string} } = {
             headers: {

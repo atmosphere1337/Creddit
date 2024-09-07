@@ -16,7 +16,16 @@ class Channel
     private ?string $name = null;
     #[ORM\Column]
     private ?string $description = null;
-    //private ?string $rules = null; // just string or maybe array or even external table?
+
+    #[ORM\Column(length: 700, nullable: true)]
+    private ?string $channelProfilePictureUrl = "default";
+
+    #[ORM\Column(length: 700, nullable: true)]
+    private ?string $channelWallpaperPictureUrl = "default";
+
+    private ?SocialMetrics $socialMetrics = null;
+    private ?float $euclideanDistance = null;
+
     private ?int $membersOnline = null;
     private ?int $members = null;
     private ?int $subscriptionLevel = 1; // 1 is for "non-subscriber", 2 is for "subscriber"
@@ -44,6 +53,22 @@ class Channel
     {
         return $this->subscriptionLevel;
     }
+    public function getChannelProfilePictureUrl(): ?string
+    {
+        return $this->channelProfilePictureUrl;
+    }
+    public function getChannelWallpaperPictureUrl(): ?string
+    {
+        return $this->channelWallpaperPictureUrl;
+    }
+    public function getSocialMetrics(): ?SocialMetrics
+    {
+        return $this->socialMetrics;
+    }
+    public function getEuclideanDistance(): ?float
+    {
+        return $this->euclideanDistance;
+    }
 //------------------------------------------------------------------------------------------------
     public function __construct(string $newName, $newDescription)
     {
@@ -62,4 +87,20 @@ class Channel
    {
        $this->subscriptionLevel = $newSubscriptionLevel;
    }
+   public function setChannelProfilePictureUrl(string $channelProfilePictureUrl) : void
+   {
+       $this->channelProfilePictureUrl = $channelProfilePictureUrl;
+   }
+   public function setChannelWallpaperPictureUrl(string $channelWallpaperPictureUrl) : void
+   {
+       $this->channelWallpaperPictureUrl = $channelWallpaperPictureUrl;
+   }
+    public function setSocialMetrics(SocialMetrics $newSocialMetrics): void
+    {
+        $this->socialMetrics = $newSocialMetrics;
+    }
+    public function setEuclideanDistance(int $newEuclideanDistance) : void
+    {
+        $this->euclideanDistance = $newEuclideanDistance;
+    }
 }
